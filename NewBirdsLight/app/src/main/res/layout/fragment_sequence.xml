@@ -1,0 +1,163 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="#14BED1"
+    tools:context=".Sequence"
+    android:orientation="vertical">
+
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="vertical">
+
+
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="30dp"
+        android:layout_marginLeft="30dp"
+        android:text="Program List"
+        android:textColor="#39405A"
+        android:textSize="20dp"
+        android:textStyle="bold"
+        android:layout_gravity="left"/>
+
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/recycler_seq_program_list"
+        android:layout_width="match_parent"
+        android:layout_height="250dp"
+        android:layout_marginVertical="10dp">
+    </androidx.recyclerview.widget.RecyclerView>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal">
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="30dp"
+            android:text="Time Range: "
+            android:textColor="#39405A"
+            android:textSize="20dp"
+            android:textStyle="bold"
+            android:layout_gravity="left"/>
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/txtTimeFrom"
+            android:text="00:00"
+            android:textColor="#39405A"
+            android:textSize="20dp"
+            android:textStyle="bold"
+            android:layout_marginHorizontal="5dp"
+            android:layout_gravity="left"/>
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/txtTimeTo"
+            android:text="00:00"
+            android:textColor="#39405A"
+            android:textSize="20dp"
+            android:textStyle="bold"
+            android:layout_gravity="left"
+            android:layout_marginHorizontal="5dp"/>
+    </LinearLayout>
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:layout_marginVertical="10dp"
+
+        android:paddingHorizontal="30dp"
+        android:weightSum="2">
+        <Button
+            android:id="@+id/btn_Start_Time"
+            android:layout_width="60dp"
+            android:layout_height="wrap_content"
+            android:layout_margin="20dp"
+            android:background="@drawable/button_model"
+            android:drawableRight="@drawable/ic_access_time_black_24dp"
+            android:textColor="#14BED1"
+            android:layout_gravity="center"
+            android:paddingHorizontal="10dp"
+            android:layout_weight="1"
+            android:text="Start Time" />
+
+        <Button
+            android:id="@+id/btn_End_Time"
+            android:layout_width="60dp"
+            android:layout_height="wrap_content"
+            android:background="@drawable/button_model"
+            android:layout_margin="20dp"
+            android:drawableRight="@drawable/ic_access_time_black_24dp"
+            android:textColor="#14BED1"
+            android:layout_gravity="center"
+            android:paddingHorizontal="10dp"
+            android:enabled="false"
+            android:layout_weight="1"
+            android:text="End Time"/>
+
+    </LinearLayout>
+
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal">
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="30dp"
+            android:text="Day Range: "
+            android:textColor="#39405A"
+            android:textSize="20dp"
+            android:textStyle="bold"
+            android:layout_gravity="left"/>
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/txtDays"
+            android:text=""
+            android:textColor="#39405A"
+            android:textSize="20dp"
+            android:textStyle="bold"
+            android:layout_gravity="left"/>
+
+    </LinearLayout>
+
+    <Button
+        android:id="@+id/btn_Days_Range"
+        android:layout_width="220dp"
+        android:layout_height="wrap_content"
+        android:layout_margin="20dp"
+        android:background="@drawable/button_model"
+        android:drawableRight="@drawable/ic_today_black_24dp"
+        android:textColor="@color/MainColor"
+        android:layout_gravity="center"
+        android:paddingHorizontal="30dp"
+        android:text="Change Days" />
+
+            <Button
+                android:id="@+id/btn_Save_Sequence"
+                android:layout_width="220dp"
+                android:layout_height="wrap_content"
+                android:layout_margin="20dp"
+                android:background="@drawable/button_model"
+                android:drawableRight="@drawable/ic_check_black_24dp"
+                android:textColor="@color/MainColor"
+                android:layout_gravity="center"
+                android:paddingHorizontal="20dp"
+                android:text="Save Sequence" />
+
+        </LinearLayout>
+
+    </ScrollView>
+</LinearLayout>
