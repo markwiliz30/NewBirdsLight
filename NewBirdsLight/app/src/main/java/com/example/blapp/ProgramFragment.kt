@@ -52,7 +52,6 @@ class ProgramFragment : Fragment(){
 
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
-       // dbStep = DBmanager(activity!!)
         dbm = DBmanager(activity!!)
 
         recycler_pgm.setHasFixedSize(true)

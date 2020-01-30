@@ -7,6 +7,7 @@ class PgmItem
     var pgm: Byte? = 0
     var name: String = ""
     var isClicked = false
+        
         //Getter
         get() = field
         //Setter

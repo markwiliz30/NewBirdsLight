@@ -19,7 +19,7 @@ import kotlin.collections.ArrayList
 import kotlin.collections.HashMap
 
 abstract class MySwipeHelper(context: FragmentActivity?, private val recyclerView: RecyclerView, internal var buttonWith: Int)
-    : ItemTouchHelper.SimpleCallback(0, ItemTouchHelper.LEFT){
+    : ItemTouchHelper.SimpleCallback(0, ItemTouchHelper.LEFT                                                                                          ){
 
     private var buttonList: MutableList<MyButton>?=null
     lateinit var gestureDetector: GestureDetector
