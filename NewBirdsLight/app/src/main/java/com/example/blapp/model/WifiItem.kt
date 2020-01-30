@@ -5,6 +5,7 @@ class WifiItem{
     var status: Int? = 0
     var level: Int? = 0
     var selected: Boolean = false
+    var capabilities: String? = ""
 
         //Getter
         get() = field

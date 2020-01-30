@@ -20,11 +20,10 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.blapp.adapter.WifiAdapter
 import com.example.blapp.common.DeviceProtocol
 import com.example.blapp.common.Protocol
-import com.example.blapp.common.SharedWifiDetails
+import com.example.blapp.common.SharedWifiUtils
 import com.example.blapp.model.WifiItem
 import dmax.dialog.SpotsDialog
 import kotlinx.android.synthetic.main.fragment_landing.*
-import android.net.wifi.WifiConfiguration
 
 
 /**
@@ -72,28 +71,32 @@ class LandingFragment : Fragment() {
     }
 
     private fun displayScannedWifi() {
-        SharedWifiDetails.wifiList.clear()
+        SharedWifiUtils.wifiList.clear()
         var sameSSIDCount = 1
         for(item in resultList)
         {
-            var newWifiItem = WifiItem()
-            val found = SharedWifiDetails.wifiList.filter { it.name == item.SSID }
-            if(found.count() != 0)
+            if(item.SSID.contains("LAGO"))
             {
-                sameSSIDCount++
-                newWifiItem.name = item.SSID + " " + sameSSIDCount
-            }
-            else
-            {
-                newWifiItem.name = item.SSID
-            }
-            newWifiItem.level = WifiManager.calculateSignalLevel(item.level, 5)
-            newWifiItem.status = 2
+                var newWifiItem = WifiItem()
+                val found = SharedWifiUtils.wifiList.filter { it.name == item.SSID }
+                if(found.count() != 0)
+                {
+                    sameSSIDCount++
+                    newWifiItem.name = item.SSID + " " + sameSSIDCount
+                }
+                else
+                {
+                    newWifiItem.name = item.SSID
+                }
+                newWifiItem.level = WifiManager.calculateSignalLevel(item.level, 5)
+                newWifiItem.status = 0
+                newWifiItem.capabilities = item.capabilities
 
-            SharedWifiDetails.wifiList.add(newWifiItem)
+                SharedWifiUtils.wifiList.add(newWifiItem)
+            }
         }
 
-        SharedWifiDetails.wifiList.sortByDescending { it.level }
+        SharedWifiUtils.wifiList.sortByDescending { it.level }
         adapter.notifyDataSetChanged()
     }
 
@@ -112,6 +115,7 @@ class LandingFragment : Fragment() {
     ): View? {
         dialog = SpotsDialog(activity, R.style.Custom)
         wifiManager = activity!!.applicationContext.getSystemService(Context.WIFI_SERVICE) as WifiManager
+        SharedWifiUtils.sharedWifiManager = wifiManager
         Protocol.cDeviceProt = deviceProtocol
 
         if(!wifiManager!!.isWifiEnabled)
@@ -133,8 +137,8 @@ class LandingFragment : Fragment() {
         navController = Navigation.findNavController(view)
         Protocol.cDeviceProt.startChannel()
 
-        adapter = WifiAdapter(activity, SharedWifiDetails.wifiList)
-        SharedWifiDetails.sharedWifiAdapter = adapter
+        adapter = WifiAdapter(activity, SharedWifiUtils.wifiList)
+        SharedWifiUtils.sharedWifiAdapter = adapter
         lst_wifi.adapter = adapter
 
         startScanning()
@@ -154,7 +158,12 @@ class LandingFragment : Fragment() {
         }
     }
 
-//    private fun generateItem() {
+    override fun onDestroyView() {
+        super.onDestroyView()
+        stopScanning()
+    }
+
+    //    private fun generateItem() {
 //
 //        var item1 = WifiItem()
 //        item1.name = "waw"

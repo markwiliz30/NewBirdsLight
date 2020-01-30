@@ -3,12 +3,20 @@ package com.example.blapp.common
 import android.content.Context
 import android.net.wifi.WifiConfiguration
 import android.net.wifi.WifiManager
+import com.example.blapp.adapter.WifiAdapter
+import com.example.blapp.model.WifiItem
 
 @Suppress("DEPRECATION")
-class Utils {
+class WifiUtils {
+    companion object{
+        var selectedWifiIndex: Int? = -1
+        var wifiList = ArrayList<WifiItem>()
+        var sharedWifiAdapter: WifiAdapter? = null
+        var sharedWifiManager: WifiManager? = null
+    }
+
     fun connectWiFi(wifiManager: WifiManager, SSID: String, password: String, Security: String) {
         try {
-
             val conf = WifiConfiguration()
             conf.SSID =
                 "\"" + SSID + "\""   // Please note the quotes. String should contain ssid in quotes
