@@ -5,7 +5,7 @@
 
     <EditText
         android:hint="Password"
-        android:id="@+id/input_box"
+        android:id="@+id/input_password_box"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:inputType="textPassword" />

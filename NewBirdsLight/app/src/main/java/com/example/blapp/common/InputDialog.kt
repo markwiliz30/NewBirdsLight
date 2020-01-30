@@ -2,7 +2,6 @@ package com.example.blapp.common
 
 import android.app.AlertDialog
 import android.app.Dialog
-import android.content.DialogInterface
 import android.os.Bundle
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatDialogFragment
@@ -22,8 +21,11 @@ class InputDialog : AppCompatDialogFragment() {
                 Toast.makeText(context, "Cancel pressed", Toast.LENGTH_SHORT).show()
             }
             .setPositiveButton("Connect") { dialog, which ->
-                SharedWifiDetails.wifiList[SharedWifiDetails.selectedWifiIndex!!].selected = true
-                SharedWifiDetails.sharedWifiAdapter!!.notifyDataSetChanged()
+                val connectWifi = WifiUtils()
+                //val inputPassword: String? = input_password_box.text.toString()
+                connectWifi.connectWiFi(SharedWifiUtils.sharedWifiManager!!, SelectedDevice.SSID, "12345678", SharedWifiUtils.wifiList[SharedWifiUtils.selectedWifiIndex!!].capabilities!!)
+                SharedWifiUtils.wifiList[SharedWifiUtils.selectedWifiIndex!!].selected = true
+                SharedWifiUtils.sharedWifiAdapter!!.notifyDataSetChanged()
                 Toast.makeText(context, "Connect pressed", Toast.LENGTH_SHORT).show()
             }
 
