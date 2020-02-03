@@ -7,8 +7,6 @@ import androidx.fragment.app.FragmentActivity
 import androidx.recyclerview.widget.RecyclerView
 import com.example.blapp.R
 import com.example.blapp.common.InputDialog
-import com.example.blapp.common.SelectedDevice
-import com.example.blapp.common.SharedWifiUtils
 import com.example.blapp.common.WifiUtils
 import com.example.blapp.model.WifiItem
 
@@ -29,11 +27,10 @@ RecyclerView.Adapter<WifiViewHolder>()
         var wifiNameHold: String? = itemList[position].name
         holder.lblWifiName.text = wifiNameHold.toString()
 
-        var wifiStatusHold: Int? = itemList[position].status
+        var wifiStatusHold: Boolean? = itemList[position].status
         when(wifiStatusHold){
-            0 -> holder.lblWifiStatus.text = "Not Connected"
-            1 -> holder.lblWifiStatus.text = "Connecting..."
-            2 -> holder.lblWifiStatus.text = "Connected!"
+            false -> holder.lblWifiStatus.text = "Not Connected"
+            true -> holder.lblWifiStatus.text = "Connected!"
             else -> holder.lblWifiStatus.text = "Not Connected"
         }
 
@@ -67,15 +64,15 @@ RecyclerView.Adapter<WifiViewHolder>()
                 item.selected = false
             }
             //itemList[position].selected = !itemList[position].selected
-            SharedWifiUtils.selectedWifiIndex = position
+            WifiUtils.selectedWifiIndex = position
             //notifyDataSetChanged()
 
-            SelectedDevice.SSID = itemList[position].name.toString()
+            //SelectedDevice.SSID = itemList[position].name.toString()
 
             if(!itemList[position].capabilities!!.toUpperCase().contains("WPA") && !itemList[position].capabilities!!.toUpperCase().contains("WEP"))
             {
                 val connectWifi = WifiUtils()
-                connectWifi.connectWiFi(SharedWifiUtils.sharedWifiManager!!, SelectedDevice.SSID, "", itemList[position].capabilities!!)
+                connectWifi.connectWiFi(WifiUtils.sharedWifiManager!!, WifiUtils.wifiList[WifiUtils.selectedWifiIndex!!].name!!, "", itemList[position].capabilities!!)
             }
             else
             {

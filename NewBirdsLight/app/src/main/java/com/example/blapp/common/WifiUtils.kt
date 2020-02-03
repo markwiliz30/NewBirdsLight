@@ -1,8 +1,11 @@
 package com.example.blapp.common
 
 import android.content.Context
+import android.net.ConnectivityManager
+import android.net.NetworkInfo
 import android.net.wifi.WifiConfiguration
 import android.net.wifi.WifiManager
+import android.widget.Toast
 import com.example.blapp.adapter.WifiAdapter
 import com.example.blapp.model.WifiItem
 
@@ -89,4 +92,25 @@ class WifiUtils {
             e.printStackTrace()
         }
     }
+
+
+    fun IsWiFiConnected(context: Context, SSID: String)
+    : Boolean {
+        val connectivity = context.applicationContext.getSystemService(Context.CONNECTIVITY_SERVICE) as ConnectivityManager
+
+        if(connectivity != null)
+        {
+            val info = connectivity.allNetworkInfo
+            if(info != null)
+            {
+                for (i in info.indices) {
+                    if (info[i].typeName == SSID && info[i].isConnected)
+                        return true
+                }
+            }
+        }
+        return false
+    }
+
+
 }

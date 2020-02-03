@@ -20,7 +20,7 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.blapp.adapter.WifiAdapter
 import com.example.blapp.common.DeviceProtocol
 import com.example.blapp.common.Protocol
-import com.example.blapp.common.SharedWifiUtils
+import com.example.blapp.common.WifiUtils
 import com.example.blapp.model.WifiItem
 import dmax.dialog.SpotsDialog
 import kotlinx.android.synthetic.main.fragment_landing.*
@@ -71,14 +71,14 @@ class LandingFragment : Fragment() {
     }
 
     private fun displayScannedWifi() {
-        SharedWifiUtils.wifiList.clear()
+        WifiUtils.wifiList.clear()
         var sameSSIDCount = 1
         for(item in resultList)
         {
             if(item.SSID.contains("LAGO"))
             {
                 var newWifiItem = WifiItem()
-                val found = SharedWifiUtils.wifiList.filter { it.name == item.SSID }
+                val found = WifiUtils.wifiList.filter { it.name == item.SSID }
                 if(found.count() != 0)
                 {
                     sameSSIDCount++
@@ -89,14 +89,14 @@ class LandingFragment : Fragment() {
                     newWifiItem.name = item.SSID
                 }
                 newWifiItem.level = WifiManager.calculateSignalLevel(item.level, 5)
-                newWifiItem.status = 0
+                newWifiItem.status = false
                 newWifiItem.capabilities = item.capabilities
 
-                SharedWifiUtils.wifiList.add(newWifiItem)
+                WifiUtils.wifiList.add(newWifiItem)
             }
         }
 
-        SharedWifiUtils.wifiList.sortByDescending { it.level }
+        WifiUtils.wifiList.sortByDescending { it.level }
         adapter.notifyDataSetChanged()
     }
 
@@ -115,7 +115,7 @@ class LandingFragment : Fragment() {
     ): View? {
         dialog = SpotsDialog(activity, R.style.Custom)
         wifiManager = activity!!.applicationContext.getSystemService(Context.WIFI_SERVICE) as WifiManager
-        SharedWifiUtils.sharedWifiManager = wifiManager
+        WifiUtils.sharedWifiManager = wifiManager
         Protocol.cDeviceProt = deviceProtocol
 
         if(!wifiManager!!.isWifiEnabled)
@@ -137,8 +137,8 @@ class LandingFragment : Fragment() {
         navController = Navigation.findNavController(view)
         Protocol.cDeviceProt.startChannel()
 
-        adapter = WifiAdapter(activity, SharedWifiUtils.wifiList)
-        SharedWifiUtils.sharedWifiAdapter = adapter
+        adapter = WifiAdapter(activity, WifiUtils.wifiList)
+        WifiUtils.sharedWifiAdapter = adapter
         lst_wifi.adapter = adapter
 
         startScanning()
