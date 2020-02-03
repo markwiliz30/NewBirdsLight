@@ -21,6 +21,7 @@ import com.example.blapp.collection.StepCollection
 import com.example.blapp.databasehelper.DBmanager
 import com.example.blapp.helper.MyButton
 import com.example.blapp.helper.MySwipeHelper
+import com.example.blapp.helper.MySwipeHelper2
 import com.example.blapp.listener.MyButtonClickListener
 import com.example.blapp.model.PgmItem
 import com.example.blapp.model.StepItem
@@ -52,7 +53,6 @@ class ProgramFragment : Fragment(){
 
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
-       // dbStep = DBmanager(activity!!)
         dbm = DBmanager(activity!!)
 
         recycler_pgm.setHasFixedSize(true)
@@ -92,6 +92,36 @@ class ProgramFragment : Fragment(){
                                 val bundle = bundleOf("parentPgmIndex" to  pos + 1)
                                 navController.navigate(R.id.action_programFragment_to_setStepFragment, bundle )
                                 CurrentID.UpdateID(num = 6)
+                                CurrentID.Updatebool(x = true)
+                            }
+                        }
+                    )
+                )
+
+                buffer.add(
+                    MyButton(activity,
+                        "Save",
+                        30,
+                        R.drawable.ic_save_dark_blue_24dp,
+                        Color.parseColor("#14BED1"),
+                        object : MyButtonClickListener{
+                            override fun onClick(pos: Int) {
+                                showCreateCategoryDialog(pos+1)
+                            }
+                        }
+                    )
+                )
+
+                buffer.add(
+                    MyButton(activity,
+                        "Save",
+                        30,
+                        R.drawable.ic_date_range_dark_blue_24dp,
+                        Color.parseColor("#14BED1"),
+                        object : MyButtonClickListener{
+                            override fun onClick(pos: Int) {
+                                navController.navigate(R.id.action_programFragment_to_dayPicker)
+                                CurrentID.UpdateID(num = 8)
                                 CurrentID.Updatebool(x = true)
                             }
                         }
