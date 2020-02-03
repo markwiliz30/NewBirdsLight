@@ -236,9 +236,9 @@ class Landing : AppCompatActivity() {
                 CurrentID.UpdateID(num = ID_SCHEDULEFRAGMENT)
             }
             else if(CurrentID.getID() == ID_DAYPICKERFRAGMENT){
-                navController.navigate(R.id.action_dayPicker_to_sequence)
+                navController.navigate(R.id.action_dayPicker_to_programFragment)
                 CurrentID.Updatebool(x = false)
-                CurrentID.UpdateID(num = ID_SEQUENCEFRAGMENT)
+                CurrentID.UpdateID(num = ID_PROGRAMFRAGMENT)
             }
             else if(CurrentID.getID() == ID_IMPORTFRAGMENT){
                 navController.navigate(R.id.action_importFragment_to_programFragment)

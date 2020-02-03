@@ -2,18 +2,16 @@ package com.example.blapp
 
 
 import android.app.TimePickerDialog
-import android.app.TimePickerDialog.OnTimeSetListener
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.Button
 import android.widget.TimePicker
 import androidx.fragment.app.Fragment
 import androidx.navigation.NavController
 import androidx.navigation.Navigation
 import com.CurrentId.extensions.CurrentID
-import kotlinx.android.synthetic.main.fragment_sequence.*
+import kotlinx.android.synthetic.main.fragment_time_picker.*
 import java.util.*
 
 /**
@@ -28,7 +26,7 @@ class Sequence : Fragment() {
         savedInstanceState: Bundle?
     ): View? {
         // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_sequence, container, false)
+        return inflater.inflate(R.layout.fragment_time_picker, container, false)
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {

@@ -1,16 +1,20 @@
 package com.example.blapp
 
 
+import android.app.TimePickerDialog
 import android.os.Bundle
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.TimePicker
 import androidx.fragment.app.FragmentController
 import androidx.navigation.NavController
 import androidx.navigation.Navigation
 import com.CurrentId.extensions.CurrentID
 import kotlinx.android.synthetic.main.fragment_day_picker.*
+import kotlinx.android.synthetic.main.fragment_time_picker.*
+import java.util.*
 
 /**
  * A simple [Fragment] subclass.
@@ -39,14 +43,38 @@ class DayPicker : Fragment() {
         super.onViewCreated(view, savedInstanceState)
         navController = Navigation.findNavController(view)
         btnCancelDayPicker.setOnClickListener{
-            navController.navigate(R.id.action_dayPicker_to_sequence)
-            CurrentID.UpdateID(num = 7)
-            CurrentID.Updatebool(x = true)
+            navController.navigate(R.id.action_dayPicker_to_programFragment)
+            CurrentID.UpdateID(num = 3)
+            CurrentID.Updatebool(x = false)
         }
+
+        val mTimePickerStart: TimePickerDialog
+        val mTimePickerEnd: TimePickerDialog
+        val mcurrentTime = Calendar.getInstance()
+        val hour = mcurrentTime.get(Calendar.HOUR_OF_DAY)
+        val minute = mcurrentTime.get(Calendar.MINUTE)
+
+
+        mTimePickerEnd = TimePickerDialog(activity, object : TimePickerDialog.OnTimeSetListener{
+            override fun onTimeSet(view: TimePicker?, hourOfDay: Int, minute: Int) {
+
+            }
+        }, hour , minute , false)
+
+
+        mTimePickerStart = TimePickerDialog(activity, R.style.MyTimePickerTheme,object : TimePickerDialog.OnTimeSetListener {
+            override fun onTimeSet(view: TimePicker?, hourOfDay: Int, minute: Int) {
+                mTimePickerEnd.show()
+               // btn_End_Time.isEnabled = true
+            }
+
+        }, hour, minute, false)
+
 
         btnMonday.setOnClickListener{
             isMondayClicked =!isMondayClicked
             if(isMondayClicked){
+                mTimePickerStart.show()
                 btnMonday.setBackgroundResource(R.drawable.bottom_border)
             }else{
                 btnMonday.setBackgroundResource(R.drawable.button_model)
@@ -56,6 +84,7 @@ class DayPicker : Fragment() {
         btnTuesday.setOnClickListener{
             isTuesdayClicked =!isTuesdayClicked
             if(isTuesdayClicked){
+                mTimePickerStart.show()
                 btnTuesday.setBackgroundResource(R.drawable.bottom_border)
             }else{
                 btnTuesday.setBackgroundResource(R.drawable.button_model)
@@ -65,6 +94,7 @@ class DayPicker : Fragment() {
         btnWednesday.setOnClickListener{
             isWednesdayClicked =!isWednesdayClicked
             if(isWednesdayClicked){
+                mTimePickerStart.show()
                 btnWednesday.setBackgroundResource(R.drawable.bottom_border)
             }else{
                 btnWednesday.setBackgroundResource(R.drawable.button_model)
@@ -73,6 +103,7 @@ class DayPicker : Fragment() {
         btnThursday.setOnClickListener{
             isThursdayClicked =!isThursdayClicked
             if(isThursdayClicked){
+                mTimePickerStart.show()
                 btnThursday.setBackgroundResource(R.drawable.bottom_border)
             }else{
                 btnThursday.setBackgroundResource(R.drawable.button_model)
@@ -81,6 +112,7 @@ class DayPicker : Fragment() {
         btnFriday.setOnClickListener{
             isFridayClicked =!isFridayClicked
             if(isFridayClicked){
+                mTimePickerStart.show()
                 btnFriday.setBackgroundResource(R.drawable.bottom_border)
             }else{
                 btnFriday.setBackgroundResource(R.drawable.button_model)
@@ -89,6 +121,7 @@ class DayPicker : Fragment() {
         btnSaturday.setOnClickListener{
             isSaturdayClicked =!isSaturdayClicked
             if(isSaturdayClicked){
+                mTimePickerStart.show()
                 btnSaturday.setBackgroundResource(R.drawable.bottom_border)
             }else{
                 btnSaturday.setBackgroundResource(R.drawable.button_model)
@@ -97,6 +130,7 @@ class DayPicker : Fragment() {
         btnSunday.setOnClickListener{
             isSundayClicked =!isSundayClicked
             if(isSundayClicked){
+                mTimePickerStart.show()
                 btnSunday.setBackgroundResource(R.drawable.bottom_border)
             }else{
                 btnSunday.setBackgroundResource(R.drawable.button_model)
@@ -106,6 +140,7 @@ class DayPicker : Fragment() {
         btnAll.setOnClickListener{
             isSelectAllClicked =! isSelectAllClicked
             if(isSelectAllClicked){
+                mTimePickerStart.show()
                 btnAll.setBackgroundResource(R.drawable.bottom_border)
                 SelectAllDays()
             }else{

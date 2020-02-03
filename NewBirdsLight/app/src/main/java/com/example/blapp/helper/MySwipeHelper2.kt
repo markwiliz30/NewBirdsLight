@@ -18,8 +18,8 @@ import java.util.*
 import kotlin.collections.ArrayList
 import kotlin.collections.HashMap
 
-abstract class MySwipeHelper(context: FragmentActivity?, private val recyclerView: RecyclerView, internal var buttonWith: Int)
-    : ItemTouchHelper.SimpleCallback(0, ItemTouchHelper.LEFT){
+abstract class MySwipeHelper2(context: FragmentActivity?, private val recyclerView: RecyclerView, internal var buttonWith: Int)
+    : ItemTouchHelper.SimpleCallback(0, ItemTouchHelper.RIGHT){
 
     private var buttonList: MutableList<MyButton>?=null
     lateinit var gestureDetector: GestureDetector
@@ -58,8 +58,8 @@ abstract class MySwipeHelper(context: FragmentActivity?, private val recyclerVie
         swipedItem.getGlobalVisibleRect(rect)
 
         if(motionEvent.action == MotionEvent.ACTION_DOWN ||
-                motionEvent.action == MotionEvent.ACTION_MOVE ||
-                motionEvent.action == MotionEvent.ACTION_UP)
+            motionEvent.action == MotionEvent.ACTION_MOVE ||
+            motionEvent.action == MotionEvent.ACTION_UP)
         {
             if(rect.top < point.y && rect.bottom > point.y)
                 gestureDetector.onTouchEvent(motionEvent)
@@ -177,7 +177,7 @@ abstract class MySwipeHelper(context: FragmentActivity?, private val recyclerVie
         }
         if(actionState == ItemTouchHelper.ACTION_STATE_SWIPE)
         {
-            if(dX < 0)
+            if(dX > 0)
             {
                 var buffer: MutableList<MyButton> = ArrayList()
                 if(!buttonBuffer.containsKey(pos))
@@ -197,13 +197,13 @@ abstract class MySwipeHelper(context: FragmentActivity?, private val recyclerVie
     }
 
     private fun drawButton(c: Canvas, itemView: View, buffer: MutableList<MyButton>, pos: Int, translationX: Float) {
-        var right = itemView.right.toFloat()
+        var left = itemView.left.toFloat()
         var dButtonWidth = -1*translationX/buffer.size
         for (button in buffer)
         {
-            var left = right - dButtonWidth
-            button.onDraw(c, RectF(left, itemView.top.toFloat(), right, itemView.bottom.toFloat()), pos)
-            right = left
+            var right = left - dButtonWidth
+            button.onDraw(c, RectF(left, itemView.top.toFloat(), left, itemView.bottom.toFloat()), pos)
+            left = right
         }
     }
 }
