@@ -120,7 +120,7 @@ class ProgramFragment : Fragment(){
                         Color.parseColor("#14BED1"),
                         object : MyButtonClickListener{
                             override fun onClick(pos: Int) {
-                                val bundle = bundleOf("parentPgmIndex" to  pos)
+                                val bundle = bundleOf("parentPgmIndex" to  pos+1)
                                 navController.navigate(R.id.action_programFragment_to_dayPicker , bundle)
                                 CurrentID.UpdateID(num = 8)
                                 CurrentID.Updatebool(x = true)

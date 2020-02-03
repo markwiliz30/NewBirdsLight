@@ -33,7 +33,7 @@ import kotlinx.android.synthetic.main.activity_landing.*
 class SetStepFragment : Fragment() {
 
     lateinit var navController: NavController
-        var parentPgmIndex: Int = 0
+            var parentPgmIndex: Int = 0
     var stepIndex: Int = 0
     internal var pVal: Int = 0
     internal var tVal:Int = 0

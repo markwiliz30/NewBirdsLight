@@ -8,12 +8,17 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.TimePicker
+import android.widget.Toast
 import androidx.appcompat.app.AlertDialog
+import androidx.core.os.bundleOf
 import androidx.fragment.app.FragmentController
 import androidx.navigation.NavController
 import androidx.navigation.Navigation
 import com.CurrentId.extensions.CurrentID
 import kotlinx.android.synthetic.main.fragment_day_picker.*
+import kotlinx.android.synthetic.main.fragment_day_picker.view.*
+import kotlinx.android.synthetic.main.fragment_time_schedule.*
+import kotlinx.android.synthetic.main.fragment_time_schedule.view.*
 import java.util.*
 
 /**
@@ -39,6 +44,7 @@ class DayPicker : Fragment() {
         // Inflate the layout for this fragment
         parentPgmIndex = arguments!!.getInt("parentPgmIndex")
         return inflater.inflate(R.layout.fragment_day_picker, container, false)
+
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
@@ -50,34 +56,11 @@ class DayPicker : Fragment() {
             CurrentID.Updatebool(x = false)
         }
 
-        val mTimePickerStart: TimePickerDialog
-        val mTimePickerEnd: TimePickerDialog
-        val mcurrentTime = Calendar.getInstance()
-        val hour = mcurrentTime.get(Calendar.HOUR_OF_DAY)
-        val minute = mcurrentTime.get(Calendar.MINUTE)
-
-
-        mTimePickerEnd = TimePickerDialog(activity, object : TimePickerDialog.OnTimeSetListener{
-            override fun onTimeSet(view: TimePicker?, hourOfDay: Int, minute: Int) {
-
-            }
-        }, hour , minute , false)
-
-
-        mTimePickerStart = TimePickerDialog(activity, R.style.MyTimePickerTheme,object : TimePickerDialog.OnTimeSetListener {
-            override fun onTimeSet(view: TimePicker?, hourOfDay: Int, minute: Int) {
-                mTimePickerEnd.show()
-               // btn_End_Time.isEnabled = true
-            }
-
-        }, hour, minute, false)
-
-
         btnMonday.setOnClickListener{
             isMondayClicked =!isMondayClicked
             if(isMondayClicked){
-                ShowTimeSchedule()
-                btnMonday.setBackgroundResource(R.drawable.bottom_border)
+                ShowTimeSchedule(1)
+
             }else{
                 btnMonday.setBackgroundResource(R.drawable.button_model)
             }
@@ -86,7 +69,6 @@ class DayPicker : Fragment() {
         btnTuesday.setOnClickListener{
             isTuesdayClicked =!isTuesdayClicked
             if(isTuesdayClicked){
-                mTimePickerStart.show()
                 btnTuesday.setBackgroundResource(R.drawable.bottom_border)
             }else{
                 btnTuesday.setBackgroundResource(R.drawable.button_model)
@@ -96,7 +78,6 @@ class DayPicker : Fragment() {
         btnWednesday.setOnClickListener{
             isWednesdayClicked =!isWednesdayClicked
             if(isWednesdayClicked){
-                mTimePickerStart.show()
                 btnWednesday.setBackgroundResource(R.drawable.bottom_border)
             }else{
                 btnWednesday.setBackgroundResource(R.drawable.button_model)
@@ -105,7 +86,6 @@ class DayPicker : Fragment() {
         btnThursday.setOnClickListener{
             isThursdayClicked =!isThursdayClicked
             if(isThursdayClicked){
-                mTimePickerStart.show()
                 btnThursday.setBackgroundResource(R.drawable.bottom_border)
             }else{
                 btnThursday.setBackgroundResource(R.drawable.button_model)
@@ -114,7 +94,6 @@ class DayPicker : Fragment() {
         btnFriday.setOnClickListener{
             isFridayClicked =!isFridayClicked
             if(isFridayClicked){
-                mTimePickerStart.show()
                 btnFriday.setBackgroundResource(R.drawable.bottom_border)
             }else{
                 btnFriday.setBackgroundResource(R.drawable.button_model)
@@ -123,7 +102,6 @@ class DayPicker : Fragment() {
         btnSaturday.setOnClickListener{
             isSaturdayClicked =!isSaturdayClicked
             if(isSaturdayClicked){
-                mTimePickerStart.show()
                 btnSaturday.setBackgroundResource(R.drawable.bottom_border)
             }else{
                 btnSaturday.setBackgroundResource(R.drawable.button_model)
@@ -132,7 +110,6 @@ class DayPicker : Fragment() {
         btnSunday.setOnClickListener{
             isSundayClicked =!isSundayClicked
             if(isSundayClicked){
-                mTimePickerStart.show()
                 btnSunday.setBackgroundResource(R.drawable.bottom_border)
             }else{
                 btnSunday.setBackgroundResource(R.drawable.button_model)
@@ -142,7 +119,6 @@ class DayPicker : Fragment() {
         btnAll.setOnClickListener{
             isSelectAllClicked =! isSelectAllClicked
             if(isSelectAllClicked){
-                mTimePickerStart.show()
                 btnAll.setBackgroundResource(R.drawable.bottom_border)
                 SelectAllDays()
             }else{
@@ -186,15 +162,59 @@ class DayPicker : Fragment() {
         btnSunday.setBackgroundResource(R.drawable.button_model)
         isSundayClicked = false
     }
-    fun ShowTimeSchedule() {
+    fun ShowTimeSchedule(day: Int) {
+        when (day) {
+            1 -> {
+                val bundle = bundleOf("parentPgmIndex" to  parentPgmIndex , "days" to day)
+                navController.navigate(R.id.action_dayPicker_to_timeSchedule, bundle)
+                CurrentID.UpdateID(num = 7)
+                CurrentID.Updatebool(x = false)
 
-        val editAlert = AlertDialog.Builder(activity!!).create()
+            }
+            2 -> {
+                navController.navigate(R.id.action_dayPicker_to_timeSchedule)
+                CurrentID.UpdateID(num = 3)
+                CurrentID.Updatebool(x = false)
+                val bundle = bundleOf("parentPgmIndex" to  parentPgmIndex)
+                val bundleDay = bundleOf("day" to day)
+            }
+            3 -> {
+                navController.navigate(R.id.action_dayPicker_to_timeSchedule)
+                CurrentID.UpdateID(num = 3)
+                CurrentID.Updatebool(x = false)
+                val bundle = bundleOf("parentPgmIndex" to  parentPgmIndex)
+                val bundleDay = bundleOf("day" to day)
+            }
+            4 -> {
+                navController.navigate(R.id.action_dayPicker_to_timeSchedule)
+                CurrentID.UpdateID(num = 3)
+                CurrentID.Updatebool(x = false)
+                val bundle = bundleOf("parentPgmIndex" to  parentPgmIndex)
+                val bundleDay = bundleOf("day" to day)
+            }
+            5 -> {
+                navController.navigate(R.id.action_dayPicker_to_timeSchedule)
+                CurrentID.UpdateID(num = 3)
+                CurrentID.Updatebool(x = false)
+                val bundle = bundleOf("parentPgmIndex" to  parentPgmIndex)
+                val bundleDay = bundleOf("day" to day)
+            }
+            6 -> {
+                navController.navigate(R.id.action_dayPicker_to_timeSchedule)
+                CurrentID.UpdateID(num = 3)
+                CurrentID.Updatebool(x = false)
+                val bundle = bundleOf("parentPgmIndex" to  parentPgmIndex)
+                val bundleDay = bundleOf("day" to day)
+            }
+            7 -> {
+                navController.navigate(R.id.action_dayPicker_to_timeSchedule)
+                CurrentID.UpdateID(num = 3)
+                CurrentID.Updatebool(x = false)
+                val bundle = bundleOf("parentPgmIndex" to  parentPgmIndex)
+                val bundleDay = bundleOf("day" to day)
+            }
+        }
 
-        val editView = layoutInflater.inflate(R.layout.fragment_time_schedule, null)
-
-        editView.setBackgroundResource(R.drawable.button_model)
-        editAlert.setView(editView)
-        editAlert.show()
 
     }
 

@@ -267,6 +267,9 @@
             app:destination="@id/programFragment"
             app:exitAnim="@anim/slide_up"
             app:enterAnim="@anim/slide_down"/>
+        <action
+            android:id="@+id/action_dayPicker_to_timeSchedule"
+            app:destination="@id/timeSchedule" />
     </fragment>
     <fragment
         android:id="@+id/programList"
@@ -338,5 +341,29 @@
         <action
             android:id="@+id/action_calendarFragment_to_programFragment"
             app:destination="@id/programFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/timeSchedule"
+        android:name="com.example.blapp.TimeSchedule"
+        android:label="fragment_time_schedule"
+        tools:layout="@layout/fragment_time_schedule" >
+        <action
+            android:id="@+id/action_timeSchedule_to_dayPicker"
+            app:destination="@id/dayPicker" />
+        <action
+            android:id="@+id/action_timeSchedule_to_settings"
+            app:destination="@id/settings" />
+        <action
+            android:id="@+id/action_timeSchedule_to_landingFragment"
+            app:destination="@id/landingFragment" />
+        <action
+            android:id="@+id/action_timeSchedule_to_testFragment"
+            app:destination="@id/testFragment" />
+        <action
+            android:id="@+id/action_timeSchedule_to_programFragment"
+            app:destination="@id/programFragment" />
+        <action
+            android:id="@+id/action_timeSchedule_to_scheduleFragment"
+            app:destination="@id/scheduleFragment" />
     </fragment>
 </navigation>

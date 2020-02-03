@@ -31,7 +31,7 @@ class Landing : AppCompatActivity() {
         private const val ID_SCHEDULEFRAGMENT = 4
         private const val ID_SETTINGSFRAGMENT = 5
         private const val ID_STEPFRAGMENT = 6
-        private const val ID_SEQUENCEFRAGMENT = 7
+        private const val ID_TIMESCHEDFRAGMENT = 7
         private const val ID_DAYPICKERFRAGMENT = 8
         private const val ID_IMPORTFRAGMENT = 9
         private const val ID_CALENDAR = 10
@@ -98,7 +98,7 @@ class Landing : AppCompatActivity() {
                 } else if (CurrentID.getID() == ID_STEPFRAGMENT) {
                      bottomNavigation.isVisible =false
                     ShowSaveAlert(clicked = it.id , current = CurrentID.getID())
-                } else if (CurrentID.getID() == ID_SEQUENCEFRAGMENT) {
+                } else if (CurrentID.getID() == ID_TIMESCHEDFRAGMENT) {
                      bottomNavigation.isVisible =false
                      ShowSaveAlert(clicked = it.id , current = CurrentID.getID())
                 } else if (CurrentID.getID() == ID_DAYPICKERFRAGMENT) {
@@ -127,7 +127,7 @@ class Landing : AppCompatActivity() {
                 } else if (CurrentID.getID() == ID_STEPFRAGMENT) {
                     bottomNavigation.isVisible =false
                     ShowSaveAlert(clicked = it.id , current = CurrentID.getID())
-                } else if (CurrentID.getID() == ID_SEQUENCEFRAGMENT) {
+                } else if (CurrentID.getID() == ID_TIMESCHEDFRAGMENT) {
                     bottomNavigation.isVisible =false
                     ShowSaveAlert(clicked = it.id , current = CurrentID.getID())
                 } else if (CurrentID.getID() == ID_DAYPICKERFRAGMENT) {
@@ -153,7 +153,7 @@ class Landing : AppCompatActivity() {
                 } else if (CurrentID.getID() == ID_SETTINGSFRAGMENT) {
                     navController.navigate(R.id.action_settings_to_programFragment)
                     CurrentID.UpdateID(num = it.id)
-                } else if (CurrentID.getID() == ID_SEQUENCEFRAGMENT) {
+                } else if (CurrentID.getID() == ID_TIMESCHEDFRAGMENT) {
                     bottomNavigation.isVisible =false
                     ShowSaveAlert(clicked = it.id , current = CurrentID.getID())
                 } else if (CurrentID.getID() == ID_DAYPICKERFRAGMENT) {
@@ -199,7 +199,7 @@ class Landing : AppCompatActivity() {
                 } else if (CurrentID.getID() == ID_STEPFRAGMENT) {
                     bottomNavigation.isVisible =false
                     ShowSaveAlert(clicked = it.id , current = CurrentID.getID())
-                } else if (CurrentID.getID() == ID_SEQUENCEFRAGMENT) {
+                } else if (CurrentID.getID() == ID_TIMESCHEDFRAGMENT) {
                     bottomNavigation.isVisible =false
                     ShowSaveAlert(clicked = it.id , current = CurrentID.getID())
                 } else if (CurrentID.getID() == ID_DAYPICKERFRAGMENT) {
@@ -230,7 +230,7 @@ class Landing : AppCompatActivity() {
                 CurrentID.Updatebool(x = false)
                 CurrentID.UpdateID(num = ID_PROGRAMFRAGMENT)
             }
-            else if(CurrentID.getID() == ID_SEQUENCEFRAGMENT){
+            else if(CurrentID.getID() == ID_TIMESCHEDFRAGMENT){
                 navController.navigate(R.id.action_sequence_to_scheduleFragment)
                 CurrentID.Updatebool(x = false)
                 CurrentID.UpdateID(num = ID_SCHEDULEFRAGMENT)
@@ -372,7 +372,7 @@ class Landing : AppCompatActivity() {
                 navController.navigate(R.id.action_setStepFragment_to_landingFragment)
                 CurrentID.UpdateID(num = clicked)
                 CurrentID.Updatebool(x = false)
-            }else if(clicked == ID_HOME && current == ID_SEQUENCEFRAGMENT){
+            }else if(clicked == ID_HOME && current == ID_TIMESCHEDFRAGMENT){
                 bottomNavigation.isVisible =true
                 bottomNavigation.show(clicked)
                 navController.navigate(R.id.action_sequence_to_landingFragment)
@@ -401,7 +401,7 @@ class Landing : AppCompatActivity() {
                 navController.navigate(R.id.action_setStepFragment_to_testFragment)
                 CurrentID.UpdateID(num = clicked)
                 CurrentID.Updatebool(x = false)
-            }else if(clicked == ID_TESTFRAGMENT && current == ID_SEQUENCEFRAGMENT){
+            }else if(clicked == ID_TESTFRAGMENT && current == ID_TIMESCHEDFRAGMENT){
                 bottomNavigation.isVisible =true
                 navController.navigate(R.id.action_sequence_to_testFragment)
                 CurrentID.UpdateID(num = clicked)
@@ -424,7 +424,7 @@ class Landing : AppCompatActivity() {
             }
 
 
-            else if(clicked == ID_PROGRAMFRAGMENT && current == ID_SEQUENCEFRAGMENT){
+            else if(clicked == ID_PROGRAMFRAGMENT && current == ID_TIMESCHEDFRAGMENT){
                 bottomNavigation.isVisible = true
                 navController.navigate(R.id.action_sequence_to_programFragment)
                 CurrentID.UpdateID(num = clicked)
@@ -458,7 +458,7 @@ class Landing : AppCompatActivity() {
                 navController.navigate(R.id.action_setStepFragment_to_settings)
                 CurrentID.UpdateID(num = clicked)
                 CurrentID.Updatebool(x = false)
-            }else if(clicked == ID_SETTINGSFRAGMENT && current == ID_SEQUENCEFRAGMENT){
+            }else if(clicked == ID_SETTINGSFRAGMENT && current == ID_TIMESCHEDFRAGMENT){
                 bottomNavigation.isVisible = true
                 navController.navigate(R.id.action_sequence_to_settings)
                 CurrentID.UpdateID(num = clicked)
@@ -487,7 +487,7 @@ class Landing : AppCompatActivity() {
             if(current == ID_STEPFRAGMENT || current == ID_IMPORTFRAGMENT){
                    bottomNavigation.show(ID_PROGRAMFRAGMENT)
             }
-            else if(current == ID_SEQUENCEFRAGMENT || current == ID_DAYPICKERFRAGMENT || current == ID_CALENDAR){
+            else if(current == ID_TIMESCHEDFRAGMENT || current == ID_DAYPICKERFRAGMENT || current == ID_CALENDAR){
                 bottomNavigation.show(ID_SCHEDULEFRAGMENT)
             }
 
