@@ -12,17 +12,23 @@ import android.widget.TimePicker
 import androidx.navigation.NavController
 import androidx.navigation.Navigation
 import com.CurrentId.extensions.CurrentID
+import kotlinx.android.synthetic.main.fragment_time_schedule.*
 import java.util.*
 
 class TimeSchedule : Fragment() {
 
     lateinit var navController: NavController
+    private var parentPgmIndex: Int = 0
+    private var day: Int = 0
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
         // Inflate the layout for this fragment
+
+        parentPgmIndex = arguments!!.getInt("parentPgmIndex")
+        day = arguments!!.getInt("day")
         return inflater.inflate(R.layout.fragment_time_schedule, container, false)
     }
 
@@ -35,19 +41,21 @@ class TimeSchedule : Fragment() {
         val hour = mcurrentTime.get(Calendar.HOUR_OF_DAY)
         val minute = mcurrentTime.get(Calendar.MINUTE)
 
-        mTimePickerStart = TimePickerDialog(activity, object : TimePickerDialog.OnTimeSetListener {
-            override fun onTimeSet(view: TimePicker?, hourOfDay: Int, minute: Int) {
-//                txtTimeFrom.setText(String.format("From: %d : %d", hourOfDay, minute))
-//                btn_End_Time.isEnabled = true
-            }
-
-        }, hour, minute, false)
 
         mTimePickerEnd = TimePickerDialog(activity, object : TimePickerDialog.OnTimeSetListener{
             override fun onTimeSet(view: TimePicker?, hourOfDay: Int, minute: Int) {
-//                txtTimeTo.setText(String.format("To: %d : %d", hourOfDay, minute))
+                time_end.text= "To: "+hourOfDay.toString()+":"+minute.toString()
             }
         }, hour , minute , false)
+
+
+        mTimePickerStart = TimePickerDialog(activity, object : TimePickerDialog.OnTimeSetListener {
+            override fun onTimeSet(view: TimePicker?, hourOfDay: Int, minute: Int) {
+                time_start.text = "From: "+hourOfDay.toString()+":"+minute.toString()
+                btn_End_Time.isEnabled = true
+            }
+
+        }, hour, minute, false)
 
 //        btn_Start_Time.setOnClickListener{
 //            mTimePickerStart.show()}
