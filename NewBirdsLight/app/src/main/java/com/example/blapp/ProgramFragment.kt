@@ -114,13 +114,14 @@ class ProgramFragment : Fragment(){
 
                 buffer.add(
                     MyButton(activity,
-                        "Save",
+                        "DayPicker",
                         30,
                         R.drawable.ic_date_range_dark_blue_24dp,
                         Color.parseColor("#14BED1"),
                         object : MyButtonClickListener{
                             override fun onClick(pos: Int) {
-                                navController.navigate(R.id.action_programFragment_to_dayPicker)
+                                val bundle = bundleOf("parentPgmIndex" to  pos)
+                                navController.navigate(R.id.action_programFragment_to_dayPicker , bundle)
                                 CurrentID.UpdateID(num = 8)
                                 CurrentID.Updatebool(x = true)
                             }
@@ -130,7 +131,7 @@ class ProgramFragment : Fragment(){
 
                 buffer.add(
                     MyButton(activity,
-                        "Save",
+                        "List",
                         30,
                         R.drawable.ic_save_dark_blue_24dp,
                         Color.parseColor("#14BED1"),
@@ -291,6 +292,4 @@ class ProgramFragment : Fragment(){
             editAlert.dismiss()
             Toast.makeText(activity!!, "Save Canceled!" , Toast.LENGTH_LONG).show()
         }
-    }
-
-}
+}}

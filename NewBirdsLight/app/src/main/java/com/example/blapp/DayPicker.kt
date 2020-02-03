@@ -8,12 +8,12 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.TimePicker
+import androidx.appcompat.app.AlertDialog
 import androidx.fragment.app.FragmentController
 import androidx.navigation.NavController
 import androidx.navigation.Navigation
 import com.CurrentId.extensions.CurrentID
 import kotlinx.android.synthetic.main.fragment_day_picker.*
-import kotlinx.android.synthetic.main.fragment_time_picker.*
 import java.util.*
 
 /**
@@ -22,6 +22,7 @@ import java.util.*
 class DayPicker : Fragment() {
 
     lateinit var navController: NavController
+    var parentPgmIndex: Int = 0
     var isMondayClicked: Boolean = false
     var isTuesdayClicked: Boolean = false
     var isWednesdayClicked: Boolean = false
@@ -36,6 +37,7 @@ class DayPicker : Fragment() {
         savedInstanceState: Bundle?
     ): View? {
         // Inflate the layout for this fragment
+        parentPgmIndex = arguments!!.getInt("parentPgmIndex")
         return inflater.inflate(R.layout.fragment_day_picker, container, false)
     }
 
@@ -74,7 +76,7 @@ class DayPicker : Fragment() {
         btnMonday.setOnClickListener{
             isMondayClicked =!isMondayClicked
             if(isMondayClicked){
-                mTimePickerStart.show()
+                ShowTimeSchedule()
                 btnMonday.setBackgroundResource(R.drawable.bottom_border)
             }else{
                 btnMonday.setBackgroundResource(R.drawable.button_model)
@@ -183,6 +185,17 @@ class DayPicker : Fragment() {
         isSaturdayClicked = false
         btnSunday.setBackgroundResource(R.drawable.button_model)
         isSundayClicked = false
+    }
+    fun ShowTimeSchedule() {
+
+        val editAlert = AlertDialog.Builder(activity!!).create()
+
+        val editView = layoutInflater.inflate(R.layout.fragment_time_schedule, null)
+
+        editView.setBackgroundResource(R.drawable.button_model)
+        editAlert.setView(editView)
+        editAlert.show()
+
     }
 
 }
