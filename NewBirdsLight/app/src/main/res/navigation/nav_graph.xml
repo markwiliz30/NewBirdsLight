@@ -123,11 +123,6 @@
             app:exitAnim="@anim/slide_out_left"
             app:enterAnim="@anim/slide_in_right"/>
         <action
-            android:id="@+id/action_scheduleFragment_to_sequence"
-            app:destination="@id/sequence"
-            app:exitAnim="@anim/slide_up"
-            app:enterAnim="@anim/slide_down"/>
-        <action
             android:id="@+id/action_scheduleFragment_to_calendarFragment"
             app:destination="@id/calendarFragment" />
     </fragment>
@@ -191,52 +186,12 @@
             android:id="@+id/action_setStepFragment_to_testFragment2"
             app:destination="@id/testFragment" />
     </fragment>
-    <fragment
-        android:id="@+id/sequence"
-        android:name="com.example.blapp.Sequence"
-        android:label="fragment_sequence"
-        tools:layout="@layout/fragment_time_picker" >
-        <action
-            android:id="@+id/action_sequence_to_scheduleFragment"
-            app:destination="@id/scheduleFragment"
-            app:exitAnim="@anim/slide_up"
-            app:enterAnim="@anim/slide_down"/>
-        <action
-            android:id="@+id/action_sequence_to_programFragment"
-            app:destination="@id/programFragment"
-            app:exitAnim="@anim/slide_up"
-            app:enterAnim="@anim/slide_down"/>
-        <action
-            android:id="@+id/action_sequence_to_testFragment"
-            app:destination="@id/testFragment"
-            app:exitAnim="@anim/slide_up"
-            app:enterAnim="@anim/slide_down"/>
-        <action
-            android:id="@+id/action_sequence_to_landingFragment"
-            app:destination="@id/landingFragment"
-            app:exitAnim="@anim/slide_up"
-            app:enterAnim="@anim/slide_down"/>
-        <action
-            android:id="@+id/action_sequence_to_settings"
-            app:destination="@id/settings"
-            app:exitAnim="@anim/slide_up"
-            app:enterAnim="@anim/slide_down"/>
-        <action
-            android:id="@+id/action_sequence_to_dayPicker"
-            app:destination="@id/dayPicker"
-            app:exitAnim="@anim/slide_up"
-            app:enterAnim="@anim/slide_down"/>
-    </fragment>
+
     <fragment
         android:id="@+id/dayPicker"
         android:name="com.example.blapp.DayPicker"
         android:label="fragment_day_picker"
         tools:layout="@layout/fragment_day_picker" >
-        <action
-            android:id="@+id/action_dayPicker_to_sequence"
-            app:destination="@id/sequence"
-            app:exitAnim="@anim/slide_up"
-            app:enterAnim="@anim/slide_down"/>
         <action
             android:id="@+id/action_dayPicker_to_scheduleFragment"
             app:destination="@id/scheduleFragment"
@@ -269,7 +224,9 @@
             app:enterAnim="@anim/slide_down"/>
         <action
             android:id="@+id/action_dayPicker_to_timeSchedule"
-            app:destination="@id/timeSchedule" />
+            app:destination="@id/timeSchedule"
+            app:exitAnim="@anim/slide_up"
+            app:enterAnim="@anim/slide_down"/>
     </fragment>
     <fragment
         android:id="@+id/programList"
@@ -349,21 +306,33 @@
         tools:layout="@layout/fragment_time_schedule" >
         <action
             android:id="@+id/action_timeSchedule_to_dayPicker"
-            app:destination="@id/dayPicker" />
+            app:destination="@id/dayPicker"
+            app:exitAnim="@anim/slide_up"
+            app:enterAnim="@anim/slide_down"/>
         <action
             android:id="@+id/action_timeSchedule_to_settings"
-            app:destination="@id/settings" />
+            app:destination="@id/settings"
+            app:exitAnim="@anim/slide_up"
+            app:enterAnim="@anim/slide_down"/>
         <action
             android:id="@+id/action_timeSchedule_to_landingFragment"
-            app:destination="@id/landingFragment" />
+            app:destination="@id/landingFragment"
+            app:exitAnim="@anim/slide_up"
+            app:enterAnim="@anim/slide_down"/>
         <action
             android:id="@+id/action_timeSchedule_to_testFragment"
-            app:destination="@id/testFragment" />
+            app:destination="@id/testFragment"
+            app:exitAnim="@anim/slide_up"
+            app:enterAnim="@anim/slide_down"/>
         <action
             android:id="@+id/action_timeSchedule_to_programFragment"
-            app:destination="@id/programFragment" />
+            app:destination="@id/programFragment"
+            app:exitAnim="@anim/slide_up"
+            app:enterAnim="@anim/slide_down"/>
         <action
             android:id="@+id/action_timeSchedule_to_scheduleFragment"
-            app:destination="@id/scheduleFragment" />
+            app:destination="@id/scheduleFragment"
+            app:exitAnim="@anim/slide_up"
+            app:enterAnim="@anim/slide_down"/>
     </fragment>
 </navigation>

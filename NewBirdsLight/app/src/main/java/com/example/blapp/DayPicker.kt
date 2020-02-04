@@ -168,50 +168,44 @@ class DayPicker : Fragment() {
                 val bundle = bundleOf("parentPgmIndex" to  parentPgmIndex , "days" to day)
                 navController.navigate(R.id.action_dayPicker_to_timeSchedule, bundle)
                 CurrentID.UpdateID(num = 7)
-                CurrentID.Updatebool(x = false)
+                CurrentID.Updatebool(x = true)
 
             }
             2 -> {
                 navController.navigate(R.id.action_dayPicker_to_timeSchedule)
-                CurrentID.UpdateID(num = 3)
-                CurrentID.Updatebool(x = false)
-                val bundle = bundleOf("parentPgmIndex" to  parentPgmIndex)
-                val bundleDay = bundleOf("day" to day)
+                CurrentID.UpdateID(num = 7)
+                CurrentID.Updatebool(x = true)
+
             }
             3 -> {
                 navController.navigate(R.id.action_dayPicker_to_timeSchedule)
-                CurrentID.UpdateID(num = 3)
-                CurrentID.Updatebool(x = false)
-                val bundle = bundleOf("parentPgmIndex" to  parentPgmIndex)
-                val bundleDay = bundleOf("day" to day)
+                CurrentID.UpdateID(num = 7)
+                CurrentID.Updatebool(x = true)
+
             }
             4 -> {
                 navController.navigate(R.id.action_dayPicker_to_timeSchedule)
-                CurrentID.UpdateID(num = 3)
-                CurrentID.Updatebool(x = false)
-                val bundle = bundleOf("parentPgmIndex" to  parentPgmIndex)
-                val bundleDay = bundleOf("day" to day)
+                CurrentID.UpdateID(num = 7)
+                CurrentID.Updatebool(x = true)
+
             }
             5 -> {
                 navController.navigate(R.id.action_dayPicker_to_timeSchedule)
-                CurrentID.UpdateID(num = 3)
-                CurrentID.Updatebool(x = false)
-                val bundle = bundleOf("parentPgmIndex" to  parentPgmIndex)
-                val bundleDay = bundleOf("day" to day)
+                CurrentID.UpdateID(num = 7)
+                CurrentID.Updatebool(x = true)
+
             }
             6 -> {
                 navController.navigate(R.id.action_dayPicker_to_timeSchedule)
-                CurrentID.UpdateID(num = 3)
-                CurrentID.Updatebool(x = false)
-                val bundle = bundleOf("parentPgmIndex" to  parentPgmIndex)
-                val bundleDay = bundleOf("day" to day)
+                CurrentID.UpdateID(num = 7)
+                CurrentID.Updatebool(x = true)
+
             }
             7 -> {
                 navController.navigate(R.id.action_dayPicker_to_timeSchedule)
-                CurrentID.UpdateID(num = 3)
-                CurrentID.Updatebool(x = false)
-                val bundle = bundleOf("parentPgmIndex" to  parentPgmIndex)
-                val bundleDay = bundleOf("day" to day)
+                CurrentID.UpdateID(num = 7)
+                CurrentID.Updatebool(x = true)
+
             }
         }
 

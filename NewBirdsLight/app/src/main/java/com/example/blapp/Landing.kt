@@ -153,12 +153,6 @@ class Landing : AppCompatActivity() {
                 } else if (CurrentID.getID() == ID_SETTINGSFRAGMENT) {
                     navController.navigate(R.id.action_settings_to_programFragment)
                     CurrentID.UpdateID(num = it.id)
-                } else if (CurrentID.getID() == ID_TIMESCHEDFRAGMENT) {
-                    bottomNavigation.isVisible =false
-                    ShowSaveAlert(clicked = it.id , current = CurrentID.getID())
-                } else if (CurrentID.getID() == ID_DAYPICKERFRAGMENT) {
-                    bottomNavigation.isVisible =false
-                    ShowSaveAlert(clicked = it.id , current = CurrentID.getID())
                 }else if (CurrentID.getID() == ID_CALENDAR){
                     bottomNavigation.isVisible = false
                     ShowSaveAlert(clicked = it.id, current = CurrentID.getID())
@@ -181,6 +175,12 @@ class Landing : AppCompatActivity() {
                     ShowSaveAlert(clicked = it.id , current = CurrentID.getID())
                 }else if (CurrentID.getID() == ID_IMPORTFRAGMENT){
                     bottomNavigation.isVisible = false
+                    ShowSaveAlert(clicked = it.id , current = CurrentID.getID())
+                }else if (CurrentID.getID() == ID_TIMESCHEDFRAGMENT) {
+                    bottomNavigation.isVisible =false
+                    ShowSaveAlert(clicked = it.id , current = CurrentID.getID())
+                }else if (CurrentID.getID() == ID_DAYPICKERFRAGMENT) {
+                    bottomNavigation.isVisible =false
                     ShowSaveAlert(clicked = it.id , current = CurrentID.getID())
                 }
 
@@ -231,9 +231,9 @@ class Landing : AppCompatActivity() {
                 CurrentID.UpdateID(num = ID_PROGRAMFRAGMENT)
             }
             else if(CurrentID.getID() == ID_TIMESCHEDFRAGMENT){
-                navController.navigate(R.id.action_sequence_to_scheduleFragment)
+                navController.navigate(R.id.action_timeSchedule_to_programFragment)
                 CurrentID.Updatebool(x = false)
-                CurrentID.UpdateID(num = ID_SCHEDULEFRAGMENT)
+                CurrentID.UpdateID(num = ID_PROGRAMFRAGMENT)
             }
             else if(CurrentID.getID() == ID_DAYPICKERFRAGMENT){
                 navController.navigate(R.id.action_dayPicker_to_programFragment)
@@ -250,6 +250,7 @@ class Landing : AppCompatActivity() {
                 CurrentID.Updatebool(x = false)
                 CurrentID.UpdateID(num = ID_SCHEDULEFRAGMENT)
             }
+
         } else {
             if (doubleBackToExitPressedOnce) {
                 CurrentID.UpdateID(num = ID_HOME)
@@ -375,7 +376,7 @@ class Landing : AppCompatActivity() {
             }else if(clicked == ID_HOME && current == ID_TIMESCHEDFRAGMENT){
                 bottomNavigation.isVisible =true
                 bottomNavigation.show(clicked)
-                navController.navigate(R.id.action_sequence_to_landingFragment)
+                navController.navigate(R.id.action_timeSchedule_to_landingFragment)
                 CurrentID.UpdateID(num = clicked)
                 CurrentID.Updatebool(x = false)
             }else if(clicked == ID_HOME && current == ID_DAYPICKERFRAGMENT){
@@ -394,7 +395,13 @@ class Landing : AppCompatActivity() {
                 navController.navigate(R.id.action_calendarFragment_to_landingFragment)
                 CurrentID.UpdateID(num = clicked)
                 CurrentID.Updatebool(x = false)
+            }else if(clicked == ID_HOME && current == ID_DAYPICKERFRAGMENT){
+                bottomNavigation.isVisible = true
+                navController.navigate(R.id.action_dayPicker_to_landingFragment)
+                CurrentID.UpdateID(num = clicked)
+                CurrentID.Updatebool(x = false)
             }
+
 
             else if(clicked == ID_TESTFRAGMENT && current == ID_STEPFRAGMENT){
                 bottomNavigation.isVisible =true
@@ -403,7 +410,7 @@ class Landing : AppCompatActivity() {
                 CurrentID.Updatebool(x = false)
             }else if(clicked == ID_TESTFRAGMENT && current == ID_TIMESCHEDFRAGMENT){
                 bottomNavigation.isVisible =true
-                navController.navigate(R.id.action_sequence_to_testFragment)
+                navController.navigate(R.id.action_timeSchedule_to_testFragment)
                 CurrentID.UpdateID(num = clicked)
                 CurrentID.Updatebool(x = false)
             }else if(clicked == ID_TESTFRAGMENT && current == ID_DAYPICKERFRAGMENT){
@@ -421,12 +428,17 @@ class Landing : AppCompatActivity() {
                 navController.navigate(R.id.action_calendarFragment_to_testFragment)
                 CurrentID.UpdateID(num = clicked)
                 CurrentID.Updatebool(x = false)
+            }else if(clicked == ID_TESTFRAGMENT && current == ID_DAYPICKERFRAGMENT){
+                bottomNavigation.isVisible = true
+                navController.navigate(R.id.action_dayPicker_to_testFragment)
+                CurrentID.UpdateID(num = clicked)
+                CurrentID.Updatebool(x = false)
             }
 
 
             else if(clicked == ID_PROGRAMFRAGMENT && current == ID_TIMESCHEDFRAGMENT){
                 bottomNavigation.isVisible = true
-                navController.navigate(R.id.action_sequence_to_programFragment)
+                navController.navigate(R.id.action_timeSchedule_to_programFragment)
                 CurrentID.UpdateID(num = clicked)
                 CurrentID.Updatebool(x = false)
             }else if(clicked == ID_PROGRAMFRAGMENT && current == ID_DAYPICKERFRAGMENT){
@@ -451,6 +463,11 @@ class Landing : AppCompatActivity() {
                 navController.navigate(R.id.action_importFragment_to_scheduleFragment)
                 CurrentID.UpdateID(num = clicked)
                 CurrentID.Updatebool(x = false)
+            }else if(clicked == ID_SCHEDULEFRAGMENT && current == ID_DAYPICKERFRAGMENT){
+                bottomNavigation.isVisible = true
+                navController.navigate(R.id.action_dayPicker_to_scheduleFragment)
+                CurrentID.UpdateID(num = clicked)
+                CurrentID.Updatebool(x = false)
             }
 
             else if(clicked == ID_SETTINGSFRAGMENT && current == ID_STEPFRAGMENT){
@@ -460,7 +477,7 @@ class Landing : AppCompatActivity() {
                 CurrentID.Updatebool(x = false)
             }else if(clicked == ID_SETTINGSFRAGMENT && current == ID_TIMESCHEDFRAGMENT){
                 bottomNavigation.isVisible = true
-                navController.navigate(R.id.action_sequence_to_settings)
+                navController.navigate(R.id.action_timeSchedule_to_settings)
                 CurrentID.UpdateID(num = clicked)
                 CurrentID.Updatebool(x = false)
             }else if(clicked == ID_SETTINGSFRAGMENT && current == ID_DAYPICKERFRAGMENT){
@@ -484,10 +501,10 @@ class Landing : AppCompatActivity() {
         }
         mAlertDialog.setNegativeButton("No") { dialog, id ->
             bottomNavigation.isVisible = true
-            if(current == ID_STEPFRAGMENT || current == ID_IMPORTFRAGMENT){
+            if(current == ID_STEPFRAGMENT || current == ID_IMPORTFRAGMENT || current == ID_DAYPICKERFRAGMENT || current == ID_TIMESCHEDFRAGMENT){
                    bottomNavigation.show(ID_PROGRAMFRAGMENT)
             }
-            else if(current == ID_TIMESCHEDFRAGMENT || current == ID_DAYPICKERFRAGMENT || current == ID_CALENDAR){
+            else if(current == ID_DAYPICKERFRAGMENT || current == ID_CALENDAR){
                 bottomNavigation.show(ID_SCHEDULEFRAGMENT)
             }
 
