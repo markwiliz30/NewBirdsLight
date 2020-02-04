@@ -15,6 +15,7 @@ import androidx.core.os.bundleOf
 import androidx.fragment.app.FragmentController
 import androidx.navigation.NavController
 import androidx.navigation.Navigation
+import com.CurrentId.extensions.CurrentID
 import com.bumptech.glide.load.model.ByteBufferEncoder
 import com.example.blapp.collection.PgmCollection
 import com.example.blapp.collection.StepCollection
@@ -245,6 +246,8 @@ class SetStepFragment : Fragment() {
                 Toast.makeText(activity!!, "Update Success!", Toast.LENGTH_SHORT).show()
                 editClicked = false
                 navController.navigate(R.id.action_setStepFragment_to_programFragment)
+                CurrentID.Updatebool(x = false)
+                CurrentID.UpdateID(num = 3)
 
             }else{
                 var createdPgm = PgmItem()
@@ -254,6 +257,8 @@ class SetStepFragment : Fragment() {
                 AddStep(stepIndex)
                 AddPgmToCollection(createdPgm, tempStepList)
                 navController.navigate(R.id.action_setStepFragment_to_programFragment)
+                CurrentID.Updatebool(x = false)
+                CurrentID.UpdateID(num = 3)
             }
 
 

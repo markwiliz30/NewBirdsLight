@@ -113,6 +113,4 @@ class WifiUtils {
         }
         return false
     }
-
-
 }

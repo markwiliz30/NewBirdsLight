@@ -12,7 +12,8 @@ class ScheduleItem{
     var sminute: Byte? = 0
     var ehour: Byte? = 0
     var eminute: Byte? = 0
-        var pgmname: Byte? = 0
+    var pgmname: Byte? = 0
+    var sched: Byte? = 0
 
     get() = field
     set(value){
