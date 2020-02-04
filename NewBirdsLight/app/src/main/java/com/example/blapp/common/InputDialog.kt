@@ -9,6 +9,8 @@ import android.os.Bundle
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatDialogFragment
 import com.example.blapp.R
+import kotlinx.android.synthetic.main.layout_input_dialog.*
+import kotlinx.android.synthetic.main.layout_input_dialog.view.*
 
 class InputDialog : AppCompatDialogFragment() {
 
@@ -25,17 +27,17 @@ class InputDialog : AppCompatDialogFragment() {
                 Toast.makeText(context, "Cancel pressed", Toast.LENGTH_SHORT).show()
             }
             .setPositiveButton("Connect") { dialog, which ->
-                val connectWifi = WifiUtils()
+                val mConnectWifi = WifiUtils()
                 //val inputPassword: String? = input_password_box.text.toString()
-                connectWifi.connectWiFi(WifiUtils.sharedWifiManager!!, SelSSID!!, "12345678", WifiUtils.wifiList[WifiUtils.selectedWifiIndex!!].capabilities!!)
+                val isConnected = mConnectWifi.connectWiFi(WifiUtils.sharedWifiManager!!, SelSSID!!, view.input_password_box.text.toString(), WifiUtils.wifiList[WifiUtils.selectedWifiIndex!!].capabilities!!)
                 WifiUtils.wifiList[WifiUtils.selectedWifiIndex!!].selected = true
                 WifiUtils.sharedWifiAdapter!!.notifyDataSetChanged()
                 //Toast.makeText(context, "Connect pressed", Toast.LENGTH_SHORT).show()
                 val wifiUtils = WifiUtils()
                 val selSSID = WifiUtils.wifiList.find { it.name ==  WifiUtils.wifiList[WifiUtils.selectedWifiIndex!!].name}
                 selSSID!!.status = wifiUtils.IsWiFiConnected(context!!, selSSID!!.name!!)
+                Toast.makeText(context, selSSID.status.toString(), Toast.LENGTH_SHORT).show()
             }
-
         return builder.create()
     }
 }

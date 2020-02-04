@@ -18,7 +18,7 @@ class WifiUtils {
         var sharedWifiManager: WifiManager? = null
     }
 
-    fun connectWiFi(wifiManager: WifiManager, SSID: String, password: String, Security: String) {
+    fun connectWiFi(wifiManager: WifiManager, SSID: String, password: String, Security: String): Boolean {
         try {
             val conf = WifiConfiguration()
             conf.SSID =
@@ -77,20 +77,22 @@ class WifiUtils {
             val list = wifiManager.configuredNetworks
             for (i in list) {
                 if (i.SSID != null && i.SSID == "\"" + SSID + "\"") {
-
                     val isDisconnected = wifiManager.disconnect()
 
                     val isEnabled = wifiManager.enableNetwork(i.networkId, true)
 
                     val isReconnected = wifiManager.reconnect()
 
-                    break
+                    return isReconnected
+                    //break
                 }
             }
 
         } catch (e: Exception) {
             e.printStackTrace()
+            return false
         }
+        return false
     }
 
 
