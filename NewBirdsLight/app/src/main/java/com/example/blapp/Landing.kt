@@ -468,6 +468,11 @@ class Landing : AppCompatActivity() {
                 navController.navigate(R.id.action_dayPicker_to_scheduleFragment)
                 CurrentID.UpdateID(num = clicked)
                 CurrentID.Updatebool(x = false)
+            }else if(clicked == ID_SCHEDULEFRAGMENT && current == ID_TIMESCHEDFRAGMENT){
+                bottomNavigation.isVisible = true
+                navController.navigate(R.id.action_timeSchedule_to_scheduleFragment)
+                CurrentID.UpdateID(num = clicked)
+                CurrentID.Updatebool(x = false)
             }
 
             else if(clicked == ID_SETTINGSFRAGMENT && current == ID_STEPFRAGMENT){
