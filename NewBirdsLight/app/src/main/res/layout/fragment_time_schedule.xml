@@ -15,11 +15,21 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:orientation="vertical">
+            <TextView
+            android:id="@+id/lblTime"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Time Schedule"
+            android:textSize="30sp"
+            android:textStyle="bold"
+            android:layout_margin="20dp"
+            android:layout_gravity="center"
+            android:textColor="#39405A"/>
 
             <androidx.recyclerview.widget.RecyclerView
                 android:id="@+id/recycler_time"
                 android:layout_width="match_parent"
-                android:layout_height="400dp">
+                android:layout_height="250dp">
             </androidx.recyclerview.widget.RecyclerView>
 
             <LinearLayout
@@ -44,7 +54,7 @@
                         android:layout_weight="1"
                         android:textSize="20sp"
                         android:layout_gravity="center"
-                        android:text="00:00"/>
+                        android:text="Set Time"/>
                     <Button
                         android:id="@+id/btn_Start_Time"
                         android:layout_width="match_parent"
@@ -71,7 +81,7 @@
                         android:layout_height="wrap_content"
                         android:textSize="20sp"
                         android:layout_gravity="center"
-                        android:text="00:00"/>
+                        android:text="Set Time"/>
                     <Button
                         android:id="@+id/btn_End_Time"
                         android:layout_width="match_parent"

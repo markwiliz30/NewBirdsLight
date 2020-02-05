@@ -2,20 +2,29 @@ package com.example.blapp
 
 import android.app.TimePickerDialog
 import android.content.Context
+import android.graphics.Color
 import android.net.Uri
 import android.os.Bundle
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.view.animation.AnimationUtils
 import android.widget.TimePicker
+import android.widget.Toast
+import androidx.core.os.bundleOf
 import androidx.navigation.NavController
 import androidx.navigation.Navigation
 import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.RecyclerView
 import com.CurrentId.extensions.CurrentID
 import com.example.blapp.adapter.TimeAdapter
 import com.example.blapp.collection.ScheduleCollection
+import com.example.blapp.helper.MyButton
+import com.example.blapp.helper.MySwipeHelper
+import com.example.blapp.listener.MyButtonClickListener
 import com.example.blapp.model.ScheduleItem
+import kotlinx.android.synthetic.main.fragment_day_picker.*
 import kotlinx.android.synthetic.main.fragment_time_schedule.*
 import java.util.*
 
@@ -26,10 +35,10 @@ class TimeSchedule : Fragment() {
     private var parentPgmIndex: Int = 0
     private var day: Int = 0
     lateinit var adapter: TimeAdapter
-    private var tempshour: Int = 0
-    private var tempsminute: Int = 0
-    private var tempehour: Int = 0
-    private var tempeminute: Int = 0
+    private var tempshour: Int = 25
+    private var tempsminute: Int = 25
+    private var tempehour: Int = 25
+    private var tempeminute: Int = 25
 
 
     override fun onCreateView(
@@ -80,20 +89,21 @@ class TimeSchedule : Fragment() {
             mTimePickerEnd.show()
         }
         btn_save_time.setOnClickListener{
-            val newItem = ScheduleItem()
-            var filtered =  ScheduleCollection.scheduleCollection.filter { it.pgm!!.toInt() == parentPgmIndex  }
-            val schedNumber = filtered.count()+1
-            var schedCounter: Int = 1
-            newItem.command = 0x02
-            newItem.pgm = parentPgmIndex.toByte()
-            newItem.shour = tempshour.toByte()
-            newItem.sminute = tempsminute.toByte()
-            newItem.ehour = tempehour.toByte()
-            newItem.eminute = tempeminute.toByte()
-            newItem.sched = schedNumber.toByte()
-            ScheduleCollection.scheduleCollection.add(newItem)
-        }
 
+            if(tempehour == 25 && tempeminute == 25 && tempshour == 25 && tempsminute == 25){
+                btn_save_time.startAnimation(AnimationUtils.loadAnimation(activity , R.anim.shake))
+                Toast.makeText(activity, "No time set" , Toast.LENGTH_LONG).show()
+            }else if (tempeminute == 25 && tempehour == 25){
+                btn_save_time.startAnimation(AnimationUtils.loadAnimation(activity , R.anim.shake))
+                Toast.makeText(activity, "End Time is not Set" , Toast.LENGTH_LONG).show()
+            }
+            else{
+                addToTimeCollection()
+                refreshList()
+                returnToInitial()
+                Toast.makeText(activity, "Save Success" , Toast.LENGTH_LONG).show()
+            }
+        }
     }
 
     override fun onActivityCreated(savedInstanceState: Bundle?) {
@@ -102,12 +112,136 @@ class TimeSchedule : Fragment() {
         recycler_time.setItemViewCacheSize(25)
         layoutManager = LinearLayoutManager(activity)
         recycler_time.layoutManager = layoutManager
+        val swipe = object: MySwipeHelper(activity, recycler_time, 200)
+        {
+            override fun instantiateMyButton(
+                viewHolder: RecyclerView.ViewHolder,
+                buffer: MutableList<MyButton>
+            ) {
+                buffer.add(
+                    MyButton(activity,
+                        "Delete",
+                        30,
+                        R.drawable.ic_delete_dark_blue_24dp,
+                        Color.parseColor("#14BED1"),
+                        object : MyButtonClickListener{
+                            override fun onClick(pos: Int) {
+                            }
+                        }
+                    )
+                )
+
+                buffer.add(
+                    MyButton(activity,
+                        "Update",
+                        30,
+                        R.drawable.ic_edit_dark_blue_24dp,
+                        Color.parseColor("#14BED1"),
+                        object : MyButtonClickListener{
+                            override fun onClick(pos: Int) {
+                                val bundle = bundleOf("parentPgmIndex" to  pos + 1)
+                                navController.navigate(R.id.action_programFragment_to_setStepFragment, bundle )
+                                CurrentID.UpdateID(num = 6)
+                                CurrentID.Updatebool(x = true)
+                            }
+                        }
+                    )
+                )
+
+                buffer.add(
+                    MyButton(activity,
+                        "Save",
+                        30,
+                        R.drawable.ic_save_dark_blue_24dp,
+                        Color.parseColor("#14BED1"),
+                        object : MyButtonClickListener{
+                            override fun onClick(pos: Int) {
+                            }
+                        }
+                    )
+                )
+
+                buffer.add(
+                    MyButton(activity,
+                        "DayPicker",
+                        30,
+                        R.drawable.ic_date_range_dark_blue_24dp,
+                        Color.parseColor("#14BED1"),
+                        object : MyButtonClickListener{
+                            override fun onClick(pos: Int) {
+                                val bundle = bundleOf("parentPgmIndex" to  pos+1)
+                                navController.navigate(R.id.action_programFragment_to_dayPicker , bundle)
+                                CurrentID.UpdateID(num = 8)
+                                CurrentID.Updatebool(x = true)
+                            }
+                        }
+                    )
+                )
+
+                buffer.add(
+                    MyButton(activity,
+                        "DateRange",
+                        30,
+                        R.drawable.ic_date_range_dark_blue_24dp,
+                        Color.parseColor("#14BED1"),
+                        object : MyButtonClickListener{
+                            override fun onClick(pos: Int) {
+
+                            }
+                        }
+                    )
+                )
+            }
+        }
+
         generateItem()
     }
     private fun generateItem() {
         adapter = TimeAdapter(activity,
-            ScheduleCollection.scheduleCollection.filter { it.pgm!!.toInt() == parentPgmIndex } as MutableList<ScheduleItem>)
+            ScheduleCollection.scheduleCollection.filter { it.pgm!!.toInt() == parentPgmIndex && it.wday!!.toInt() == day } as MutableList<ScheduleItem>)
         recycler_time.adapter = adapter
+    }
+
+    private fun addToTimeCollection(){
+        val newItem = ScheduleItem()
+        var filtered =  ScheduleCollection.scheduleCollection.filter { it.pgm!!.toInt() == parentPgmIndex && it.wday!!.toInt() == day }
+        val schedNumber = filtered.count()+1
+        newItem.command = 0x02
+        newItem.pgm = parentPgmIndex.toByte()
+        newItem.shour = tempshour.toByte()
+        newItem.sminute = tempsminute.toByte()
+        newItem.ehour = tempehour.toByte()
+        newItem.eminute = tempeminute.toByte()
+        newItem.sched = schedNumber.toByte()
+        newItem.wday = day.toByte()
+        ScheduleCollection.scheduleCollection.add(newItem)
+    }
+    private fun refreshList(){
+        adapter.itemList.clear()
+        generateItem()
+    }
+    private fun returnToInitial(){
+        time_start.text = "Set Time"
+        time_end.text = "Set Time"
+        btn_End_Time.isEnabled = false
+        tempehour = 25
+        tempeminute = 25
+        tempshour = 25
+        tempsminute = 25
+
+    }
+    private fun deleteTime(pos: Int){
+        var filtered =  ScheduleCollection.scheduleCollection.filter { it.pgm!!.toInt() == parentPgmIndex && it.wday!!.toInt() == day }
+        var Del = filtered.find { it.sched!!.toInt() == pos }
+
+        ScheduleCollection.scheduleCollection.remove(Del)
+
+
+        for(update in ScheduleCollection.scheduleCollection.filter { it.pgm!!.toInt() == parentPgmIndex && it.wday!!.toInt() == day }){
+            if(update.sched!!.toInt() > Del!!.sched!!.toInt()){
+                update.sched = update.sched!!.dec()
+            }
+        }
     }
 
 }

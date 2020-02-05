@@ -15,6 +15,7 @@ import androidx.fragment.app.FragmentController
 import androidx.navigation.NavController
 import androidx.navigation.Navigation
 import com.CurrentId.extensions.CurrentID
+import com.example.blapp.collection.ScheduleCollection
 import kotlinx.android.synthetic.main.fragment_day_picker.*
 import kotlinx.android.synthetic.main.fragment_day_picker.view.*
 import kotlinx.android.synthetic.main.fragment_time_schedule.*
@@ -57,13 +58,7 @@ class DayPicker : Fragment() {
         }
 
         btnMonday.setOnClickListener{
-            isMondayClicked =!isMondayClicked
-            if(isMondayClicked){
                 ShowTimeSchedule(1)
-
-            }else{
-                btnMonday.setBackgroundResource(R.drawable.button_model)
-            }
         }
 
         btnTuesday.setOnClickListener{
@@ -126,6 +121,11 @@ class DayPicker : Fragment() {
                 DeselectAllDays()
             }
         }
+
+        for(x in 1..7){
+            BorderOrganize(x)
+        }
+
 
     }
 
@@ -209,6 +209,65 @@ class DayPicker : Fragment() {
             }
         }
 
+    }
+
+    fun DateChecker(day: Int): Boolean {
+        var Checker = ScheduleCollection.scheduleCollection.filter { it.pgm!!.toInt() == parentPgmIndex && it.wday!!.toInt() == day }
+        return !Checker.isEmpty()
+    }
+
+    fun BorderOrganize(day: Int){
+        when (day){
+            1->{
+            if(DateChecker(day)){
+                btnMonday.setBackgroundResource(R.drawable.bottom_border)
+                }else{
+                btnMonday.setBackgroundResource(R.drawable.button_model)
+                }
+            }
+            2->{
+                if(DateChecker(day)){
+                    btnTuesday.setBackgroundResource(R.drawable.bottom_border)
+                }else{
+                    btnTuesday.setBackgroundResource(R.drawable.button_model)
+                }
+            }
+            3->{
+                if(DateChecker(day)){
+                    btnWednesday.setBackgroundResource(R.drawable.bottom_border)
+                }else{
+                    btnWednesday.setBackgroundResource(R.drawable.button_model)
+                }
+            }
+            4->{
+                if(DateChecker(day)){
+                    btnThursday.setBackgroundResource(R.drawable.bottom_border)
+                }else{
+                    btnThursday.setBackgroundResource(R.drawable.button_model)
+                }
+            }
+            5->{
+                if(DateChecker(day)){
+                    btnFriday.setBackgroundResource(R.drawable.bottom_border)
+                }else{
+                    btnFriday.setBackgroundResource(R.drawable.button_model)
+                }
+            }
+            6->{
+                if(DateChecker(day)){
+                    btnSaturday.setBackgroundResource(R.drawable.bottom_border)
+                }else{
+                    btnSaturday.setBackgroundResource(R.drawable.button_model)
+                }
+            }
+            7->{
+                if(DateChecker(day)){
+                    btnSunday.setBackgroundResource(R.drawable.bottom_border)
+                }else{
+                    btnSunday.setBackgroundResource(R.drawable.button_model)
+                }
+            }
+        }
 
     }
 
