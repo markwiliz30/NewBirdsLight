@@ -128,20 +128,6 @@ class ProgramFragment : Fragment(){
                         }
                     )
                 )
-
-                buffer.add(
-                    MyButton(activity,
-                        "DateRange",
-                        30,
-                        R.drawable.ic_date_range_dark_blue_24dp,
-                        Color.parseColor("#14BED1"),
-                        object : MyButtonClickListener{
-                            override fun onClick(pos: Int) {
-                                showCreateCategoryDialog(pos+1)
-                            }
-                        }
-                    )
-                )
             }
         }
 
