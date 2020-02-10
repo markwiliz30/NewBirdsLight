@@ -16,7 +16,7 @@
         android:textStyle="bold"
         android:layout_margin="20dp"
         android:layout_gravity="center"
-        android:textColor="#39405A"/>
+        android:textColor="@color/colorAccent"/>
 
     <!--tools:listitem="@layout/fragment_program_list"        //add this to preview the item list on recycler-->
     <androidx.recyclerview.widget.RecyclerView

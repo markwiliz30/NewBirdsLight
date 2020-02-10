@@ -323,24 +323,24 @@ class DayPicker : Fragment(), PrimeDatePickerBottomSheet.OnDayPickedListener {
 
     fun ShowSaveAlert(day: Int , Status: Boolean){
 
+        var dayState = "Enable"
         val mAlertDialog = AlertDialog.Builder(activity!!)
         mAlertDialog.setIcon(R.mipmap.ic_launcher_round)
-        mAlertDialog.setMessage("Hentai hehe")
-        when(Status){
+        mAlertDialog.setTitle("Choose Option")
+
+        when(Status)
+        {
             true->{
-                mAlertDialog.setTitle("Set Day as Active?")
-                mAlertDialog.setPositiveButton("Yes Let's Go!") { dialog, id ->
-                    BorderOrganize(day)
-                }
+                dayState = "Enable"
             }
             false->{
-                mAlertDialog.setTitle("Deactive Day?")
-                mAlertDialog.setPositiveButton("Yes Let's Go!") { dialog, id ->
-                    BorderOrganize(day)
-                }
+                dayState = "Disable"
             }
         }
 
+        mAlertDialog.setPositiveButton(dayState) { dialog, id ->
+            BorderOrganize(day)
+        }
 
         mAlertDialog.setNegativeButton("Manage Schedule") { dialog, id ->
             onCancelChangeStatus(day)

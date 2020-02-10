@@ -4,16 +4,13 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="#14BED1"
+    android:background="@color/MainColor"
     tools:context=".ScheduleFragment"
     android:orientation="vertical"
     android:gravity="center_horizontal"
-    android:paddingTop="50dp"
-    >
+    android:paddingBottom="30dp">
 
-
-
-    <com.aminography.primedatepicker.calendarview.PrimeCalendarView
+    <!--<com.aminography.primedatepicker.calendarview.PrimeCalendarView
         android:id="@+id/calendar_event_view"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -43,7 +40,31 @@
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
-    </androidx.constraintlayout.widget.ConstraintLayout>
+    </androidx.constraintlayout.widget.ConstraintLayout>-->
 
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Scheduled Programs"
+        android:textSize="30dp"
+        android:textStyle="bold"
+        android:layout_margin="20dp"
+        android:layout_gravity="center"
+        android:textColor="@color/colorAccent"/>
+
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/lst_created_pgm"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:scrollbars="vertical">
+    </androidx.recyclerview.widget.RecyclerView>
+
+    <TextView
+        android:id="@+id/txt_empty"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:gravity="center"
+        android:visibility="gone"
+        android:text="@string/no_data_available" />
 
 </LinearLayout>
