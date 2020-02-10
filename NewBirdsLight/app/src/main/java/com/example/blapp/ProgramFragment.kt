@@ -16,6 +16,7 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.CurrentId.extensions.CurrentID
 import com.example.blapp.adapter.PgmAdapter
+import com.example.blapp.collection.DayCollection
 import com.example.blapp.collection.PgmCollection
 import com.example.blapp.collection.StepCollection
 import com.example.blapp.databasehelper.DBmanager
@@ -23,6 +24,7 @@ import com.example.blapp.helper.MyButton
 import com.example.blapp.helper.MySwipeHelper
 import com.example.blapp.helper.MySwipeHelper2
 import com.example.blapp.listener.MyButtonClickListener
+import com.example.blapp.model.DayManager
 import com.example.blapp.model.PgmItem
 import com.example.blapp.model.StepItem
 import kotlinx.android.synthetic.main.fragment_input_dialog.*
@@ -121,9 +123,21 @@ class ProgramFragment : Fragment(){
                         object : MyButtonClickListener{
                             override fun onClick(pos: Int) {
                                 val bundle = bundleOf("parentPgmIndex" to  pos+1)
-                                navController.navigate(R.id.action_programFragment_to_dayPicker , bundle)
-                                CurrentID.UpdateID(num = 8)
-                                CurrentID.Updatebool(x = true)
+                                val pgmChecker =  DayCollection.dayCollection.filter { it.pgm!!.toInt() == pos+1 }
+
+                                if(pgmChecker.isEmpty()){
+                                    val newItem = DayManager()
+                                    newItem.pgm = pos.toByte().inc()
+                                    DayCollection.dayCollection.add(newItem)
+                                    navController.navigate(R.id.action_programFragment_to_dayPicker , bundle)
+                                    CurrentID.UpdateID(num = 8)
+                                    CurrentID.Updatebool(x = true)
+
+                                }else{
+                                    navController.navigate(R.id.action_programFragment_to_dayPicker , bundle)
+                                    CurrentID.UpdateID(num = 8)
+                                    CurrentID.Updatebool(x = true)
+                                }
                             }
                         }
                     )
@@ -278,4 +292,9 @@ class ProgramFragment : Fragment(){
             editAlert.dismiss()
             Toast.makeText(activity!!, "Save Canceled!" , Toast.LENGTH_LONG).show()
         }
-}}
+    }
+
+    fun AddDayCollection(day: Int){
+
+    }
+}

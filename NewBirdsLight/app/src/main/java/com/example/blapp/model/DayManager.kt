@@ -11,9 +11,9 @@ class DayManager {
      var sunday: Boolean = false
      var alldays: Boolean = false
      var sMonth: String? = ""
-        var sDay: String? = ""
-            var eMonth: String? = ""
-                    var eDay: String? = ""
+     var sDay: String? = ""
+     var eMonth: String? = ""
+     var eDay: String? = ""
 
      get() = field
      //Setter

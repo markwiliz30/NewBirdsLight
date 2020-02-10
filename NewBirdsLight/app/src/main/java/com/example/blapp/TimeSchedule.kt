@@ -50,7 +50,7 @@ class TimeSchedule : Fragment() {
         // Inflate the layout for this fragment
 
         parentPgmIndex = arguments!!.getInt("parentPgmIndex")
-        day = arguments!!.getInt("day")
+        day = arguments!!.getInt("days")
         return inflater.inflate(R.layout.fragment_time_schedule, container, false)
     }
 
