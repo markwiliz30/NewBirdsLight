@@ -8,13 +8,34 @@
     android:orientation="vertical">
 
     <TextView
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:text="Select Date Range"
+    android:textSize="30sp"
+    android:textStyle="bold"
+    android:textColor="@color/colorAccent"
+    android:layout_margin="20dp"
+    android:gravity="center"/>
+
+        <Button
+            android:id="@+id/btn_set_calender"
+            android:layout_width="200dp"
+            android:layout_height="wrap_content"
+            android:background="@drawable/button_model"
+            android:drawableRight="@drawable/ic_check_black_24dp"
+            android:textColor="#14BED1"
+            android:layout_gravity="center"
+            android:paddingHorizontal="30sp"
+            android:text="Set Date" />
+
+    <TextView
         android:id="@+id/lblDays"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:text="Day Picker"
-        android:textSize="30dp"
+        android:textSize="30sp"
         android:textStyle="bold"
-        android:textColor="#39405A"
+        android:textColor="@color/colorAccent"
         android:layout_margin="20dp"
         android:gravity="center"
         />
@@ -33,7 +54,7 @@
             android:background="@drawable/button_model"
             android:text="Mon"
             android:textColor="@color/MainColor"
-            android:textSize="20dp"
+            android:textSize="20sp"
             android:padding="20dp"
             android:layout_marginHorizontal="10dp"/>
 
@@ -133,45 +154,6 @@
             android:textSize="20dp"
             android:padding="20dp"
             android:layout_marginHorizontal="10dp"/>
-
-
-
-    </LinearLayout>
-
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="100dp"
-        android:gravity="center"
-        android:orientation="horizontal"
-        >
-
-        <Button
-            android:id="@+id/btnSaveDayPicker"
-            android:layout_width="120dp"
-            android:layout_height="wrap_content"
-            android:layout_margin="10dp"
-            android:background="@drawable/button_model"
-            android:drawableRight="@drawable/ic_check_black_24dp"
-            android:textColor="#14BED1"
-            android:layout_gravity="center"
-            android:paddingHorizontal="10dp"
-            android:text="Save"
-            android:textSize="15dp"/>
-
-        <Button
-            android:id="@+id/btnCancelDayPicker"
-            android:layout_width="120dp"
-            android:layout_height="wrap_content"
-            android:layout_margin="10dp"
-            android:background="@drawable/button_model"
-            android:drawableRight="@drawable/ic_close_black_24dp"
-            android:textColor="#14BED1"
-            android:layout_gravity="center"
-            android:paddingHorizontal="10dp"
-            android:text="Cancel"
-            android:textSize="15dp"/>
-
-
 
     </LinearLayout>
 

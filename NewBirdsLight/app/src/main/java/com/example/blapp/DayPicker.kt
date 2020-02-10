@@ -11,11 +11,18 @@ import android.widget.TimePicker
 import android.widget.Toast
 import androidx.appcompat.app.AlertDialog
 import androidx.core.os.bundleOf
+import androidx.fragment.app.FragmentActivity
 import androidx.fragment.app.FragmentController
 import androidx.navigation.NavController
 import androidx.navigation.Navigation
 import com.CurrentId.extensions.CurrentID
+import com.aminography.primecalendar.PrimeCalendar
+import com.aminography.primecalendar.common.CalendarFactory
+import com.aminography.primecalendar.common.CalendarType
+import com.aminography.primedatepicker.PickType
+import com.aminography.primedatepicker.fragment.PrimeDatePickerBottomSheet
 import com.example.blapp.collection.ScheduleCollection
+import com.example.blapp.common.ManageDayDialog
 import kotlinx.android.synthetic.main.fragment_day_picker.*
 import kotlinx.android.synthetic.main.fragment_day_picker.view.*
 import kotlinx.android.synthetic.main.fragment_time_schedule.*
@@ -25,7 +32,7 @@ import java.util.*
 /**
  * A simple [Fragment] subclass.
  */
-class DayPicker : Fragment() {
+class DayPicker : Fragment(), PrimeDatePickerBottomSheet.OnDayPickedListener {
 
     lateinit var navController: NavController
     var parentPgmIndex: Int = 0
@@ -37,6 +44,10 @@ class DayPicker : Fragment() {
     var isSaturdayClicked: Boolean = false
     var isSundayClicked: Boolean = false
     var isSelectAllClicked: Boolean = false
+    lateinit var sMonth: String
+    lateinit var sDay: String
+    lateinit var eMonth: String
+    lateinit var eDay: String
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -45,17 +56,11 @@ class DayPicker : Fragment() {
         // Inflate the layout for this fragment
         parentPgmIndex = arguments!!.getInt("parentPgmIndex")
         return inflater.inflate(R.layout.fragment_day_picker, container, false)
-
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         navController = Navigation.findNavController(view)
-        btnCancelDayPicker.setOnClickListener{
-            navController.navigate(R.id.action_dayPicker_to_programFragment)
-            CurrentID.UpdateID(num = 3)
-            CurrentID.Updatebool(x = false)
-        }
 
         btnMonday.setOnClickListener{
                 ShowTimeSchedule(1)
@@ -71,12 +76,8 @@ class DayPicker : Fragment() {
         }
 
         btnWednesday.setOnClickListener{
-            isWednesdayClicked =!isWednesdayClicked
-            if(isWednesdayClicked){
-                btnWednesday.setBackgroundResource(R.drawable.bottom_border)
-            }else{
-                btnWednesday.setBackgroundResource(R.drawable.button_model)
-            }
+            val inputDialog = ManageDayDialog()
+            inputDialog.show((context as FragmentActivity).supportFragmentManager, "wifiInput")
         }
         btnThursday.setOnClickListener{
             isThursdayClicked =!isThursdayClicked
@@ -126,7 +127,32 @@ class DayPicker : Fragment() {
             BorderOrganize(x)
         }
 
+        btn_set_calender.setOnClickListener{
+            var datePicker: PrimeDatePickerBottomSheet?
 
+            val calendarType = CalendarType.CIVIL
+
+            val pickType = PickType.RANGE_START
+
+            val minDateCalendar= null
+
+            val maxDateCalendar = null
+
+            val typeface = null
+
+            val today = CalendarFactory.newInstance(calendarType)
+
+
+            datePicker = PrimeDatePickerBottomSheet.newInstance(
+                currentDateCalendar = today,
+                minDateCalendar = minDateCalendar,
+                maxDateCalendar = maxDateCalendar,
+                pickType = pickType,
+                typefacePath = typeface
+            )
+            datePicker?.setOnDateSetListener(this)
+            datePicker?.show(activity!!.supportFragmentManager, "PrimeDatePickerBottomSheet")
+        }
     }
 
     fun SelectAllDays(){
@@ -162,6 +188,7 @@ class DayPicker : Fragment() {
         btnSunday.setBackgroundResource(R.drawable.button_model)
         isSundayClicked = false
     }
+
     fun ShowTimeSchedule(day: Int) {
         when (day) {
             1 -> {
@@ -268,6 +295,26 @@ class DayPicker : Fragment() {
                 }
             }
         }
+
+    }
+
+    override fun onMultipleDaysPicked(multipleDays: List<PrimeCalendar>) {
+
+    }
+
+    override fun onRangeDaysPicked(startDay: PrimeCalendar, endDay: PrimeCalendar) {
+        sMonth = startDay.month.toString()
+        sDay = startDay.dayOfMonth.toString()
+        eMonth = endDay.month.toString()
+        eDay = endDay.dayOfMonth.toString()
+
+        for (item in ScheduleCollection.scheduleCollection)
+        {
+            
+        }
+    }
+
+    override fun onSingleDayPicked(singleDay: PrimeCalendar) {
 
     }
 
