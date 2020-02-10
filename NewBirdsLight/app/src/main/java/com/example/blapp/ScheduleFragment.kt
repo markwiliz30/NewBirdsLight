@@ -23,12 +23,12 @@ import com.google.android.material.bottomsheet.BottomSheetBehavior
 import kotlinx.android.synthetic.main.fragment_calendar.*
 import kotlinx.android.synthetic.main.fragment_schedule.*
 import java.util.*
+import kotlin.collections.ArrayList
 
-class ScheduleFragment : Fragment() ,PrimeDatePickerBottomSheet.OnDayPickedListener {
+class ScheduleFragment : Fragment() {
 
     lateinit var navController: NavController
-    private var datePicker: PrimeDatePickerBottomSheet? = null
-    private var calendarType = CalendarType.CIVIL
+    var adapter: List<String> = ArrayList<String>()
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -41,48 +41,41 @@ class ScheduleFragment : Fragment() ,PrimeDatePickerBottomSheet.OnDayPickedListe
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         navController = Navigation.findNavController(view)
-        this.calendar_event_view.onDayPickedListener
-        calendar_event_view.calendarType = calendarType
-        calendar_event_view.flingOrientation = PrimeCalendarView.FlingOrientation.HORIZONTAL
-        PrimeCalendarView
 
-        btnDateRange.setOnClickListener{
-
-            val calendarType = CalendarType.CIVIL
-
-            val pickType = PickType.RANGE_START
-
-            val minDateCalendar= null
-
-            val maxDateCalendar = null
-
-            val typeface = null
-
-            val today = CalendarFactory.newInstance(calendarType)
-
-
-            datePicker = PrimeDatePickerBottomSheet.newInstance(
-                currentDateCalendar = today,
-                minDateCalendar = minDateCalendar,
-                maxDateCalendar = maxDateCalendar,
-                pickType = pickType,
-                typefacePath = typeface
-            )
-            datePicker?.setOnDateSetListener(this)
-            datePicker?.show(activity!!.supportFragmentManager, "PrimeDatePickerBottomSheet")
-        }
+//        var datePicker: PrimeDatePickerBottomSheet? = null
+//        this.calendar_event_view.onDayPickedListener
+//        calendar_event_view.calendarType = CalendarType.CIVIL
+//        calendar_event_view.flingOrientation = PrimeCalendarView.FlingOrientation.HORIZONTAL
+//        PrimeCalendarView
+//
+//        btnDateRange.setOnClickListener{
+//
+//            val calendarType = CalendarType.CIVIL
+//
+//            val pickType = PickType.RANGE_START
+//
+//            val minDateCalendar= null
+//
+//            val maxDateCalendar = null
+//
+//            val typeface = null
+//
+//            val today = CalendarFactory.newInstance(calendarType)
+//
+//
+//            datePicker = PrimeDatePickerBottomSheet.newInstance(
+//                currentDateCalendar = today,
+//                minDateCalendar = minDateCalendar,
+//                maxDateCalendar = maxDateCalendar,
+//                pickType = pickType,
+//                typefacePath = typeface
+//            )
+//            datePicker?.setOnDateSetListener(this)
+//            datePicker?.show(activity!!.supportFragmentManager, "PrimeDatePickerBottomSheet")
+//        }
     }
 
-    override fun onMultipleDaysPicked(multipleDays: List<PrimeCalendar>) {
-
-    }
-
-    override fun onRangeDaysPicked(startDay: PrimeCalendar, endDay: PrimeCalendar) {
-
-    }
-
-    override fun onSingleDayPicked(singleDay: PrimeCalendar) {
-
-    }
-
+//    private fun generateItem() {
+//        lst_created_pgm.adapter = adapter
+//    }
 }

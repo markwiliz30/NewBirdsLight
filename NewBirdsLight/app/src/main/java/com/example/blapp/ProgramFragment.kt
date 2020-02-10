@@ -199,8 +199,8 @@ class ProgramFragment : Fragment(){
     private fun DeleteAlert(pos: Int){
         val mAlertDialog = AlertDialog.Builder(activity!!)
         mAlertDialog.setIcon(R.mipmap.ic_launcher_round) //set alertdialog icon
-        mAlertDialog.setTitle("Title!") //set alertdialog title
-        mAlertDialog.setMessage("Your message here") //set alertdialog message
+        mAlertDialog.setTitle("Are you sure?") //set alertdialog title
+        mAlertDialog.setMessage("Do you want to delete Program " + (pos + 1) + "?" ) //set alertdialog message
         mAlertDialog.setPositiveButton("Yes") { dialog, id ->
             val pgmIndex = PgmCollection.pgmCollection.get(pos)
             RefreshStepCollection(pgmIndex.pgm!!.toInt())

@@ -128,67 +128,7 @@ class TimeSchedule : Fragment() {
                         Color.parseColor("#14BED1"),
                         object : MyButtonClickListener{
                             override fun onClick(pos: Int) {
-                            }
-                        }
-                    )
-                )
-
-                buffer.add(
-                    MyButton(activity,
-                        "Update",
-                        30,
-                        R.drawable.ic_edit_dark_blue_24dp,
-                        Color.parseColor("#14BED1"),
-                        object : MyButtonClickListener{
-                            override fun onClick(pos: Int) {
-                                val bundle = bundleOf("parentPgmIndex" to  pos + 1)
-                                navController.navigate(R.id.action_programFragment_to_setStepFragment, bundle )
-                                CurrentID.UpdateID(num = 6)
-                                CurrentID.Updatebool(x = true)
-                            }
-                        }
-                    )
-                )
-
-                buffer.add(
-                    MyButton(activity,
-                        "Save",
-                        30,
-                        R.drawable.ic_save_dark_blue_24dp,
-                        Color.parseColor("#14BED1"),
-                        object : MyButtonClickListener{
-                            override fun onClick(pos: Int) {
-                            }
-                        }
-                    )
-                )
-
-                buffer.add(
-                    MyButton(activity,
-                        "DayPicker",
-                        30,
-                        R.drawable.ic_date_range_dark_blue_24dp,
-                        Color.parseColor("#14BED1"),
-                        object : MyButtonClickListener{
-                            override fun onClick(pos: Int) {
-                                val bundle = bundleOf("parentPgmIndex" to  pos+1)
-                                navController.navigate(R.id.action_programFragment_to_dayPicker , bundle)
-                                CurrentID.UpdateID(num = 8)
-                                CurrentID.Updatebool(x = true)
-                            }
-                        }
-                    )
-                )
-
-                buffer.add(
-                    MyButton(activity,
-                        "DateRange",
-                        30,
-                        R.drawable.ic_date_range_dark_blue_24dp,
-                        Color.parseColor("#14BED1"),
-                        object : MyButtonClickListener{
-                            override fun onClick(pos: Int) {
-
+                                ShowDeleteAlert(pos)
                             }
                         }
                     )
@@ -244,6 +184,24 @@ class TimeSchedule : Fragment() {
                 update.sched = update.sched!!.dec()
             }
         }
+    }
+
+    fun ShowDeleteAlert(schd: Int){
+
+        val mAlertDialog = AlertDialog.Builder(activity!!)
+        mAlertDialog.setIcon(R.mipmap.ic_launcher_round)
+        mAlertDialog.setTitle("Are you sure?")
+        mAlertDialog.setMessage("Do you want to delete this schedule " + (schd + 1) + "?")
+
+        mAlertDialog.setPositiveButton("Yes") { dialog, id ->
+
+        }
+
+        mAlertDialog.setNegativeButton("No") { dialog, id ->
+
+        }
+
+        mAlertDialog.show()
     }
 
 }
