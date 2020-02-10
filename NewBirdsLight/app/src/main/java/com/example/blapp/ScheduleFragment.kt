@@ -70,9 +70,6 @@ class ScheduleFragment : Fragment() ,PrimeDatePickerBottomSheet.OnDayPickedListe
             )
             datePicker?.setOnDateSetListener(this)
             datePicker?.show(activity!!.supportFragmentManager, "PrimeDatePickerBottomSheet")
-
-
-
         }
     }
 
