@@ -23,6 +23,7 @@ import com.aminography.primedatepicker.PickType
 import com.aminography.primedatepicker.fragment.PrimeDatePickerBottomSheet
 import com.example.blapp.collection.ScheduleCollection
 import com.example.blapp.common.ManageDayDialog
+import com.example.blapp.common.DayState
 import kotlinx.android.synthetic.main.fragment_day_picker.*
 import kotlinx.android.synthetic.main.fragment_day_picker.view.*
 import kotlinx.android.synthetic.main.fragment_time_schedule.*
@@ -36,14 +37,6 @@ class DayPicker : Fragment(), PrimeDatePickerBottomSheet.OnDayPickedListener {
 
     lateinit var navController: NavController
     var parentPgmIndex: Int = 0
-    var isMondayClicked: Boolean = false
-    var isTuesdayClicked: Boolean = false
-    var isWednesdayClicked: Boolean = false
-    var isThursdayClicked: Boolean = false
-    var isFridayClicked: Boolean = false
-    var isSaturdayClicked: Boolean = false
-    var isSundayClicked: Boolean = false
-    var isSelectAllClicked: Boolean = false
     lateinit var sMonth: String
     lateinit var sDay: String
     lateinit var eMonth: String
@@ -63,68 +56,49 @@ class DayPicker : Fragment(), PrimeDatePickerBottomSheet.OnDayPickedListener {
         navController = Navigation.findNavController(view)
 
         btnMonday.setOnClickListener{
-                ShowTimeSchedule(1)
+            DayState.monday =! DayState.monday
+            ShowSaveAlert(1 ,DayState.monday )
         }
 
         btnTuesday.setOnClickListener{
-            isTuesdayClicked =!isTuesdayClicked
-            if(isTuesdayClicked){
-                btnTuesday.setBackgroundResource(R.drawable.bottom_border)
-            }else{
-                btnTuesday.setBackgroundResource(R.drawable.button_model)
-            }
+            DayState.tuesday =!DayState.tuesday
+            ShowSaveAlert(2 ,DayState.tuesday )
         }
 
         btnWednesday.setOnClickListener{
-            val inputDialog = ManageDayDialog()
-            inputDialog.show((context as FragmentActivity).supportFragmentManager, "wifiInput")
+            DayState.wednesday =! DayState.wednesday
+            ShowSaveAlert(3, DayState.wednesday)
         }
         btnThursday.setOnClickListener{
-            isThursdayClicked =!isThursdayClicked
-            if(isThursdayClicked){
-                btnThursday.setBackgroundResource(R.drawable.bottom_border)
-            }else{
-                btnThursday.setBackgroundResource(R.drawable.button_model)
-            }
+            DayState.thursday =! DayState.thursday
+            ShowSaveAlert(4, DayState.thursday)
         }
         btnFriday.setOnClickListener{
-            isFridayClicked =!isFridayClicked
-            if(isFridayClicked){
-                btnFriday.setBackgroundResource(R.drawable.bottom_border)
-            }else{
-                btnFriday.setBackgroundResource(R.drawable.button_model)
-            }
+            DayState.friday =! DayState.friday
+            ShowSaveAlert(5, DayState.friday)
         }
         btnSaturday.setOnClickListener{
-            isSaturdayClicked =!isSaturdayClicked
-            if(isSaturdayClicked){
-                btnSaturday.setBackgroundResource(R.drawable.bottom_border)
-            }else{
-                btnSaturday.setBackgroundResource(R.drawable.button_model)
-            }
+            DayState.saturday =!DayState.saturday
+            ShowSaveAlert(6, DayState.saturday)
         }
         btnSunday.setOnClickListener{
-            isSundayClicked =!isSundayClicked
-            if(isSundayClicked){
-                btnSunday.setBackgroundResource(R.drawable.bottom_border)
-            }else{
-                btnSunday.setBackgroundResource(R.drawable.button_model)
-            }
+            DayState.sunday =!DayState.sunday
+            ShowSaveAlert(7, DayState.sunday)
         }
 
-        btnAll.setOnClickListener{
-            isSelectAllClicked =! isSelectAllClicked
-            if(isSelectAllClicked){
-                btnAll.setBackgroundResource(R.drawable.bottom_border)
-                SelectAllDays()
-            }else{
-                btnAll.setBackgroundResource(R.drawable.button_model)
-                DeselectAllDays()
-            }
-        }
+//        btnAll.setOnClickListener{
+//            DayState.alldays =! DayState.alldays
+//            if(DayState.alldays){
+//                btnAll.setBackgroundResource(R.drawable.bottom_border)
+//                SelectAllDays()
+//            }else{
+//                btnAll.setBackgroundResource(R.drawable.button_model)
+//                DeselectAllDays()
+//            }
+//        }
 
-        for(x in 1..7){
-            BorderOrganize(x)
+        for(i in 1..7){
+            BorderOrganize(i)
         }
 
         btn_set_calender.setOnClickListener{
@@ -155,39 +129,39 @@ class DayPicker : Fragment(), PrimeDatePickerBottomSheet.OnDayPickedListener {
         }
     }
 
-    fun SelectAllDays(){
-        btnMonday.setBackgroundResource(R.drawable.bottom_border)
-        isMondayClicked = true
-        btnTuesday.setBackgroundResource(R.drawable.bottom_border)
-        isTuesdayClicked = true
-        btnWednesday.setBackgroundResource(R.drawable.bottom_border)
-        isWednesdayClicked = true
-        btnThursday.setBackgroundResource(R.drawable.bottom_border)
-        isThursdayClicked = true
-        btnFriday.setBackgroundResource(R.drawable.bottom_border)
-        isFridayClicked = true
-        btnSaturday.setBackgroundResource(R.drawable.bottom_border)
-        isSaturdayClicked = true
-        btnSunday.setBackgroundResource(R.drawable.bottom_border)
-        isSundayClicked = true
-    }
-
-    fun DeselectAllDays(){
-        btnMonday.setBackgroundResource(R.drawable.button_model)
-        isMondayClicked = false
-        btnTuesday.setBackgroundResource(R.drawable.button_model)
-        isTuesdayClicked = false
-        btnWednesday.setBackgroundResource(R.drawable.button_model)
-        isWednesdayClicked = false
-        btnThursday.setBackgroundResource(R.drawable.button_model)
-        isThursdayClicked = false
-        btnFriday.setBackgroundResource(R.drawable.button_model)
-        isFridayClicked = false
-        btnSaturday.setBackgroundResource(R.drawable.button_model)
-        isSaturdayClicked = false
-        btnSunday.setBackgroundResource(R.drawable.button_model)
-        isSundayClicked = false
-    }
+//    fun SelectAllDays(){
+//        btnMonday.setBackgroundResource(R.drawable.bottom_border)
+//        isMondayClicked = true
+//        btnTuesday.setBackgroundResource(R.drawable.bottom_border)
+//        isTuesdayClicked = true
+//        btnWednesday.setBackgroundResource(R.drawable.bottom_border)
+//        isWednesdayClicked = true
+//        btnThursday.setBackgroundResource(R.drawable.bottom_border)
+//        isThursdayClicked = true
+//        btnFriday.setBackgroundResource(R.drawable.bottom_border)
+//        isFridayClicked = true
+//        btnSaturday.setBackgroundResource(R.drawable.bottom_border)
+//        isSaturdayClicked = true
+//        btnSunday.setBackgroundResource(R.drawable.bottom_border)
+//        isSundayClicked = true
+//    }
+//
+//    fun DeselectAllDays(){
+//        btnMonday.setBackgroundResource(R.drawable.button_model)
+//        isMondayClicked = false
+//        btnTuesday.setBackgroundResource(R.drawable.button_model)
+//        isTuesdayClicked = false
+//        btnWednesday.setBackgroundResource(R.drawable.button_model)
+//        isWednesdayClicked = false
+//        btnThursday.setBackgroundResource(R.drawable.button_model)
+//        isThursdayClicked = false
+//        btnFriday.setBackgroundResource(R.drawable.button_model)
+//        isFridayClicked = false
+//        btnSaturday.setBackgroundResource(R.drawable.button_model)
+//        isSaturdayClicked = false
+//        btnSunday.setBackgroundResource(R.drawable.button_model)
+//        isSundayClicked = false
+//    }
 
     fun ShowTimeSchedule(day: Int) {
         when (day) {
@@ -199,37 +173,43 @@ class DayPicker : Fragment(), PrimeDatePickerBottomSheet.OnDayPickedListener {
 
             }
             2 -> {
-                navController.navigate(R.id.action_dayPicker_to_timeSchedule)
+                val bundle = bundleOf("parentPgmIndex" to  parentPgmIndex , "days" to day)
+                navController.navigate(R.id.action_dayPicker_to_timeSchedule, bundle)
                 CurrentID.UpdateID(num = 7)
                 CurrentID.Updatebool(x = true)
 
             }
             3 -> {
-                navController.navigate(R.id.action_dayPicker_to_timeSchedule)
+                val bundle = bundleOf("parentPgmIndex" to  parentPgmIndex , "days" to day)
+                navController.navigate(R.id.action_dayPicker_to_timeSchedule, bundle)
                 CurrentID.UpdateID(num = 7)
                 CurrentID.Updatebool(x = true)
 
             }
             4 -> {
-                navController.navigate(R.id.action_dayPicker_to_timeSchedule)
+                val bundle = bundleOf("parentPgmIndex" to  parentPgmIndex , "days" to day)
+                navController.navigate(R.id.action_dayPicker_to_timeSchedule, bundle)
                 CurrentID.UpdateID(num = 7)
                 CurrentID.Updatebool(x = true)
 
             }
             5 -> {
-                navController.navigate(R.id.action_dayPicker_to_timeSchedule)
+                val bundle = bundleOf("parentPgmIndex" to  parentPgmIndex , "days" to day)
+                navController.navigate(R.id.action_dayPicker_to_timeSchedule, bundle)
                 CurrentID.UpdateID(num = 7)
                 CurrentID.Updatebool(x = true)
 
             }
             6 -> {
-                navController.navigate(R.id.action_dayPicker_to_timeSchedule)
+                val bundle = bundleOf("parentPgmIndex" to  parentPgmIndex , "days" to day)
+                navController.navigate(R.id.action_dayPicker_to_timeSchedule, bundle)
                 CurrentID.UpdateID(num = 7)
                 CurrentID.Updatebool(x = true)
 
             }
             7 -> {
-                navController.navigate(R.id.action_dayPicker_to_timeSchedule)
+                val bundle = bundleOf("parentPgmIndex" to  parentPgmIndex , "days" to day)
+                navController.navigate(R.id.action_dayPicker_to_timeSchedule, bundle)
                 CurrentID.UpdateID(num = 7)
                 CurrentID.Updatebool(x = true)
 
@@ -238,57 +218,80 @@ class DayPicker : Fragment(), PrimeDatePickerBottomSheet.OnDayPickedListener {
 
     }
 
-    fun DateChecker(day: Int): Boolean {
-        var Checker = ScheduleCollection.scheduleCollection.filter { it.pgm!!.toInt() == parentPgmIndex && it.wday!!.toInt() == day }
-        return !Checker.isEmpty()
-    }
-
-    fun BorderOrganize(day: Int){
+    fun onCancelChangeStatus(day: Int){
         when (day){
             1->{
-            if(DateChecker(day)){
+                DayState.monday =! DayState.monday
+            }
+            2->{
+               DayState.tuesday =! DayState.tuesday
+            }
+            3->{
+                DayState.wednesday =! DayState.wednesday
+            }
+            4->{
+                DayState.thursday =! DayState.thursday
+            }
+            5->{
+                DayState.friday =! DayState.friday
+            }
+            6->{
+                DayState.saturday =! DayState.saturday
+            }
+            7->{
+                DayState.sunday =! DayState.sunday
+            }
+        }
+    }
+
+
+
+    fun BorderOrganize(day: Int ){
+        when (day){
+            1->{
+            if(DayState.monday){
                 btnMonday.setBackgroundResource(R.drawable.bottom_border)
                 }else{
                 btnMonday.setBackgroundResource(R.drawable.button_model)
                 }
             }
             2->{
-                if(DateChecker(day)){
+                if(DayState.tuesday){
                     btnTuesday.setBackgroundResource(R.drawable.bottom_border)
                 }else{
                     btnTuesday.setBackgroundResource(R.drawable.button_model)
                 }
             }
             3->{
-                if(DateChecker(day)){
+                if(DayState.wednesday){
                     btnWednesday.setBackgroundResource(R.drawable.bottom_border)
                 }else{
                     btnWednesday.setBackgroundResource(R.drawable.button_model)
                 }
             }
             4->{
-                if(DateChecker(day)){
+                if(DayState.thursday){
                     btnThursday.setBackgroundResource(R.drawable.bottom_border)
                 }else{
                     btnThursday.setBackgroundResource(R.drawable.button_model)
                 }
             }
             5->{
-                if(DateChecker(day)){
+                if(DayState.friday){
                     btnFriday.setBackgroundResource(R.drawable.bottom_border)
                 }else{
                     btnFriday.setBackgroundResource(R.drawable.button_model)
                 }
             }
             6->{
-                if(DateChecker(day)){
+                if(DayState.saturday){
                     btnSaturday.setBackgroundResource(R.drawable.bottom_border)
                 }else{
                     btnSaturday.setBackgroundResource(R.drawable.button_model)
                 }
             }
             7->{
-                if(DateChecker(day)){
+                if(DayState.sunday){
                     btnSunday.setBackgroundResource(R.drawable.bottom_border)
                 }else{
                     btnSunday.setBackgroundResource(R.drawable.button_model)
@@ -318,4 +321,33 @@ class DayPicker : Fragment(), PrimeDatePickerBottomSheet.OnDayPickedListener {
 
     }
 
+    fun ShowSaveAlert(day: Int , Status: Boolean){
+
+        val mAlertDialog = AlertDialog.Builder(activity!!)
+        mAlertDialog.setIcon(R.mipmap.ic_launcher_round)
+        mAlertDialog.setMessage("Hentai hehe")
+        when(Status){
+            true->{
+                mAlertDialog.setTitle("Set Day as Active?")
+                mAlertDialog.setPositiveButton("Yes Let's Go!") { dialog, id ->
+                    BorderOrganize(day)
+                }
+            }
+            false->{
+                mAlertDialog.setTitle("Deactive Day?")
+                mAlertDialog.setPositiveButton("Yes Let's Go!") { dialog, id ->
+                    BorderOrganize(day)
+                }
+            }
+        }
+
+
+        mAlertDialog.setNegativeButton("Manage Schedule") { dialog, id ->
+            onCancelChangeStatus(day)
+            ShowTimeSchedule(day)
+        }
+
+        mAlertDialog.setOnCancelListener { onCancelChangeStatus(day) }
+        mAlertDialog.show()
+    }
 }
