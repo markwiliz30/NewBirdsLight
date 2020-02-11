@@ -1,46 +1,52 @@
 package com.example.blapp
 
 
+import android.app.AlertDialog
+import android.content.DialogInterface
+import android.graphics.Color
+import android.graphics.drawable.ColorDrawable
 import android.os.Bundle
-import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
-import androidx.coordinatorlayout.widget.CoordinatorLayout
-import androidx.core.content.ContextCompat
+import androidx.fragment.app.Fragment
 import androidx.navigation.NavController
 import androidx.navigation.Navigation
-import com.CurrentId.extensions.CurrentID
-import com.aminography.primecalendar.PrimeCalendar
-import com.aminography.primecalendar.common.CalendarFactory
-import com.aminography.primecalendar.common.CalendarType
-import com.aminography.primedatepicker.PickType
-import com.aminography.primedatepicker.calendarview.PrimeCalendarView
-import com.aminography.primedatepicker.fragment.PrimeDatePickerBottomSheet
-import com.aminography.primedatepicker.tools.screenSize
-import com.google.android.material.bottomsheet.BottomSheetBehavior
-import kotlinx.android.synthetic.main.fragment_calendar.*
+import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.RecyclerView
+import com.example.blapp.adapter.ScheduleAdapter
+import com.example.blapp.collection.ScheduleCollection
+import com.example.blapp.helper.MyButton
+import com.example.blapp.helper.MySwipeHelper
+import com.example.blapp.listener.MyButtonClickListener
+import com.example.blapp.model.ScheduleItem
+import dmax.dialog.SpotsDialog
 import kotlinx.android.synthetic.main.fragment_schedule.*
-import java.util.*
-import kotlin.collections.ArrayList
 
 class ScheduleFragment : Fragment() {
 
     lateinit var navController: NavController
-    var adapter: List<String> = ArrayList<String>()
+    lateinit var adapter: ScheduleAdapter
+    lateinit var layoutManager: LinearLayoutManager
+    private lateinit var dialog: AlertDialog
+    var scheduleList : MutableList<ScheduleItem> = mutableListOf()
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
         // Inflate the layout for this fragment
+        dialog = SpotsDialog(activity, R.style.Custom)
         return inflater.inflate(R.layout.fragment_schedule, container, false)
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         navController = Navigation.findNavController(view)
+        FilterUniqueItem()
+        adapter = ScheduleAdapter(activity, scheduleList)
+        lst_created_pgm.adapter = adapter
 
 //        var datePicker: PrimeDatePickerBottomSheet? = null
 //        this.calendar_event_view.onDayPickedListener
@@ -73,9 +79,49 @@ class ScheduleFragment : Fragment() {
 //            datePicker?.setOnDateSetListener(this)
 //            datePicker?.show(activity!!.supportFragmentManager, "PrimeDatePickerBottomSheet")
 //        }
+
+        btn_upload_all.setOnClickListener{
+            //dialog.show()
+
+            val builder: AlertDialog.Builder = AlertDialog.Builder(activity)
+            val view: View = layoutInflater.inflate(R.layout.layout_loading_dialog, null)
+
+            builder.setView(view).setNegativeButton("Cancel") { dialog, which ->
+            }
+
+            val dialog = builder.create()
+            dialog.setOnShowListener { dialog.getButton(AlertDialog.BUTTON_NEGATIVE).setTextColor(Color.parseColor("#ffffff")) }
+            dialog.show()
+            dialog.window!!.setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT))
+        }
     }
 
-//    private fun generateItem() {
-//        lst_created_pgm.adapter = adapter
-//    }
+    override fun onActivityCreated(savedInstanceState: Bundle?) {
+        super.onActivityCreated(savedInstanceState)
+
+        lst_created_pgm.setHasFixedSize(true)
+        lst_created_pgm.setItemViewCacheSize(25)
+        layoutManager = LinearLayoutManager(activity)
+        lst_created_pgm.layoutManager = layoutManager
+
+    }
+
+    fun FilterUniqueItem(){
+        var tempSchedItem: ScheduleItem? = null
+        for(item in ScheduleCollection.scheduleCollection) {
+            if(tempSchedItem != null)
+            {
+                if(!(tempSchedItem!!.smonth == item.smonth && tempSchedItem.sday == item.sday && tempSchedItem.emonth == item.emonth && tempSchedItem.eday == tempSchedItem.eday))
+                {
+                    tempSchedItem = item
+                    scheduleList.add(tempSchedItem)
+                }
+            }
+            else
+            {
+                tempSchedItem = item
+                scheduleList.add(tempSchedItem)
+            }
+        }
+    }
 }

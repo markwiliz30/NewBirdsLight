@@ -1,18 +1,14 @@
 package com.example.blapp
 
 
-import android.app.TimePickerDialog
 import android.os.Bundle
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.TimePicker
 import android.widget.Toast
 import androidx.appcompat.app.AlertDialog
 import androidx.core.os.bundleOf
-import androidx.fragment.app.FragmentActivity
-import androidx.fragment.app.FragmentController
 import androidx.navigation.NavController
 import androidx.navigation.Navigation
 import com.CurrentId.extensions.CurrentID
@@ -23,14 +19,8 @@ import com.aminography.primedatepicker.PickType
 import com.aminography.primedatepicker.fragment.PrimeDatePickerBottomSheet
 import com.example.blapp.collection.DayCollection
 import com.example.blapp.collection.ScheduleCollection
-import com.example.blapp.common.ManageDayDialog
-import com.example.blapp.common.DayState
 import com.example.blapp.model.DayManager
 import kotlinx.android.synthetic.main.fragment_day_picker.*
-import kotlinx.android.synthetic.main.fragment_day_picker.view.*
-import kotlinx.android.synthetic.main.fragment_time_schedule.*
-import kotlinx.android.synthetic.main.fragment_time_schedule.view.*
-import java.util.*
 
 /**
  * A simple [Fragment] subclass.
