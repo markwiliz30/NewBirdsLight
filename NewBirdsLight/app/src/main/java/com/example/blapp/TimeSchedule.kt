@@ -20,6 +20,7 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.CurrentId.extensions.CurrentID
 import com.example.blapp.adapter.TimeAdapter
+import com.example.blapp.collection.DayCollection
 import com.example.blapp.collection.ScheduleCollection
 import com.example.blapp.helper.MyButton
 import com.example.blapp.helper.MySwipeHelper
@@ -28,6 +29,12 @@ import com.example.blapp.model.DayManager
 import com.example.blapp.model.ScheduleItem
 import kotlinx.android.synthetic.main.fragment_day_picker.*
 import kotlinx.android.synthetic.main.fragment_time_schedule.*
+import java.sql.Time
+import java.sql.Timestamp
+import java.text.SimpleDateFormat
+import java.time.LocalDate
+import java.time.LocalTime
+import java.time.format.DateTimeFormatter
 import java.util.*
 
 class TimeSchedule : Fragment() {
@@ -92,6 +99,12 @@ class TimeSchedule : Fragment() {
         }
         btn_save_time.setOnClickListener{
 
+
+            var TimeRestric = ScheduleCollection.scheduleCollection.filter { it.pgm!!.toInt() == parentPgmIndex }
+            var Check = ScheduleCollection.scheduleCollection.find { it.pgm!!.toInt() == parentPgmIndex }
+
+
+
             if(tempehour == 25 && tempeminute == 25 && tempshour == 25 && tempsminute == 25){
                 btn_save_time.startAnimation(AnimationUtils.loadAnimation(activity , R.anim.shake))
                 Toast.makeText(activity, "No time set" , Toast.LENGTH_LONG).show()
@@ -147,6 +160,7 @@ class TimeSchedule : Fragment() {
     private fun addToTimeCollection(){
         val newItem = ScheduleItem()
         var filtered =  ScheduleCollection.scheduleCollection.filter { it.pgm!!.toInt() == parentPgmIndex && it.wday!!.toInt() == day }
+        var DateFind = DayCollection.dayCollection.find { it.pgm!!.toInt() == parentPgmIndex }
         val schedNumber = filtered.count()+1
         newItem.command = 0x02
         newItem.pgm = parentPgmIndex.toByte()
@@ -156,6 +170,10 @@ class TimeSchedule : Fragment() {
         newItem.eminute = tempeminute.toByte()
         newItem.sched = schedNumber.toByte()
         newItem.wday = day.toByte()
+        newItem.smonth = DateFind!!.sMonth!!.toByte()
+        newItem.sday = DateFind!!.sDay!!.toByte()
+        newItem.emonth= DateFind!!.eMonth!!.toByte()
+        newItem.eday = DateFind!!.eDay!!.toByte()
         ScheduleCollection.scheduleCollection.add(newItem)
     }
     private fun refreshList(){
