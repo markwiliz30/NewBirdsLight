@@ -51,4 +51,6 @@ dependencies {
     implementation "androidx.navigation:navigation-ui-ktx:$nav_version"
 
     implementation 'com.github.d-max:spots-dialog:0.7@aar'
+
+    implementation 'me.itangqi.waveloadingview:library:0.3.5'
 }

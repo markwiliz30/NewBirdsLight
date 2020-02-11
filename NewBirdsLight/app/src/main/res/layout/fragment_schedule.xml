@@ -55,9 +55,21 @@
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/lst_created_pgm"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
+        android:layout_height="400dp"
         android:scrollbars="vertical">
     </androidx.recyclerview.widget.RecyclerView>
+
+    <Button
+        android:id="@+id/btn_upload_all"
+        android:layout_width="200dp"
+        android:layout_height="wrap_content"
+        android:layout_margin="20dp"
+        android:background="@drawable/button_model"
+        android:drawableRight="@drawable/ic_file_upload_light_blue_24dp"
+        android:textColor="@color/MainColor"
+        android:layout_gravity="center"
+        android:paddingHorizontal="20dp"
+        android:text="upload all" />
 
     <TextView
         android:id="@+id/txt_empty"
@@ -66,5 +78,7 @@
         android:gravity="center"
         android:visibility="gone"
         android:text="@string/no_data_available" />
+
+
 
 </LinearLayout>

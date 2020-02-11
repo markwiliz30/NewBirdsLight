@@ -137,6 +137,7 @@ class TimeSchedule : Fragment() {
         recycler_time.setItemViewCacheSize(25)
         layoutManager = LinearLayoutManager(activity)
         recycler_time.layoutManager = layoutManager
+
         val swipe = object: MySwipeHelper(activity, recycler_time, 200)
         {
             override fun instantiateMyButton(
@@ -149,9 +150,9 @@ class TimeSchedule : Fragment() {
                         30,
                         R.drawable.ic_delete_dark_blue_24dp,
                         Color.parseColor("#14BED1"),
-                        object : MyButtonClickListener{
+                        object : MyButtonClickListener {
                             override fun onClick(pos: Int) {
-                                ShowDeleteAlert(pos)
+                                Toast.makeText(activity, "wew"+pos, Toast.LENGTH_SHORT).show()
                             }
                         }
                     )
