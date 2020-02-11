@@ -19,6 +19,7 @@ import com.example.blapp.adapter.ScheduleAdapter
 import com.example.blapp.collection.ScheduleCollection
 import com.example.blapp.helper.MyButton
 import com.example.blapp.helper.MySwipeHelper
+import com.example.blapp.helper.MySwipeHelper2
 import com.example.blapp.listener.MyButtonClickListener
 import com.example.blapp.model.ScheduleItem
 import dmax.dialog.SpotsDialog
@@ -104,6 +105,27 @@ class ScheduleFragment : Fragment() {
         layoutManager = LinearLayoutManager(activity)
         lst_created_pgm.layoutManager = layoutManager
 
+        val swipe = object: MySwipeHelper2(activity, lst_created_pgm, 200)
+        {
+            override fun instantiateMyButton(
+                viewHolder: RecyclerView.ViewHolder,
+                buffer: MutableList<MyButton>
+            ) {
+                buffer.add(
+                    MyButton(activity,
+                        "Delete",
+                        30,
+                        R.drawable.ic_delete_dark_blue_24dp,
+                        Color.parseColor("#14BED1"),
+                        object : MyButtonClickListener {
+                            override fun onClick(pos: Int) {
+                                Toast.makeText(activity, "wew"+pos, Toast.LENGTH_SHORT).show()
+                            }
+                        }
+                    )
+                )
+            }
+        }
     }
 
     fun FilterUniqueItem(){

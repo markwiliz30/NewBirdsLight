@@ -24,6 +24,7 @@ import com.example.blapp.collection.DayCollection
 import com.example.blapp.collection.ScheduleCollection
 import com.example.blapp.helper.MyButton
 import com.example.blapp.helper.MySwipeHelper
+import com.example.blapp.helper.MySwipeHelper2
 import com.example.blapp.listener.MyButtonClickListener
 import com.example.blapp.model.DayManager
 import com.example.blapp.model.ScheduleItem
@@ -40,15 +41,12 @@ import java.util.*
 class TimeSchedule : Fragment() {
 
     lateinit var navController: NavController
-    lateinit var layoutManager: LinearLayoutManager
     private var parentPgmIndex: Int = 0
     private var day: Int = 0
-    lateinit var adapter: TimeAdapter
     private var tempshour: Int = 25
     private var tempsminute: Int = 25
     private var tempehour: Int = 25
     private var tempeminute: Int = 25
-
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -69,7 +67,6 @@ class TimeSchedule : Fragment() {
         val mcurrentTime = Calendar.getInstance()
         val hour = mcurrentTime.get(Calendar.HOUR_OF_DAY)
         val minute = mcurrentTime.get(Calendar.MINUTE)
-        var SchedTempList: MutableList<ScheduleItem> = mutableListOf()
 
         mTimePickerEnd = TimePickerDialog(activity, object : TimePickerDialog.OnTimeSetListener{
             override fun onTimeSet(view: TimePicker?, hourOfDay: Int, minute: Int) {
@@ -99,11 +96,8 @@ class TimeSchedule : Fragment() {
         }
         btn_save_time.setOnClickListener{
 
-
             var TimeRestric = ScheduleCollection.scheduleCollection.filter { it.pgm!!.toInt() == parentPgmIndex }
             var Check = ScheduleCollection.scheduleCollection.find { it.pgm!!.toInt() == parentPgmIndex }
-
-
 
             if(tempehour == 25 && tempeminute == 25 && tempshour == 25 && tempsminute == 25){
                 btn_save_time.startAnimation(AnimationUtils.loadAnimation(activity , R.anim.shake))
@@ -113,74 +107,38 @@ class TimeSchedule : Fragment() {
                 Toast.makeText(activity, "End Time is not Set" , Toast.LENGTH_LONG).show()
             }
             else{
-                addToTimeCollection()
-                refreshList()
+                //addToTimeCollection()
+                //refresh
                 returnToInitial()
                 Toast.makeText(activity, "Save Success" , Toast.LENGTH_LONG).show()
+
+
+                //get selected sched
+                //ScheduleCollection.scheduleCollection.filter { it.pgm!!.toInt() == parentPgmIndex && it.wday!!.toInt() == day }
             }
         }
     }
 
-    override fun onActivityCreated(savedInstanceState: Bundle?) {
-        super.onActivityCreated(savedInstanceState)
-        recycler_time.setHasFixedSize(true)
-        recycler_time.setItemViewCacheSize(25)
-        layoutManager = LinearLayoutManager(activity)
-        recycler_time.layoutManager = layoutManager
+//    private fun addToTimeCollection(){
+//        val newItem = ScheduleItem()
+//        var filtered =  ScheduleCollection.scheduleCollection.filter { it.pgm!!.toInt() == parentPgmIndex && it.wday!!.toInt() == day }
+//        var DateFind = DayCollection.dayCollection.find { it.pgm!!.toInt() == parentPgmIndex }
+//        val schedNumber = filtered.count()+1
+//        newItem.command = 0x02
+//        newItem.pgm = parentPgmIndex.toByte()
+//        newItem.shour = tempshour.toByte()
+//        newItem.sminute = tempsminute.toByte()
+//        newItem.ehour = tempehour.toByte()
+//        newItem.eminute = tempeminute.toByte()
+//        newItem.sched = schedNumber.toByte()
+//        newItem.wday = day.toByte()
+//        newItem.smonth = DateFind!!.sMonth!!.toByte()
+//        newItem.sday = DateFind!!.sDay!!.toByte()
+//        newItem.emonth= DateFind!!.eMonth!!.toByte()
+//        newItem.eday = DateFind!!.eDay!!.toByte()
+//        ScheduleCollection.scheduleCollection.add(newItem)
+//    }
 
-        val swipe = object: MySwipeHelper(activity, recycler_time, 200)
-        {
-            override fun instantiateMyButton(
-                viewHolder: RecyclerView.ViewHolder,
-                buffer: MutableList<MyButton>
-            ) {
-                buffer.add(
-                    MyButton(activity,
-                        "Delete",
-                        30,
-                        R.drawable.ic_delete_dark_blue_24dp,
-                        Color.parseColor("#14BED1"),
-                        object : MyButtonClickListener {
-                            override fun onClick(pos: Int) {
-                                Toast.makeText(activity, "wew"+pos, Toast.LENGTH_SHORT).show()
-                            }
-                        }
-                    )
-                )
-            }
-        }
-
-        generateItem()
-    }
-    private fun generateItem() {
-        adapter = TimeAdapter(activity,
-            ScheduleCollection.scheduleCollection.filter { it.pgm!!.toInt() == parentPgmIndex && it.wday!!.toInt() == day } as MutableList<ScheduleItem>)
-        recycler_time.adapter = adapter
-    }
-
-    private fun addToTimeCollection(){
-        val newItem = ScheduleItem()
-        var filtered =  ScheduleCollection.scheduleCollection.filter { it.pgm!!.toInt() == parentPgmIndex && it.wday!!.toInt() == day }
-        var DateFind = DayCollection.dayCollection.find { it.pgm!!.toInt() == parentPgmIndex }
-        val schedNumber = filtered.count()+1
-        newItem.command = 0x02
-        newItem.pgm = parentPgmIndex.toByte()
-        newItem.shour = tempshour.toByte()
-        newItem.sminute = tempsminute.toByte()
-        newItem.ehour = tempehour.toByte()
-        newItem.eminute = tempeminute.toByte()
-        newItem.sched = schedNumber.toByte()
-        newItem.wday = day.toByte()
-        newItem.smonth = DateFind!!.sMonth!!.toByte()
-        newItem.sday = DateFind!!.sDay!!.toByte()
-        newItem.emonth= DateFind!!.eMonth!!.toByte()
-        newItem.eday = DateFind!!.eDay!!.toByte()
-        ScheduleCollection.scheduleCollection.add(newItem)
-    }
-    private fun refreshList(){
-        adapter.itemList.clear()
-        generateItem()
-    }
     private fun returnToInitial(){
         time_start.text = "Set Time"
         time_end.text = "Set Time"
@@ -191,19 +149,19 @@ class TimeSchedule : Fragment() {
         tempsminute = 25
 
     }
-    private fun deleteTime(pos: Int){
-        var filtered =  ScheduleCollection.scheduleCollection.filter { it.pgm!!.toInt() == parentPgmIndex && it.wday!!.toInt() == day }
-        var Del = filtered.find { it.sched!!.toInt() == pos }
-
-        ScheduleCollection.scheduleCollection.remove(Del)
-
-
-        for(update in ScheduleCollection.scheduleCollection.filter { it.pgm!!.toInt() == parentPgmIndex && it.wday!!.toInt() == day }){
-            if(update.sched!!.toInt() > Del!!.sched!!.toInt()){
-                update.sched = update.sched!!.dec()
-            }
-        }
-    }
+//    private fun deleteTime(pos: Int){
+//        var filtered =  ScheduleCollection.scheduleCollection.filter { it.pgm!!.toInt() == parentPgmIndex && it.wday!!.toInt() == day }
+//        var Del = filtered.find { it.sched!!.toInt() == pos }
+//
+//        ScheduleCollection.scheduleCollection.remove(Del)
+//
+//
+//        for(update in ScheduleCollection.scheduleCollection.filter { it.pgm!!.toInt() == parentPgmIndex && it.wday!!.toInt() == day }){
+//            if(update.sched!!.toInt() > Del!!.sched!!.toInt()){
+//                update.sched = update.sched!!.dec()
+//            }
+//        }
+//    }
 
     fun ShowDeleteAlert(schd: Int){
 
@@ -222,5 +180,4 @@ class TimeSchedule : Fragment() {
 
         mAlertDialog.show()
     }
-
 }
