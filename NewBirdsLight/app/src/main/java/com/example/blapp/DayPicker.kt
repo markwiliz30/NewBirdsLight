@@ -11,12 +11,14 @@ import androidx.appcompat.app.AlertDialog
 import androidx.core.os.bundleOf
 import androidx.navigation.NavController
 import androidx.navigation.Navigation
+import androidx.recyclerview.widget.LinearLayoutManager
 import com.CurrentId.extensions.CurrentID
 import com.aminography.primecalendar.PrimeCalendar
 import com.aminography.primecalendar.common.CalendarFactory
 import com.aminography.primecalendar.common.CalendarType
 import com.aminography.primedatepicker.PickType
 import com.aminography.primedatepicker.fragment.PrimeDatePickerBottomSheet
+import com.example.blapp.adapter.TimeAdapter
 import com.example.blapp.collection.DayCollection
 import com.example.blapp.collection.ScheduleCollection
 import com.example.blapp.model.DayManager
@@ -28,6 +30,8 @@ import kotlinx.android.synthetic.main.fragment_day_picker.*
 class DayPicker : Fragment(), PrimeDatePickerBottomSheet.OnDayPickedListener {
 
     lateinit var navController: NavController
+    lateinit var layoutManager: LinearLayoutManager
+    lateinit var adapter: TimeAdapter
     var parentPgmIndex: Int = 0
     lateinit var sMonth: String
     lateinit var sDay: String
@@ -123,16 +127,15 @@ class DayPicker : Fragment(), PrimeDatePickerBottomSheet.OnDayPickedListener {
             }
         }
 
-//        btnAll.setOnClickListener{
-//            DayState.alldays =! DayState.alldays
-//            if(DayState.alldays){
-//                btnAll.setBackgroundResource(R.drawable.bottom_border)
-//                SelectAllDays()
-//            }else{
-//                btnAll.setBackgroundResource(R.drawable.button_model)
-//                DeselectAllDays()
-//            }
-//        }
+        btnAll.setOnClickListener{
+            if(Disabled){
+                Toast.makeText(activity , "Please Set A Date Range" , Toast.LENGTH_SHORT).show()
+            }else{
+                collection!!.alldays = !collection!!.alldays
+                ShowSaveAlert(8 , collection!!.alldays)
+            }
+
+        }
 
         for(i in 1..7){
             BorderOrganize(i)
@@ -166,39 +169,25 @@ class DayPicker : Fragment(), PrimeDatePickerBottomSheet.OnDayPickedListener {
         }
     }
 
-//    fun SelectAllDays(){
-//        btnMonday.setBackgroundResource(R.drawable.bottom_border)
-//        isMondayClicked = true
-//        btnTuesday.setBackgroundResource(R.drawable.bottom_border)
-//        isTuesdayClicked = true
-//        btnWednesday.setBackgroundResource(R.drawable.bottom_border)
-//        isWednesdayClicked = true
-//        btnThursday.setBackgroundResource(R.drawable.bottom_border)
-//        isThursdayClicked = true
-//        btnFriday.setBackgroundResource(R.drawable.bottom_border)
-//        isFridayClicked = true
-//        btnSaturday.setBackgroundResource(R.drawable.bottom_border)
-//        isSaturdayClicked = true
-//        btnSunday.setBackgroundResource(R.drawable.bottom_border)
-//        isSundayClicked = true
-//    }
-//
-//    fun DeselectAllDays(){
-//        btnMonday.setBackgroundResource(R.drawable.button_model)
-//        isMondayClicked = false
-//        btnTuesday.setBackgroundResource(R.drawable.button_model)
-//        isTuesdayClicked = false
-//        btnWednesday.setBackgroundResource(R.drawable.button_model)
-//        isWednesdayClicked = false
-//        btnThursday.setBackgroundResource(R.drawable.button_model)
-//        isThursdayClicked = false
-//        btnFriday.setBackgroundResource(R.drawable.button_model)
-//        isFridayClicked = false
-//        btnSaturday.setBackgroundResource(R.drawable.button_model)
-//        isSaturdayClicked = false
-//        btnSunday.setBackgroundResource(R.drawable.button_model)
-//        isSundayClicked = false
-//    }
+    fun SelectAllDays(){
+        btnMonday.setBackgroundResource(R.drawable.bottom_border)
+        btnTuesday.setBackgroundResource(R.drawable.bottom_border)
+        btnWednesday.setBackgroundResource(R.drawable.bottom_border)
+        btnThursday.setBackgroundResource(R.drawable.bottom_border)
+        btnFriday.setBackgroundResource(R.drawable.bottom_border)
+        btnSaturday.setBackgroundResource(R.drawable.bottom_border)
+        btnSunday.setBackgroundResource(R.drawable.bottom_border)
+    }
+
+    fun DeselectAllDays(){
+        btnMonday.setBackgroundResource(R.drawable.button_model)
+        btnTuesday.setBackgroundResource(R.drawable.button_model)
+        btnWednesday.setBackgroundResource(R.drawable.button_model)
+        btnThursday.setBackgroundResource(R.drawable.button_model)
+        btnFriday.setBackgroundResource(R.drawable.button_model)
+        btnSaturday.setBackgroundResource(R.drawable.button_model)
+        btnSunday.setBackgroundResource(R.drawable.button_model)
+    }
 
     fun ShowTimeSchedule(day: Int) {
         when (day) {
@@ -251,6 +240,13 @@ class DayPicker : Fragment(), PrimeDatePickerBottomSheet.OnDayPickedListener {
                 CurrentID.Updatebool(x = true)
 
             }
+
+            8 -> {
+               val bundle = bundleOf("parentPgmIndex" to parentPgmIndex , "days" to day)
+                navController.navigate(R.id.action_dayPicker_to_timeSchedule, bundle)
+                CurrentID.UpdateID(num = 7)
+                CurrentID.Updatebool(x = true)
+            }
         }
 
     }
@@ -277,6 +273,9 @@ class DayPicker : Fragment(), PrimeDatePickerBottomSheet.OnDayPickedListener {
             }
             7->{
                 collection!!.sunday =! collection!!.sunday
+            }
+            8->{
+                collection!!.alldays =! collection!!.alldays
             }
         }
     }
@@ -332,6 +331,13 @@ class DayPicker : Fragment(), PrimeDatePickerBottomSheet.OnDayPickedListener {
                     btnSunday.setBackgroundResource(R.drawable.bottom_border)
                 }else{
                     btnSunday.setBackgroundResource(R.drawable.button_model)
+                }
+            }
+            8->{
+                if(collection!!.alldays){
+                    SelectAllDays()
+                }else{
+                    DeselectAllDays()
                 }
             }
         }

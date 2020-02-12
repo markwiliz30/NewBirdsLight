@@ -2,6 +2,7 @@ package com.example.blapp.adapter
 
 import android.view.LayoutInflater
 import android.view.ViewGroup
+import androidx.core.view.isVisible
 import androidx.fragment.app.FragmentActivity
 import androidx.recyclerview.widget.RecyclerView
 import com.example.blapp.R
@@ -23,6 +24,7 @@ class ScheduleAdapter(internal var context: FragmentActivity?, internal var item
     override fun onBindViewHolder(holder: TimeViewHolder, position: Int) {
         holder.txt_num.text = "Pgm- " + itemList[position].pgm + "."
         holder.txt_title.text = convertToMonthString(itemList[position].smonth!!.toInt()) + ", " + itemList[position].sday + " ~ " + convertToMonthString(itemList[position].emonth!!.toInt()) + ", " + itemList[position].eday
+        holder.btn_del.isVisible = false
     }
 
     fun convertToMonthString(month: Int): String{

@@ -27,7 +27,7 @@
             android:textColor="#39405A"/>
 
             <androidx.recyclerview.widget.RecyclerView
-                android:id="@+id/recycler_time"
+                android:id="@+id/lst_time"
                 android:layout_width="match_parent"
                 android:layout_height="250dp">
             </androidx.recyclerview.widget.RecyclerView>

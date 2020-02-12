@@ -29,6 +29,7 @@ import com.example.blapp.listener.MyButtonClickListener
 import com.example.blapp.model.DayManager
 import com.example.blapp.model.ScheduleItem
 import kotlinx.android.synthetic.main.fragment_day_picker.*
+import kotlinx.android.synthetic.main.fragment_time_list.*
 import kotlinx.android.synthetic.main.fragment_time_schedule.*
 import java.sql.Time
 import java.sql.Timestamp
@@ -47,6 +48,10 @@ class TimeSchedule : Fragment() {
     private var tempsminute: Int = 25
     private var tempehour: Int = 25
     private var tempeminute: Int = 25
+    var conflicts: Boolean = true
+    lateinit var adapter: TimeAdapter
+    lateinit var layoutManager: LinearLayoutManager
+
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -62,6 +67,14 @@ class TimeSchedule : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         navController = Navigation.findNavController(view)
+
+        lst_time.setHasFixedSize(true)
+        layoutManager = LinearLayoutManager(activity)
+        lst_time.layoutManager = layoutManager
+
+        adapter = TimeAdapter(activity, ScheduleCollection.scheduleCollection)
+        lst_time.adapter = adapter
+
         val mTimePickerStart: TimePickerDialog
         val mTimePickerEnd: TimePickerDialog
         val mcurrentTime = Calendar.getInstance()
@@ -96,48 +109,55 @@ class TimeSchedule : Fragment() {
         }
         btn_save_time.setOnClickListener{
 
-            var TimeRestric = ScheduleCollection.scheduleCollection.filter { it.pgm!!.toInt() == parentPgmIndex }
-            var Check = ScheduleCollection.scheduleCollection.find { it.pgm!!.toInt() == parentPgmIndex }
-
             if(tempehour == 25 && tempeminute == 25 && tempshour == 25 && tempsminute == 25){
                 btn_save_time.startAnimation(AnimationUtils.loadAnimation(activity , R.anim.shake))
                 Toast.makeText(activity, "No time set" , Toast.LENGTH_LONG).show()
             }else if (tempeminute == 25 && tempehour == 25){
                 btn_save_time.startAnimation(AnimationUtils.loadAnimation(activity , R.anim.shake))
                 Toast.makeText(activity, "End Time is not Set" , Toast.LENGTH_LONG).show()
+            }else if(tempshour == tempehour && tempeminute == tempsminute){
+                btn_save_time.startAnimation(AnimationUtils.loadAnimation(activity , R.anim.shake))
+                Toast.makeText(activity, "Invalid Time Set" , Toast.LENGTH_LONG).show()
             }
             else{
-                //addToTimeCollection()
-                //refresh
-                returnToInitial()
-                Toast.makeText(activity, "Save Success" , Toast.LENGTH_LONG).show()
+                if(!timeConflict()){
+                    btn_save_time.startAnimation(AnimationUtils.loadAnimation(activity , R.anim.shake))
+                    Toast.makeText(activity, "Time has Conflict" , Toast.LENGTH_LONG).show()
+                }else{
+                    if(day == 8){
+                        addAllDaysCollection()
+                    }else{
+                        addToTimeCollection()
+                    }
 
+                    //refreshList()
+                    returnToInitial()
+                    Toast.makeText(activity, "Save Success" , Toast.LENGTH_LONG).show()
+                }
 
-                //get selected sched
-                //ScheduleCollection.scheduleCollection.filter { it.pgm!!.toInt() == parentPgmIndex && it.wday!!.toInt() == day }
             }
         }
     }
 
-//    private fun addToTimeCollection(){
-//        val newItem = ScheduleItem()
-//        var filtered =  ScheduleCollection.scheduleCollection.filter { it.pgm!!.toInt() == parentPgmIndex && it.wday!!.toInt() == day }
-//        var DateFind = DayCollection.dayCollection.find { it.pgm!!.toInt() == parentPgmIndex }
-//        val schedNumber = filtered.count()+1
-//        newItem.command = 0x02
-//        newItem.pgm = parentPgmIndex.toByte()
-//        newItem.shour = tempshour.toByte()
-//        newItem.sminute = tempsminute.toByte()
-//        newItem.ehour = tempehour.toByte()
-//        newItem.eminute = tempeminute.toByte()
-//        newItem.sched = schedNumber.toByte()
-//        newItem.wday = day.toByte()
-//        newItem.smonth = DateFind!!.sMonth!!.toByte()
-//        newItem.sday = DateFind!!.sDay!!.toByte()
-//        newItem.emonth= DateFind!!.eMonth!!.toByte()
-//        newItem.eday = DateFind!!.eDay!!.toByte()
-//        ScheduleCollection.scheduleCollection.add(newItem)
-//    }
+    private fun addToTimeCollection(){
+        val newItem = ScheduleItem()
+        var filtered =  ScheduleCollection.scheduleCollection.filter { it.pgm!!.toInt() == parentPgmIndex && it.wday!!.toInt() == day }
+        var DateFind = DayCollection.dayCollection.find { it.pgm!!.toInt() == parentPgmIndex }
+        val schedNumber = filtered.count()+1
+        newItem.command = 0x02
+        newItem.pgm = parentPgmIndex.toByte()
+        newItem.shour = tempshour.toByte()
+        newItem.sminute = tempsminute.toByte()
+        newItem.ehour = tempehour.toByte()
+        newItem.eminute = tempeminute.toByte()
+        newItem.sched = schedNumber.toByte()
+        newItem.wday = day.toByte()
+        newItem.smonth = DateFind!!.sMonth!!.toByte()
+        newItem.sday = DateFind!!.sDay!!.toByte()
+        newItem.emonth= DateFind!!.eMonth!!.toByte()
+        newItem.eday = DateFind!!.eDay!!.toByte()
+        ScheduleCollection.scheduleCollection.add(newItem)
+    }
 
     private fun returnToInitial(){
         time_start.text = "Set Time"
@@ -147,8 +167,8 @@ class TimeSchedule : Fragment() {
         tempeminute = 25
         tempshour = 25
         tempsminute = 25
-
     }
+
 //    private fun deleteTime(pos: Int){
 //        var filtered =  ScheduleCollection.scheduleCollection.filter { it.pgm!!.toInt() == parentPgmIndex && it.wday!!.toInt() == day }
 //        var Del = filtered.find { it.sched!!.toInt() == pos }
@@ -179,5 +199,63 @@ class TimeSchedule : Fragment() {
         }
 
         mAlertDialog.show()
+    }
+
+    fun timeConflict():Boolean{
+        var tempStime: Int = 0
+        var tempEtime: Int = 0
+        conflicts = true
+        var TimeRestric = ScheduleCollection.scheduleCollection.filter { it.pgm!!.toInt() == parentPgmIndex }
+
+        tempStime = if(tempsminute < 10){
+            (""+tempshour+"0"+tempsminute+"").toInt()
+        }else{
+            (""+tempshour+tempsminute+"").toInt()
+        }
+
+        tempEtime = if(tempeminute < 10){
+            (""+tempehour+"0"+tempeminute+"").toInt()
+        }else{
+            (""+tempehour+tempeminute+"").toInt()
+        }
+
+        if(tempStime > tempEtime){
+            conflicts = false
+        }
+
+        for (time in TimeRestric){
+            var tstart =(""+time.shour+time.sminute+"").toInt()
+            var tend = (""+time.ehour+time.eminute+"").toInt()
+
+          for(x in tstart..tend){
+                    if(tempStime == x || tempEtime == x){
+                        conflicts = false
+                    }
+                }
+            }
+        return conflicts
+    }
+
+    private fun addAllDaysCollection(){
+
+        var DateFind = DayCollection.dayCollection.find { it.pgm!!.toInt() == parentPgmIndex }
+
+       for(x in 1..8){
+           val newItem = ScheduleItem()
+           var timeCount = ScheduleCollection.scheduleCollection.filter { it.pgm!!.toInt() == parentPgmIndex && it.wday!!.toInt() == x }
+           newItem.command = 0x02
+           newItem.pgm = parentPgmIndex.toByte()
+           newItem.shour = tempshour.toByte()
+           newItem.sminute = tempsminute.toByte()
+           newItem.ehour = tempehour.toByte()
+           newItem.eminute = tempeminute.toByte()
+           newItem.sched = timeCount.count().toByte().inc()
+           newItem.wday = x.toByte()
+           newItem.smonth = DateFind!!.sMonth!!.toByte()
+           newItem.sday = DateFind!!.sDay!!.toByte()
+           newItem.emonth= DateFind!!.eMonth!!.toByte()
+           newItem.eday = DateFind!!.eDay!!.toByte()
+           ScheduleCollection.scheduleCollection.add(newItem)
+       }
     }
 }
