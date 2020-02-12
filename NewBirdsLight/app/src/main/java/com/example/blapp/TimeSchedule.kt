@@ -52,7 +52,6 @@ class TimeSchedule : Fragment() {
     lateinit var adapter: TimeAdapter
     lateinit var layoutManager: LinearLayoutManager
 
-
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?

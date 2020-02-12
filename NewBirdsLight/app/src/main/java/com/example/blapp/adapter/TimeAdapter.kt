@@ -1,5 +1,6 @@
 package com.example.blapp.adapter
 
+import android.app.AlertDialog
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import android.widget.Toast
@@ -29,8 +30,7 @@ RecyclerView.Adapter<TimeViewHolder>(){
         holder.txt_num.text = timeHold.toString()+"."
         holder.txt_title.text = itemList[position].shour.toString()+":"+itemList[position].sminute.toString() +"~"+itemList[position].ehour.toString()+":"+itemList[position].eminute.toString()
         holder.btn_del.setOnClickListener{
-
-            DeleteTime(itemList[position].pgm!!, itemList[position].wday!!, (position + 1).toByte())
+            DeleteAlert(itemList[position].pgm!!, itemList[position].wday!!, (position + 1).toByte())
         }
     }
 
@@ -46,5 +46,26 @@ RecyclerView.Adapter<TimeViewHolder>(){
                 update.sched = update.sched!!.dec()
             }
         }
+    }
+
+    fun RefreshList(pgm: Byte, day: Byte){
+        itemList.clear()
+        itemList.addAll(ScheduleCollection.scheduleCollection.filter { it.pgm == pgm && it.wday == day })
+        notifyDataSetChanged()
+    }
+
+    private fun DeleteAlert(pgm: Byte, day: Byte ,sched : Byte){
+        val mAlertDialog = AlertDialog.Builder(context)
+        mAlertDialog.setIcon(R.mipmap.ic_launcher_round) //set alertdialog icon
+        mAlertDialog.setTitle("Are you sure?") //set alertdialog title
+        mAlertDialog.setMessage("Do you want to delete schedule " + sched + "?" ) //set alertdialog message
+        mAlertDialog.setPositiveButton("Yes") { dialog, id ->
+            DeleteTime(pgm, day, sched)
+            RefreshList(pgm, day)
+        }
+        mAlertDialog.setNegativeButton("No") { dialog, id ->
+
+        }
+        mAlertDialog.show()
     }
 }

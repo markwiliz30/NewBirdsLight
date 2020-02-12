@@ -24,6 +24,7 @@ import com.example.blapp.listener.MyButtonClickListener
 import com.example.blapp.model.ScheduleItem
 import dmax.dialog.SpotsDialog
 import kotlinx.android.synthetic.main.fragment_schedule.*
+import kotlinx.android.synthetic.main.layout_loading_dialog.view.*
 
 class ScheduleFragment : Fragment() {
 
@@ -32,6 +33,7 @@ class ScheduleFragment : Fragment() {
     lateinit var layoutManager: LinearLayoutManager
     private lateinit var dialog: AlertDialog
     var scheduleList : MutableList<ScheduleItem> = mutableListOf()
+    var progressVal = 0
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -86,6 +88,23 @@ class ScheduleFragment : Fragment() {
 
             val builder: AlertDialog.Builder = AlertDialog.Builder(activity)
             val view: View = layoutInflater.inflate(R.layout.layout_loading_dialog, null)
+            view.loading_view.progressValue = progressVal
+            view.loading_view.centerTitle = progressVal.toString()
+//            view.btn_inc.setOnClickListener{
+//                if(progressVal < 100) {
+//                    progressVal++
+//                    view.loading_view.progressValue = progressVal
+//                    view.loading_view.centerTitle = progressVal.toString()
+//                }
+//            }
+//
+//            view.btn_dec.setOnClickListener{
+//                if(progressVal > 0){
+//                    progressVal--
+//                    view.loading_view.progressValue = progressVal
+//                    view.loading_view.centerTitle = progressVal.toString()
+//                }
+//            }
 
             builder.setView(view).setNegativeButton("Cancel") { dialog, which ->
             }
@@ -104,28 +123,6 @@ class ScheduleFragment : Fragment() {
         lst_created_pgm.setItemViewCacheSize(25)
         layoutManager = LinearLayoutManager(activity)
         lst_created_pgm.layoutManager = layoutManager
-
-        val swipe = object: MySwipeHelper2(activity, lst_created_pgm, 200)
-        {
-            override fun instantiateMyButton(
-                viewHolder: RecyclerView.ViewHolder,
-                buffer: MutableList<MyButton>
-            ) {
-                buffer.add(
-                    MyButton(activity,
-                        "Delete",
-                        30,
-                        R.drawable.ic_delete_dark_blue_24dp,
-                        Color.parseColor("#14BED1"),
-                        object : MyButtonClickListener {
-                            override fun onClick(pos: Int) {
-                                Toast.makeText(activity, "wew"+pos, Toast.LENGTH_SHORT).show()
-                            }
-                        }
-                    )
-                )
-            }
-        }
     }
 
     fun FilterUniqueItem(){
