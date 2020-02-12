@@ -6,6 +6,7 @@ import android.database.Cursor
 import android.database.sqlite.SQLiteDatabase
 import android.database.sqlite.SQLiteOpenHelper
 import com.example.blapp.model.PgmItem
+import com.example.blapp.model.ScheduleItem
 import com.example.blapp.model.StepItem
 
 
@@ -29,61 +30,37 @@ class DBmanager(context: Context):SQLiteOpenHelper(context, DATABASE_NAME, null,
         const val PROGRAM_COMMAND = "PROGRAM_COMMAND"
         const val PROGRAM_NAME = "PROGRAM_NAME"
 
-        const val SEQUENCE_TABLE = "TABLE_SEQUENCE"
-        const val SEQUENCE_ID = "SEQUENCE_ID"
-        const val SEQUENCE_COMMAND = "SEQUENCE_COMMAND"
-        const val SEQUENCE_SQN = "SEQUENCE_SQN"
-        const val SEQUENCE_SHOUR = "SEQUENCE_SHOUR"
-        const val SEQUENCE_SMINUTE = "SEQUENCE_SMINUTE"
-        const val SEQUENCE_EHOUR = "SEQUENCE_EHOUR"
-        const val SEQUENCE_EMINUTE = "SEQUENCE_EMINUTE"
-        const val SEQUENCE_NAME = "SEQUENCE_NAME"
+        const val SCHEDULE_TABLE = "TABLE_SCHEDULE"
+        const val SCHEDULE_ID = "SCHEDULE_ID"
+        const val SCHEDULE_PGM_NAME = "SCHEDULE_PGM_NAME"
+        const val SCHEDULE_COMMAND = "SCHEDULE_COMMAND"
+        const val SCHEDULE_SMONTH = "SCHEDULE_SMONTH"
+        const val SCHEDULE_SDAY = "SCHEDULE_SDAY"
+        const val SCHEDULE_EMONTH = "SCHEDULE_EMONTH"
+        const val SCHEDULE_EDAY = "SCHEDULE_EDAY"
+        const val SCHEDULE_WDAY = "SCHEDULE_WDAY"
+        const val SCHEDULE_SHOUR = "SCHEDULE_SHOUR"
+        const val SCHEDULE_SMINUTE = "SCHEDULE_SMINUTE"
+        const val SCHEDULE_EHOUR = "SCHEDULE_EHOUR"
+        const val SCHEDULE_EMINUTE = "SCHEDULE_EMINUTE"
+        const val SCHEDULE_SCHED = "SCHEDULE_SCHED"
 
-        const val SEQ_PROGRAM_TABLE = "TABLE_SEQ_PROGRAM"
-        const val SEQ_PROGRAM_ID = "SEQ_PROGRAM_ID"
-        const val SEQ_PROGRAM_COMMAND = "SEQ_PROGRAM_COMMAND"
-        const val SEQ_PROGRAM_SQN = "SEQ_PROGRAM_SQN"
-        const val SEQ_PROGRAM_ORDER = "SEQ_PROGRAM_ORDER"
-        const val SEQ_PROGRAM_PGM = "SEQ_PROGRAM_PGM"
-        const val SEQ_PROGRAM_DURATION = "SEQ_PROGRAM_DURATION"
 
-        const val SETUP_TABLE = "TABLE_SETUP"
-        const val SETUP_ID = "SETUP_ID"
-        const val SETUP_COMMAND = "SETUP_COMMAND"
-        const val SETUP_STP = "SETUP_STP"
-        const val SETUP_SMONTH = "SETUP_SMONTH"
-        const val SETUP_SDAY = "SETUP_SDAY"
-        const val SETUP_EMONTH = "SETUP_EMONTH"
-        const val SETUP_EDAY = "SETUP_EDAY"
-        const val SETUP_NAME = "SETUP_NAME"
-
-        const val SETUP_SEQ_TABLE = "TABLE_SETUP_SEQ"
-        const val SETUP_SEQ_ID = "SETUP_SEQ_ID"
-        const val SETUP_SEQ_COMMAND = "SETUP_SEQ_COMMAND"
-        const val SETUP_SEQ_STP = "SETUP_SEQ_STP"
-        const val SETUP_SEQ_SQN = "SETUP_SEQ_SQN"
-        const val SETUP_SEQ_DAY = "SETUP_SEQ_DAY"
 
 
     }
     override fun onCreate(db: SQLiteDatabase?) {
         db!!.execSQL(("CREATE TABLE $STEP_TABLE ($STEP_ID INTEGER PRIMARY KEY AUTOINCREMENT, $STEP_COMMAND BYTE, $STEP_STEP BYTE, $STEP_PAN BYTE,$STEP_TILT BYTE , $STEP_BLINK BYTE , $STEP_TIME BYTE , $STEP_PGM_NAME TEXT)"))
         db!!.execSQL(("CREATE TABLE $PROGRAM_TABLE ($PROGRAM_ID INTEGER PRIMARY KEY AUTOINCREMENT , $PROGRAM_COMMAND BYTE, $PROGRAM_NAME TEXT)"))
-        db!!.execSQL(("CREATE TABLE $SEQUENCE_TABLE ($SEQUENCE_ID INTEGER PRIMARY KEY AUTOINCREMENT, $SEQUENCE_COMMAND BYTE , $SEQUENCE_SQN BYTE , $SEQUENCE_SHOUR BYTE,$SEQUENCE_SMINUTE BYTE, $SEQUENCE_EHOUR BYTE , $SEQUENCE_EMINUTE BYTE, $SEQUENCE_NAME TEXT)"))
-        db!!.execSQL(("CREATE TABLE $SEQ_PROGRAM_TABLE ($SEQ_PROGRAM_ID INTEGER PRIMARY KEY AUTOINCREMENT , $SEQ_PROGRAM_COMMAND BYTE , $SEQ_PROGRAM_SQN BYTE , $SEQ_PROGRAM_ORDER BYTE , $SEQ_PROGRAM_PGM BYTE , $SEQ_PROGRAM_DURATION BYTE)"))
-        db!!.execSQL(("CREATE TABLE $SETUP_TABLE ($SETUP_ID INTEGER PRIMARY KEY AUTOINCREMENT , $SETUP_COMMAND BYTE, SETUP_STP BYTE , $SETUP_SMONTH BYTE , $SETUP_SDAY BYTE , $SETUP_EMONTH BYTE, $SETUP_EDAY BYTE , $SETUP_NAME TEXT)"))
-        db!!.execSQL(("CREATE TABLE $SETUP_SEQ_TABLE ($SETUP_SEQ_ID INTEGER PRIMARY KEY AUTOINCREMENT , $SETUP_SEQ_COMMAND BYTE , $SETUP_SEQ_STP BYTE , $SETUP_SEQ_SQN BYTE , $SETUP_SEQ_DAY BYTE)"))
-
-
+        db!!.execSQL(("CREATE TABLE $SCHEDULE_TABLE($SCHEDULE_ID INTEGER PRIMARY KEY AUTOINCREMENT, $SCHEDULE_COMMAND BYTE , $SCHEDULE_PGM_NAME TEXT, $SCHEDULE_SMONTH BYTE ," +
+                "$SCHEDULE_SDAY BYTE , $SCHEDULE_EMONTH BYTE, $SCHEDULE_EDAY BYTE , $SCHEDULE_WDAY BYTE , $SCHEDULE_SHOUR BYTE , $SCHEDULE_SMINUTE BYTE , " +
+                "$SCHEDULE_EHOUR BYTE , $SCHEDULE_EMINUTE BYTE ,$SCHEDULE_SCHED BYTE)"))
     }
 
     override fun onUpgrade(db: SQLiteDatabase?, p1: Int, p2: Int) {
     db!!.execSQL("DROP TABLE IF EXISTS" + STEP_TABLE)
         db!!.execSQL("DROP TABLE IF EXISTS" + PROGRAM_TABLE)
-        db!!.execSQL("DROP TABLE IF EXISTS" + SEQUENCE_TABLE)
-        db!!.execSQL("DROP TABLE IF EXISTS" + SEQ_PROGRAM_TABLE)
-        db!!.execSQL("DROP TABLE IF EXISTS" + SETUP_TABLE)
-        db!!.execSQL("DROP TABLE IF EXISTS" + SETUP_SEQ_TABLE)
+        db!!.execSQL("DROP TABLE IF EXISTS" + SCHEDULE_TABLE)
     }
 
     fun getTables(){
@@ -99,6 +76,16 @@ class DBmanager(context: Context):SQLiteOpenHelper(context, DATABASE_NAME, null,
             }
         }
     }
+
+    fun getProfilesCount(): Int {
+        val countQuery = "SELECT  * FROM $SCHEDULE_TABLE"
+        val db = this.readableDatabase
+        val cursor = db.rawQuery(countQuery, null)
+        val count = cursor.count
+        cursor.close()
+        return count
+    }
+
     val allStep:List<StepItem>
 
         get(){
@@ -185,6 +172,55 @@ class DBmanager(context: Context):SQLiteOpenHelper(context, DATABASE_NAME, null,
             db.close()
             return lstpgm
         }
+    val allSched:List<ScheduleItem>
+
+        get()  {
+            val lstSched = ArrayList<ScheduleItem>()
+            val selectQuery = "SELECT * FROM $SCHEDULE_TABLE"
+            val db: SQLiteDatabase = this.writableDatabase
+            val cursor: Cursor = db.rawQuery(selectQuery , null)
+            if(cursor.moveToFirst()){
+                do{
+                    val schedule = ScheduleItem()
+                    schedule.pgmname = cursor.getString(cursor.getColumnIndex(SCHEDULE_PGM_NAME.toString()))
+                    schedule.command = cursor.getInt(cursor.getColumnIndex(SCHEDULE_COMMAND.toString())).toByte()
+                    schedule.smonth = cursor.getInt(cursor.getColumnIndex(SCHEDULE_SMONTH.toString())).toByte()
+                    schedule.sday = cursor.getInt(cursor.getColumnIndex(SCHEDULE_SDAY.toString())).toByte()
+                    schedule.emonth = cursor.getInt(cursor.getColumnIndex(SCHEDULE_EMONTH.toString())).toByte()
+                    schedule.eday = cursor.getInt(cursor.getColumnIndex(SCHEDULE_EDAY.toString())).toByte()
+                    schedule.wday = cursor.getInt(cursor.getColumnIndex(SCHEDULE_WDAY.toString())).toByte()
+                    schedule.shour = cursor.getInt(cursor.getColumnIndex(SCHEDULE_SHOUR.toString())).toByte()
+                    schedule.sminute = cursor.getInt(cursor.getColumnIndex(SCHEDULE_SMINUTE.toString())).toByte()
+                    schedule.ehour = cursor.getInt(cursor.getColumnIndex(SCHEDULE_EHOUR.toString())).toByte()
+                    schedule.eminute = cursor.getInt(cursor.getColumnIndex(SCHEDULE_EMINUTE.toString())).toByte()
+                    schedule.sched = cursor.getInt(cursor.getColumnIndex(SCHEDULE_SCHED.toString())).toByte()
+                    lstSched.add(schedule)
+                }while (cursor.moveToNext())
+            }
+            db.close()
+            return lstSched
+        }
+
+    fun addSchedule(schedule: ScheduleItem){
+        val db:SQLiteDatabase = this.writableDatabase
+        val values = ContentValues()
+        values.put(SCHEDULE_PGM_NAME , schedule.pgmname)
+        values.put(SCHEDULE_COMMAND , schedule.command)
+        values.put(SCHEDULE_SMONTH , schedule.smonth)
+        values.put(SCHEDULE_SDAY , schedule.sday)
+        values.put(SCHEDULE_EMONTH , schedule.emonth)
+        values.put(SCHEDULE_EDAY , schedule.eday)
+        values.put(SCHEDULE_WDAY , schedule.wday)
+        values.put(SCHEDULE_SHOUR , schedule.shour)
+        values.put(SCHEDULE_SMINUTE , schedule.sminute)
+        values.put(SCHEDULE_EHOUR , schedule.ehour)
+        values.put(SCHEDULE_EMINUTE , schedule.eminute)
+        values.put(SCHEDULE_SCHED , schedule.sched)
+        db.insert(SCHEDULE_TABLE , null , values)
+        db.close()
+
+    }
+
 
     fun addPgm(pgm: PgmItem){
         val db:SQLiteDatabase = this.writableDatabase
@@ -224,4 +260,6 @@ class DBmanager(context: Context):SQLiteOpenHelper(context, DATABASE_NAME, null,
         val db:SQLiteDatabase = this.writableDatabase
         db.execSQL("DELETE from $STEP_TABLE")
     }
+
+
 }
