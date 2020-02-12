@@ -19,6 +19,10 @@ import kotlinx.android.synthetic.main.fragment_import_list.view.*
 
 class ImportFragment : Fragment() {
 
+    companion object{
+        var isSelectedAll = false
+    }
+
     lateinit var layoutManager: LinearLayoutManager
 
     lateinit var adapter : ImportAdapter
@@ -55,10 +59,12 @@ class ImportFragment : Fragment() {
             }
         }
         select_all_checkbox.setOnCheckedChangeListener { _, isChecked ->
-                for (id in 0..adapter.itemList.count() - 1) {
-                    adapter.itemList[id].isClicked = true
-                    adapter.context!!.import_checkbox.isChecked = true
-                }
+//                for (id in adapter.itemList) {
+//                    adapter.context!!.import_checkbox.isChecked = true
+//                }
+
+            isSelectedAll = !isSelectedAll
+            adapter.notifyDataSetChanged()
         }
     }
 
