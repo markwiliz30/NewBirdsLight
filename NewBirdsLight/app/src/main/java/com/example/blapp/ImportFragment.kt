@@ -6,6 +6,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
+import androidx.appcompat.app.AlertDialog
 import androidx.navigation.NavController
 import androidx.navigation.Navigation
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -22,12 +23,10 @@ class ImportFragment : Fragment() {
     companion object{
         var isSelectedAll = false
     }
-
+    var lstCheck = mutableListOf<String>()
     lateinit var layoutManager: LinearLayoutManager
-
     lateinit var adapter : ImportAdapter
     internal lateinit var dbm:DBmanager
-    internal var lstChecked: List<PgmItem> = ArrayList<PgmItem>()
     lateinit var navController: NavController
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -37,26 +36,27 @@ class ImportFragment : Fragment() {
         return inflater.inflate(R.layout.fragment_import, container, false)
     }
 
-    override fun onActivityCreated(savedInstanceState: Bundle?) {
-        super.onActivityCreated(savedInstanceState)
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
         dbm = DBmanager(activity!!)
-
+        navController = Navigation.findNavController(view)
         recycler_import.setHasFixedSize(true)
         recycler_import.setItemViewCacheSize(25)
         layoutManager = LinearLayoutManager(activity)
         recycler_import.layoutManager = layoutManager
-        ShowImports()
-    }
 
-    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-        super.onViewCreated(view, savedInstanceState)
-        navController = Navigation.findNavController(view)
         delete_import.setOnClickListener{
             for (item in adapter.itemList){
                 if(item.isClicked){
-
+                    lstCheck.add(item.name)
                 }
             }
+            if(lstCheck.isEmpty()){
+                Toast.makeText(activity,"Select a program to delete!" , Toast.LENGTH_SHORT).show()
+            }else{
+                ShowDeleteAlert()
+            }
+
         }
         select_all_checkbox.setOnCheckedChangeListener { _, isChecked ->
 //                for (id in adapter.itemList) {
@@ -66,10 +66,54 @@ class ImportFragment : Fragment() {
             isSelectedAll = !isSelectedAll
             adapter.notifyDataSetChanged()
         }
+        ShowImports()
     }
 
     private fun ShowImports(){
-        adapter = ImportAdapter(activity, dbm.allpgm)
+        adapter = ImportAdapter(activity, dbm.allpgm as MutableList<PgmItem>)
         recycler_import.adapter = adapter
+    }
+    private fun refreshList(){
+        adapter.itemList.clear()
+        ShowImports()
+    }
+
+    fun ShowDeleteAlert(){
+
+        val mAlertDialog = AlertDialog.Builder(activity!!)
+        mAlertDialog.setIcon(R.mipmap.ic_launcher_round)
+        mAlertDialog.setTitle("Are you Sure you want to Delete?")
+
+
+        mAlertDialog.setPositiveButton("Yes") { dialog, id ->
+
+                for (itemname in lstCheck){
+
+                    for(item in dbm.allpgm){
+                        if(item.name == itemname){
+                            dbm.deletePgm(itemname)
+                        }
+                    }
+                    for(item in dbm.allStep){
+                        if(item.pgm_name == itemname){
+                            dbm.deleteStep(itemname)
+                        }
+                    }
+                    for (item in dbm.allSched){
+                        if(item.pgmname == itemname){
+                            dbm.deleteSchedule(itemname)
+                        }
+                    }
+                }
+                select_all_checkbox.isChecked = false
+                refreshList()
+
+        }
+
+        mAlertDialog.setNegativeButton("Cancel") { dialog, id ->
+            lstCheck.clear()
+        }
+
+        mAlertDialog.show()
     }
 }

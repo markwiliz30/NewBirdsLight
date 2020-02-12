@@ -282,10 +282,6 @@ class ProgramFragment : Fragment(){
                         }
 
                         dbm.addPgm(pgmAdd)
-                        var ey = dbm.getProfilesCount()
-                        var test = dbm.allpgm
-                        var test2 = dbm.allStep
-                        var test3 = dbm.allSched
                         editAlert.dismiss()
                         Toast.makeText(activity!!, "Save Success!" , Toast.LENGTH_LONG).show()
                     }

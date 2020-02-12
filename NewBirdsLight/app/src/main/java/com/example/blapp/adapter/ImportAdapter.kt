@@ -11,7 +11,7 @@ import com.example.blapp.R
 import com.example.blapp.model.PgmItem
 import kotlinx.android.synthetic.main.fragment_import_list.view.*
 
-class ImportAdapter(internal var context: FragmentActivity?,internal var itemList:List<PgmItem>):
+class ImportAdapter(internal var context: FragmentActivity?,internal var itemList:MutableList<PgmItem>):
     RecyclerView.Adapter<ImportViewHolder>(){
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ImportViewHolder {
         val itemView= LayoutInflater.from(context)
