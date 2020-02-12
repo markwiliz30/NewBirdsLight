@@ -18,6 +18,7 @@ import com.CurrentId.extensions.CurrentID
 import com.example.blapp.adapter.PgmAdapter
 import com.example.blapp.collection.DayCollection
 import com.example.blapp.collection.PgmCollection
+import com.example.blapp.collection.ScheduleCollection
 import com.example.blapp.collection.StepCollection
 import com.example.blapp.databasehelper.DBmanager
 import com.example.blapp.helper.MyButton
@@ -252,7 +253,6 @@ class ProgramFragment : Fragment(){
 
         editView.input_save.setOnClickListener{
             val textName = editAlert.name_input.text
-
             var pgmAdd = PgmCollection.pgmCollection.find { it.pgm == pgm.toByte() }
             var pgmNameCheck = dbm.allpgm.find { it.name == textName.toString() }
 
@@ -275,12 +275,17 @@ class ProgramFragment : Fragment(){
                             steps.pgm_name = textName.toString()
                             dbm.addStep(steps)
                         }
-
-
+                            var schedAdd = ScheduleCollection.scheduleCollection.filter { it.pgm == pgm.toByte() }
+                        for(scheds in schedAdd){
+                            scheds.pgmname =textName.toString()
+                            dbm.addSchedule(scheds)
+                        }
 
                         dbm.addPgm(pgmAdd)
+                        var ey = dbm.getProfilesCount()
                         var test = dbm.allpgm
                         var test2 = dbm.allStep
+                        var test3 = dbm.allSched
                         editAlert.dismiss()
                         Toast.makeText(activity!!, "Save Success!" , Toast.LENGTH_LONG).show()
                     }

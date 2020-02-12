@@ -28,6 +28,7 @@ class ImportAdapter(internal var context: FragmentActivity?,internal var itemLis
         holder.importCard.setOnClickListener{
             itemList[position].isClicked = !itemList[position].isClicked
                 holder.importCardCheckBox.isChecked = itemList[position].isClicked
+            Toast.makeText(context , position.toString() , Toast.LENGTH_SHORT).show()
         }
     }
 }
