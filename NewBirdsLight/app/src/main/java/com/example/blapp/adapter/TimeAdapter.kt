@@ -9,6 +9,8 @@ import com.example.blapp.R
 import com.example.blapp.collection.ScheduleCollection
 import com.example.blapp.model.ScheduleItem
 
+
+
 class TimeAdapter(internal var context: FragmentActivity? , internal var itemList:MutableList<ScheduleItem>):
 RecyclerView.Adapter<TimeViewHolder>(){
 
@@ -27,6 +29,7 @@ RecyclerView.Adapter<TimeViewHolder>(){
         holder.txt_num.text = timeHold.toString()+"."
         holder.txt_title.text = itemList[position].shour.toString()+":"+itemList[position].sminute.toString() +"~"+itemList[position].ehour.toString()+":"+itemList[position].eminute.toString()
         holder.btn_del.setOnClickListener{
+
             DeleteTime(itemList[position].pgm!!, itemList[position].wday!!, (position + 1).toByte())
         }
     }

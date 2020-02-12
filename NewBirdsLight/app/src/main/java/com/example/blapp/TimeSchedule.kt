@@ -72,8 +72,6 @@ class TimeSchedule : Fragment() {
         layoutManager = LinearLayoutManager(activity)
         lst_time.layoutManager = layoutManager
 
-        adapter = TimeAdapter(activity, ScheduleCollection.scheduleCollection)
-        lst_time.adapter = adapter
 
         val mTimePickerStart: TimePickerDialog
         val mTimePickerEnd: TimePickerDialog
@@ -130,13 +128,23 @@ class TimeSchedule : Fragment() {
                         addToTimeCollection()
                     }
 
-                    //refreshList()
+                    refreshList()
                     returnToInitial()
                     Toast.makeText(activity, "Save Success" , Toast.LENGTH_LONG).show()
                 }
 
             }
         }
+        generateitem()
+    }
+    private fun generateitem(){
+        adapter = TimeAdapter(activity,ScheduleCollection.scheduleCollection.filter { it.pgm!!.toInt() == parentPgmIndex && it.wday!!.toInt() == day } as MutableList<ScheduleItem>)
+        lst_time.adapter = adapter
+    }
+
+    fun refreshList(){
+        adapter.itemList.clear()
+        generateitem()
     }
 
     private fun addToTimeCollection(){
