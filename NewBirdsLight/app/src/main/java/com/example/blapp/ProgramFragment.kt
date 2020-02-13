@@ -203,11 +203,12 @@ class ProgramFragment : Fragment(){
         mAlertDialog.setTitle("Are you sure?") //set alertdialog title
         mAlertDialog.setMessage("Do you want to delete Program " + (pos + 1) + "?" ) //set alertdialog message
         mAlertDialog.setPositiveButton("Yes") { dialog, id ->
-            val pgmIndex = PgmCollection.pgmCollection.get(pos)
+            val pgmIndex = PgmCollection.pgmCollection[pos]
             RefreshStepCollection(pgmIndex.pgm!!.toInt())
             PgmCollection.pgmCollection.removeAt(pos)
             SynchronizePgmCollection()
-            //Toast.makeText(activity!!, "Yes", Toast.LENGTH_SHORT).show()
+            DeleteSchedule(pgmIndex.pgm!!.toInt())
+
         }
         mAlertDialog.setNegativeButton("No") { dialog, id ->
             Toast.makeText(activity!!, "No", Toast.LENGTH_SHORT).show()
@@ -237,8 +238,17 @@ class ProgramFragment : Fragment(){
         }
     }
 
-    private fun AddPgmDb(pgm: Int){
+    private fun DeleteSchedule(pgm: Int){
+        do{
+            val schedFilter = ScheduleCollection.scheduleCollection.find { it.pgm!!.toInt() == pgm }
+            ScheduleCollection.scheduleCollection.remove(schedFilter)
+        }while (schedFilter!= null)
 
+        for(item in ScheduleCollection.scheduleCollection){
+            if(item.pgm!!.toInt() > pgm){
+                item.pgm = item!!.pgm!!.dec()
+            }
+        }
 
     }
 

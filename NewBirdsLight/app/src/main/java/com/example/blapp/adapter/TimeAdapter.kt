@@ -27,10 +27,14 @@ RecyclerView.Adapter<TimeViewHolder>(){
 
     override fun onBindViewHolder(holder: TimeViewHolder, position: Int) {
         var timeHold: Int? = itemList[position].sched!!.toInt()
+        var shourHold : Byte = itemList[position].shour!!
+        var sminuteHold: Byte = itemList[position].sminute!!
+        var ehourHold: Byte = itemList[position].ehour!!
+        var eminuteHold: Byte = itemList[position].eminute!!
         holder.txt_num.text = timeHold.toString()+"."
         holder.txt_title.text = itemList[position].shour.toString()+":"+itemList[position].sminute.toString() +"~"+itemList[position].ehour.toString()+":"+itemList[position].eminute.toString()
         holder.btn_del.setOnClickListener{
-            DeleteAlert(itemList[position].pgm!!, itemList[position].wday!!, (position + 1).toByte())
+            DeleteAlert(itemList[position].pgm!!, itemList[position].wday!!, (position + 1).toByte(),shourHold,sminuteHold,ehourHold,eminuteHold )
         }
     }
 
@@ -54,18 +58,48 @@ RecyclerView.Adapter<TimeViewHolder>(){
         notifyDataSetChanged()
     }
 
-    private fun DeleteAlert(pgm: Byte, day: Byte ,sched : Byte){
+    private fun DeleteAlert(pgm: Byte, day: Byte ,sched : Byte , shour: Byte , sminute: Byte , ehour: Byte , eminute: Byte){
         val mAlertDialog = AlertDialog.Builder(context)
         mAlertDialog.setIcon(R.mipmap.ic_launcher_round) //set alertdialog icon
         mAlertDialog.setTitle("Are you sure?") //set alertdialog title
-        mAlertDialog.setMessage("Do you want to delete schedule " + sched + "?" ) //set alertdialog message
+        if(day.toInt() == 8){
+           mAlertDialog.setMessage("This will delete all schedule created on the other days")
+        }else{
+            mAlertDialog.setMessage("Do you want to delete schedule $sched?") //set alertdialog message
+        }
+
         mAlertDialog.setPositiveButton("Yes") { dialog, id ->
-            DeleteTime(pgm, day, sched)
-            RefreshList(pgm, day)
+            if(day.toInt() == 8){
+                DeleteOtherTime(pgm,day,sched ,shour,sminute, ehour,eminute)
+            }else{
+                DeleteTime(pgm, day, sched)
+                RefreshList(pgm, day)
+            }
+
         }
         mAlertDialog.setNegativeButton("No") { dialog, id ->
 
         }
         mAlertDialog.show()
+    }
+
+    private fun DeleteOtherTime(pgm: Byte , day: Byte , sched : Byte , shour: Byte , sminute: Byte , ehour: Byte , eminute: Byte){
+
+        val filter = ScheduleCollection.scheduleCollection.filter { it.pgm == pgm && it.shour == shour && it.sminute == sminute && it.ehour == ehour && it.eminute == eminute }
+
+        for (delete in 1..8){
+            val check = filter.find { it.wday!!.toInt() == delete }
+            ScheduleCollection.scheduleCollection.remove(check)
+
+            for(update in ScheduleCollection.scheduleCollection.filter { it.pgm == pgm && it.wday!!.toInt() == delete })
+            {
+                if (update.sched!!.toInt() > sched.toInt()){
+                    update.sched = update!!.sched!!.dec()
+                }
+            }
+        }
+        RefreshList(pgm, day)
+        Toast.makeText(context, "Delete Successful" , Toast.LENGTH_SHORT).show()
+
     }
 }

@@ -138,8 +138,9 @@ class DayPicker : Fragment(), PrimeDatePickerBottomSheet.OnDayPickedListener {
         }
 
         for(i in 1..7){
-            BorderOrganize(i)
+            initialOrganize(i)
         }
+
 
         btn_set_calender.setOnClickListener{
             var datePicker: PrimeDatePickerBottomSheet?
@@ -171,22 +172,38 @@ class DayPicker : Fragment(), PrimeDatePickerBottomSheet.OnDayPickedListener {
 
     fun SelectAllDays(){
         btnMonday.setBackgroundResource(R.drawable.bottom_border)
+        collection!!.monday = true
         btnTuesday.setBackgroundResource(R.drawable.bottom_border)
+        collection!!.tuesday = true
         btnWednesday.setBackgroundResource(R.drawable.bottom_border)
+        collection!!.wednesday = true
         btnThursday.setBackgroundResource(R.drawable.bottom_border)
+        collection!!.thursday =true
         btnFriday.setBackgroundResource(R.drawable.bottom_border)
+        collection!!.friday = true
         btnSaturday.setBackgroundResource(R.drawable.bottom_border)
+        collection!!.saturday = true
         btnSunday.setBackgroundResource(R.drawable.bottom_border)
+        collection!!.sunday = true
+        btnAll.setBackgroundResource(R.drawable.bottom_border)
     }
 
     fun DeselectAllDays(){
         btnMonday.setBackgroundResource(R.drawable.button_model)
+        collection!!.monday = false
         btnTuesday.setBackgroundResource(R.drawable.button_model)
+        collection!!.tuesday = false
         btnWednesday.setBackgroundResource(R.drawable.button_model)
+        collection!!.wednesday =false
         btnThursday.setBackgroundResource(R.drawable.button_model)
+        collection!!.thursday = false
         btnFriday.setBackgroundResource(R.drawable.button_model)
+        collection!!.friday = false
         btnSaturday.setBackgroundResource(R.drawable.button_model)
+        collection!!.saturday = false
         btnSunday.setBackgroundResource(R.drawable.button_model)
+        collection!!.sunday = false
+        btnAll.setBackgroundResource(R.drawable.button_model)
     }
 
     fun ShowTimeSchedule(day: Int) {
@@ -248,7 +265,6 @@ class DayPicker : Fragment(), PrimeDatePickerBottomSheet.OnDayPickedListener {
                 CurrentID.Updatebool(x = true)
             }
         }
-
     }
 
     fun onCancelChangeStatus(day: Int){
@@ -282,7 +298,7 @@ class DayPicker : Fragment(), PrimeDatePickerBottomSheet.OnDayPickedListener {
 
 
 
-    fun BorderOrganize(day: Int ){
+    fun initialOrganize(day: Int){
         when (day){
             1->{
             if(collection!!.monday){
@@ -333,6 +349,75 @@ class DayPicker : Fragment(), PrimeDatePickerBottomSheet.OnDayPickedListener {
                     btnSunday.setBackgroundResource(R.drawable.button_model)
                 }
             }
+        }
+
+    }
+
+    fun BorderOrganize(day: Int ){
+        when (day){
+            1->{
+                if(collection!!.monday){
+                    btnMonday.setBackgroundResource(R.drawable.bottom_border)
+                }else{
+                    btnMonday.setBackgroundResource(R.drawable.button_model)
+                        btnAll.setBackgroundResource(R.drawable.button_model)
+
+                }
+            }
+            2->{
+                if(collection!!.tuesday){
+                    btnTuesday.setBackgroundResource(R.drawable.bottom_border)
+                }else{
+                    btnTuesday.setBackgroundResource(R.drawable.button_model)
+                        btnAll.setBackgroundResource(R.drawable.button_model)
+
+                }
+            }
+            3->{
+                if(collection!!.wednesday){
+                    btnWednesday.setBackgroundResource(R.drawable.bottom_border)
+                }else{
+                    btnWednesday.setBackgroundResource(R.drawable.button_model)
+                        btnAll.setBackgroundResource(R.drawable.button_model)
+
+                }
+            }
+            4->{
+                if(collection!!.thursday){
+                    btnThursday.setBackgroundResource(R.drawable.bottom_border)
+                }else{
+                    btnThursday.setBackgroundResource(R.drawable.button_model)
+                        btnAll.setBackgroundResource(R.drawable.button_model)
+
+                }
+            }
+            5->{
+                if(collection!!.friday){
+                    btnFriday.setBackgroundResource(R.drawable.bottom_border)
+                }else{
+                    btnFriday.setBackgroundResource(R.drawable.button_model)
+                        btnAll.setBackgroundResource(R.drawable.button_model)
+
+                }
+            }
+            6->{
+                if(collection!!.saturday){
+                    btnSaturday.setBackgroundResource(R.drawable.bottom_border)
+                }else{
+                    btnSaturday.setBackgroundResource(R.drawable.button_model)
+                        btnAll.setBackgroundResource(R.drawable.button_model)
+
+                }
+            }
+            7->{
+                if(collection!!.sunday){
+                    btnSunday.setBackgroundResource(R.drawable.bottom_border)
+                }else{
+                    btnSunday.setBackgroundResource(R.drawable.button_model)
+                        btnAll.setBackgroundResource(R.drawable.button_model)
+
+                }
+            }
             8->{
                 if(collection!!.alldays){
                     SelectAllDays()
@@ -343,7 +428,6 @@ class DayPicker : Fragment(), PrimeDatePickerBottomSheet.OnDayPickedListener {
         }
 
     }
-
     override fun onMultipleDaysPicked(multipleDays: List<PrimeCalendar>) {
 
     }
@@ -354,6 +438,8 @@ class DayPicker : Fragment(), PrimeDatePickerBottomSheet.OnDayPickedListener {
         collection!!.sDay = startDay.dayOfMonth.toString()
         collection!!.eMonth = endDay.month.toString()
         collection!!.eDay = endDay.dayOfMonth.toString()
+
+        Toast.makeText(activity , collection!!.sMonth+collection!!.sDay+collection!!.eMonth+collection!!.eDay , Toast.LENGTH_SHORT).show()
     }
 
     override fun onSingleDayPicked(singleDay: PrimeCalendar) {
@@ -383,6 +469,7 @@ class DayPicker : Fragment(), PrimeDatePickerBottomSheet.OnDayPickedListener {
 
             if(checker.isEmpty()){
                 Toast.makeText(activity, "No Time Set" , Toast.LENGTH_SHORT).show()
+               // collection!!.alldays =! collection!!.alldays
                 ShowSaveAlert(day, Status)
             }else{
                 BorderOrganize(day)

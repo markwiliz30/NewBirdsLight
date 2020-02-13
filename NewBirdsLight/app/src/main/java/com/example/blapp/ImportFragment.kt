@@ -11,8 +11,15 @@ import androidx.navigation.NavController
 import androidx.navigation.Navigation
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.blapp.adapter.ImportAdapter
+import com.example.blapp.collection.DayCollection
+import com.example.blapp.collection.PgmCollection
+import com.example.blapp.collection.ScheduleCollection
+import com.example.blapp.collection.StepCollection
 import com.example.blapp.databasehelper.DBmanager
+import com.example.blapp.model.DayManager
 import com.example.blapp.model.PgmItem
+import com.example.blapp.model.ScheduleItem
+import com.example.blapp.model.StepItem
 import kotlinx.android.synthetic.main.fragment_import.*
 import kotlinx.android.synthetic.main.fragment_import_list.*
 import kotlinx.android.synthetic.main.fragment_import_list.view.*
@@ -44,6 +51,73 @@ class ImportFragment : Fragment() {
         recycler_import.setItemViewCacheSize(25)
         layoutManager = LinearLayoutManager(activity)
         recycler_import.layoutManager = layoutManager
+
+        btn_import_list.setOnClickListener{
+            for (item in adapter.itemList){
+                if(item.isClicked){
+                    lstCheck.add(item.name)
+                }
+            }
+            if(lstCheck.isEmpty()){
+                Toast.makeText(activity,"Select a Program to Import!" , Toast.LENGTH_SHORT).show()
+            }else{
+                for (itemname in lstCheck){
+                var lastPgm = PgmCollection.pgmCollection.count() + 1
+                    for(item in dbm.allpgm){
+                        if(item.name == itemname){
+                            val newPgm = PgmItem()
+                            newPgm.command =item.command
+                            newPgm.pgm = lastPgm.toByte()
+                            PgmCollection.pgmCollection.add(newPgm)
+                        }
+                    }
+                    for(item in dbm.allStep){
+                        if(item.pgm_name == itemname){
+                            val newStep = StepItem()
+                            newStep.command = item.command
+                            newStep.pgm = lastPgm.toByte()
+                            newStep.step = item.step
+                            newStep.pan = item.pan
+                            newStep.tilt = item.tilt
+                            newStep.blink = item.blink
+                            newStep.time = item.time
+                            StepCollection.stepCollection.add(newStep)
+                        }
+                    }
+                    for (item in dbm.allSched){
+                        if(item.pgmname == itemname){
+                            val newSchedule = ScheduleItem()
+                            newSchedule.command = item.command
+                            newSchedule.pgm = lastPgm.toByte()
+                            newSchedule.shour = item.shour
+                            newSchedule.sminute = item.sminute
+                            newSchedule.ehour = item.ehour
+                            newSchedule.eminute = item.eminute
+                            newSchedule.sched = item.sched
+                            newSchedule.wday = item.wday
+                            newSchedule.smonth = item.smonth
+                            newSchedule.sday = item.sday
+                            newSchedule.emonth = item.emonth
+                            newSchedule.eday = item.eday
+                            ScheduleCollection.scheduleCollection.add(newSchedule)
+
+                            val newDaymanager = DayManager()
+                            newDaymanager.pgm = lastPgm.toByte()
+                            newDaymanager.sMonth = item.smonth.toString()
+                            newDaymanager.sDay = item.sday.toString()
+                            newDaymanager.eMonth = item.emonth.toString()
+                            newDaymanager.eDay = item.eday.toString()
+                            DayCollection.dayCollection.add(newDaymanager)
+                        }
+                    }
+                }
+                lstCheck.clear()
+                refreshList()
+                select_all_checkbox.isChecked = false
+                adapter.notifyDataSetChanged()
+                Toast.makeText(activity, "Import Success!" , Toast.LENGTH_SHORT).show()
+            }
+        }
 
         delete_import.setOnClickListener{
             for (item in adapter.itemList){
@@ -107,7 +181,9 @@ class ImportFragment : Fragment() {
                 }
                 select_all_checkbox.isChecked = false
                 refreshList()
-
+                lstCheck.clear()
+            select_all_checkbox.isChecked = false
+            adapter.notifyDataSetChanged()
         }
 
         mAlertDialog.setNegativeButton("Cancel") { dialog, id ->
