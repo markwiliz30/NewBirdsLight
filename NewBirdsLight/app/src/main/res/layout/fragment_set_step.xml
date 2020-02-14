@@ -138,15 +138,22 @@
             android:layout_gravity="center"
             />
 
-        <EditText
-            android:id="@+id/update_pan"
+        <TextView
+            android:id="@+id/update_step_pan"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:maxLength="255"
-            android:text="000"
-            android:textSize="20dp"
-            android:inputType="number"
+            android:text="0"
+            android:textSize="28sp"
             android:textColor="#39405A"
+            />
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="°"
+            android:textSize="25sp"
+            android:textColor="#39405A"
+            android:textStyle="bold"
+            android:layout_gravity="center"
             />
 
 
@@ -177,15 +184,22 @@
             android:layout_gravity="center"
             />
 
-        <EditText
-            android:id="@+id/update_tilt"
+        <TextView
+            android:id="@+id/update_step_tilt"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:maxLength="255"
-            android:text="000"
-            android:textSize="20dp"
-            android:inputType="number"
+            android:text="0"
+            android:textSize="28sp"
             android:textColor="#39405A"
+            />
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="°"
+            android:textSize="25sp"
+            android:textColor="#39405A"
+            android:textStyle="bold"
+            android:layout_gravity="center"
             />
 
 
@@ -217,14 +231,12 @@
             android:layout_gravity="center"
             />
 
-        <EditText
-            android:id="@+id/update_blink"
+        <TextView
+            android:id="@+id/update_step_blink"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:maxLength="255"
-            android:text="000"
-            android:textSize="20dp"
-            android:inputType="number"
+            android:text="0"
+            android:textSize="28sp"
             android:textColor="#39405A"
             />
 

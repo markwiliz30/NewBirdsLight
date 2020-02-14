@@ -231,10 +231,18 @@ class TimeSchedule : Fragment() {
         }
 
         for (time in TimeRestric){
-            var tstart =(""+time.shour+time.sminute+"").toInt()
-            var tend = (""+time.ehour+time.eminute+"").toInt()
+            var tstart2 = if(time.sminute!!.toInt() < 10){
+                (""+time.shour+"0"+time.sminute+"").toInt()
+            }else{
+                (""+time.shour+time.sminute+"").toInt()
+            }
+            var tend2 = if(time.eminute!!.toInt() < 10){
+                (""+time.ehour+"0"+time.eminute+"").toInt()
+            }else{
+                (""+time.ehour+time.eminute+"").toInt()
+            }
 
-          for(x in tstart..tend){
+          for(x in tstart2..tend2){
                     if(tempStime == x || tempEtime == x){
                         conflicts = false
                     }
