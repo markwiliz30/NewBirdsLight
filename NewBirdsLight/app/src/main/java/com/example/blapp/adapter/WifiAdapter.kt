@@ -9,6 +9,8 @@ import com.example.blapp.R
 import com.example.blapp.common.InputDialog
 import com.example.blapp.common.WifiUtils
 import com.example.blapp.model.WifiItem
+import android.content.DialogInterface.BUTTON_POSITIVE
+import androidx.appcompat.app.AlertDialog
 
 class WifiAdapter(internal var context: FragmentActivity?, internal var itemList:MutableList<WifiItem>):
 RecyclerView.Adapter<WifiViewHolder>()
@@ -27,10 +29,11 @@ RecyclerView.Adapter<WifiViewHolder>()
         var wifiNameHold: String? = itemList[position].name
         holder.lblWifiName.text = wifiNameHold.toString()
 
-        var wifiStatusHold: Boolean? = itemList[position].status
+        var wifiStatusHold: Int? = itemList[position].status
         when(wifiStatusHold){
-            false -> holder.lblWifiStatus.text = "Not Connected"
-            true -> holder.lblWifiStatus.text = "Connected!"
+            0 -> holder.lblWifiStatus.text = "Not Connected"
+            1 -> holder.lblWifiStatus.text = "Connecting..."
+            2 -> holder.lblWifiStatus.text = "Connected!"
             else -> holder.lblWifiStatus.text = "Not Connected"
         }
 
@@ -72,7 +75,7 @@ RecyclerView.Adapter<WifiViewHolder>()
             if(!itemList[position].capabilities!!.toUpperCase().contains("WPA") && !itemList[position].capabilities!!.toUpperCase().contains("WEP"))
             {
                 val connectWifi = WifiUtils()
-                connectWifi.connectWiFi(WifiUtils.sharedWifiManager!!, WifiUtils.wifiList[WifiUtils.selectedWifiIndex!!].name!!, "", itemList[position].capabilities!!)
+                connectWifi.connectWiFi(context!! ,WifiUtils.sharedWifiManager!!, WifiUtils.wifiList[WifiUtils.selectedWifiIndex!!].name!!, "", itemList[position].capabilities!!)
             }
             else
             {

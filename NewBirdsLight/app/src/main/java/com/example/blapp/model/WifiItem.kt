@@ -1,8 +1,10 @@
 package com.example.blapp.model
 
+import kotlin.properties.Delegates
+
 class WifiItem{
     var name: String? = ""
-    var status: Boolean = false
+    var status: Int = 0
     var level: Int? = 0
     var selected: Boolean = false
     var capabilities: String? = ""
@@ -13,4 +15,8 @@ class WifiItem{
         set(value){
             field = value
         }
+
+//    var a: String by Delegates.observable(a) { _, old, new ->
+//        println("Name changed from $old to $new")
+//    }
 }

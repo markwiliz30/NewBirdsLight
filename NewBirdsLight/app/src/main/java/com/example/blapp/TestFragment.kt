@@ -78,9 +78,9 @@ class TestFragment : Fragment() {
             data = byteArrayOf(
                 0x01.toByte(),
                 0x01.toByte(),
-                0x80.toByte(),
-                0x80.toByte(),
-                0x80.toByte(),
+                128.toByte(),
+                128.toByte(),
+                128.toByte(),
                 0x01.toByte()
             )
             Protocol.cDeviceProt.transferDataWithDelay(command, data)
