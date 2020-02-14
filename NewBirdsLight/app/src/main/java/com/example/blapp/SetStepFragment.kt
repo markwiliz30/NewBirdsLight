@@ -70,6 +70,7 @@ class SetStepFragment : Fragment() {
             btn_step_save.text= "Update"
         }else{
             btn_step_save.text="Save"
+            ResetCurrentStep()
         }
 
 
@@ -80,15 +81,16 @@ class SetStepFragment : Fragment() {
         edit_pan_sb.setOnSeekBarChangeListener(object : SeekBar.OnSeekBarChangeListener{
             override fun onProgressChanged(seekBar: SeekBar?, progress: Int, fromUser: Boolean) {
                 pVal = progress
-                data = byteArrayOf(
-                    0x01.toByte(),
-                    0x01.toByte(),
-                    pVal.toByte(),
-                    tVal.toByte(),
-                    bVal.toByte(),
-                    0x01.toByte()
-                )
-                Protocol.cDeviceProt.transferDataWithDelay(command, data)
+//                data = byteArrayOf(
+////                    0x01.toByte(),
+////                    0x01.toByte(),
+////                    pVal.toByte(),
+////                    tVal.toByte(),
+////                    bVal.toByte(),
+////                    0x01.toByte()
+////                )
+////                Protocol.cDeviceProt.transferDataWithDelay(command, data)
+                updateTextOnPan(pVal)
             }
 
             override fun onStartTrackingTouch(seekBar: SeekBar?) {
@@ -103,15 +105,16 @@ class SetStepFragment : Fragment() {
         edit_tilt_sb.setOnSeekBarChangeListener(object : SeekBar.OnSeekBarChangeListener{
             override fun onProgressChanged(seekBar: SeekBar?, progress: Int, fromUser: Boolean) {
                 tVal = progress
-                data = byteArrayOf(
-                    0x01.toByte(),
-                    0x01.toByte(),
-                    pVal.toByte(),
-                    tVal.toByte(),
-                    bVal.toByte(),
-                    0x01.toByte()
-                )
-                Protocol.cDeviceProt.transferDataWithDelay(command, data)
+//                data = byteArrayOf(
+//                    0x01.toByte(),
+//                    0x01.toByte(),
+//                    pVal.toByte(),
+//                    tVal.toByte(),
+//                    bVal.toByte(),
+//                    0x01.toByte()
+//                )
+//                Protocol.cDeviceProt.transferDataWithDelay(command, data)
+                updateTextOnTilt(tVal)
             }
 
             override fun onStartTrackingTouch(seekBar: SeekBar?) {
@@ -126,15 +129,16 @@ class SetStepFragment : Fragment() {
         edit_blink_sb.setOnSeekBarChangeListener(object : SeekBar.OnSeekBarChangeListener{
             override fun onProgressChanged(seekBar: SeekBar?, progress: Int, fromUser: Boolean) {
                 bVal = progress
-                data = byteArrayOf(
-                    0x01.toByte(),
-                    0x01.toByte(),
-                    pVal.toByte(),
-                    tVal.toByte(),
-                    bVal.toByte(),
-                    0x01.toByte()
-                )
-                Protocol.cDeviceProt.transferDataWithDelay(command, data)
+//                data = byteArrayOf(
+//                    0x01.toByte(),
+//                    0x01.toByte(),
+//                    pVal.toByte(),
+//                    tVal.toByte(),
+//                    bVal.toByte(),
+//                    0x01.toByte()
+//                )
+//                Protocol.cDeviceProt.transferDataWithDelay(command, data)
+                update_step_blink.text = bVal.toString()
             }
 
             override fun onStartTrackingTouch(seekBar: SeekBar?) {
@@ -261,8 +265,8 @@ class SetStepFragment : Fragment() {
                 CurrentID.UpdateID(num = 3)
             }
 
-
         }
+
     }
 
     private fun AddPgmToCollection(pgm: PgmItem, stepList: List<StepItem>)
@@ -300,6 +304,11 @@ class SetStepFragment : Fragment() {
         edit_pan_sb.progress = pVal
         edit_tilt_sb.progress = tVal
         edit_blink_sb.progress = bVal
+
+        updateTextOnTilt(tVal)
+        updateTextOnPan(pVal)
+        update_step_blink.text = bVal.toString()
+
         txt_step_time.setText(tmVal.toString())
     }
 
@@ -318,6 +327,10 @@ class SetStepFragment : Fragment() {
             bVal = newCurrentitem!!.blink!!.toUByte().toInt()
             tmVal = newCurrentitem!!.time!!.toUByte().toInt()
 
+        updateTextOnTilt(tVal)
+        updateTextOnPan(pVal)
+        update_step_blink.text = bVal.toString()
+
             edit_pan_sb.progress = pVal
             edit_tilt_sb.progress = tVal
             edit_blink_sb.progress = bVal
@@ -326,10 +339,14 @@ class SetStepFragment : Fragment() {
 
     private fun ResetCurrentStep()
     {
-        pVal = 0
-        tVal = 0
+        pVal = 128
+        tVal = 128
         bVal = 0
         tmVal = 0
+
+        updateTextOnTilt(tVal)
+        updateTextOnPan(pVal)
+        update_step_blink.text = bVal.toString()
 
         edit_pan_sb.progress = pVal
         edit_tilt_sb.progress = tVal
@@ -356,6 +373,40 @@ class SetStepFragment : Fragment() {
             adjust.step = adjust.step!!.dec()
         }
     }
+    private fun updateTextOnTilt(value: Int) {
+        var passVal: Double = 0.0
+        if(value == 255){
+            update_step_tilt.text = "90"
+        }
+        else if(value == 128){
+            update_step_tilt.text = "0"
+        }
+        else if(value >= 129){
+            passVal = (value-128) * 0.703125
+            update_step_tilt.text = ""+passVal.toInt().toString()
+        }else if(value <= 127){
+            passVal = (128-value) * 0.703125
+            update_step_tilt.text = "-"+passVal.toInt()
+        }
 
+    }
+
+    private fun updateTextOnPan(value: Int) {
+        var passVal: Double = 0.0
+        if(value == 255){
+            update_step_pan.text = "270"
+        }
+        else if(value == 128){
+            update_step_pan.text = "0"
+        }
+        else if(value >= 129){
+            passVal = (value-128) * 2.109375
+            update_step_pan.text = ""+passVal.toInt()
+        }else if(value <= 127){
+            passVal = (128-value) * 2.109375
+            update_step_pan.text = "-"+passVal.toInt()
+        }
+
+    }
 
 }

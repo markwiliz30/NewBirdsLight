@@ -79,22 +79,29 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="Pan: "
-                    android:textSize="25dp"
+                    android:textSize="25sp"
                     android:textColor="#39405A"
                     android:textStyle="bold"
                     android:layout_marginStart="30dp"
                     android:layout_gravity="center"
                     />
 
-                <EditText
-                    android:id="@+id/update_pan"
+                <TextView
+                    android:id="@+id/update_test_pan"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:maxLength="255"
-                    android:text="000"
-                    android:textSize="15dp"
-                    android:inputType="number"
+                    android:text="0"
+                    android:textSize="28sp"
                     android:textColor="#39405A"
+                    />
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="°"
+                    android:textSize="25sp"
+                    android:textColor="#39405A"
+                    android:textStyle="bold"
+                    android:layout_gravity="center"
                     />
 
 
@@ -108,6 +115,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginHorizontal="10dp"
                 android:layout_marginTop="10dp"
+                android:progress="128"
                 android:max="255"/>
 
 
@@ -122,22 +130,29 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="Tilt: "
-                    android:textSize="25dp"
+                    android:textSize="25sp"
                     android:textColor="#39405A"
                     android:textStyle="bold"
                     android:layout_marginStart="30dp"
                     android:layout_gravity="center"
                     />
 
-                <EditText
-                    android:id="@+id/update_tilt"
+                <TextView
+                    android:id="@+id/update_test_tilt"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:maxLength="255"
-                    android:text="000"
-                    android:textSize="15dp"
-                    android:inputType="number"
+                    android:text="0"
+                    android:textSize="28dp"
                     android:textColor="#39405A"
+                    />
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="°"
+                    android:textSize="25sp"
+                    android:textColor="#39405A"
+                    android:textStyle="bold"
+                    android:layout_gravity="center"
                     />
 
 
@@ -150,6 +165,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginHorizontal="10dp"
                 android:layout_marginTop="10dp"
+                android:progress="128"
                 android:max="255"/>
 
 
@@ -172,14 +188,13 @@
                     android:layout_gravity="center"
                     />
 
-                <EditText
-                    android:id="@+id/update_blink"
+                <TextView
+                    android:id="@+id/update_test_blink"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:maxLength="255"
-                    android:text="000"
-                    android:textSize="15dp"
-                    android:inputType="number"
+                    android:text="0"
+                    android:textSize="28sp"
                     android:textColor="#39405A"
                     />
 
