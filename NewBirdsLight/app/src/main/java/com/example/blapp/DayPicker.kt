@@ -63,7 +63,7 @@ class DayPicker : Fragment(), PrimeDatePickerBottomSheet.OnDayPickedListener {
             sDay = collection!!.sDay.toString()
             eMonth = collection!!.eMonth.toString()
             eDay = collection!!.eDay.toString()
-
+            btn_set_calender.text = "$sMonth/$sDay ~ $eMonth/$eDay"
         }
 
 
@@ -438,6 +438,9 @@ class DayPicker : Fragment(), PrimeDatePickerBottomSheet.OnDayPickedListener {
         collection!!.sDay = startDay.dayOfMonth.toString()
         collection!!.eMonth = endDay.month.toString()
         collection!!.eDay = endDay.dayOfMonth.toString()
+
+        btn_set_calender.text = startDay.month.toString()+"/"+startDay.dayOfMonth+" ~ "+endDay.month+"/"+endDay.dayOfMonth
+
 
         Toast.makeText(activity , collection!!.sMonth+collection!!.sDay+collection!!.eMonth+collection!!.eDay , Toast.LENGTH_SHORT).show()
     }
