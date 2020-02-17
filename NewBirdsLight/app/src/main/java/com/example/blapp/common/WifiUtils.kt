@@ -20,7 +20,6 @@ import androidx.fragment.app.FragmentActivity
 import java.io.IOException
 import java.lang.ArithmeticException
 
-
 @Suppress("DEPRECATION")
 class WifiUtils {
     private lateinit var dialog: AlertDialog
@@ -115,6 +114,7 @@ class WifiUtils {
                     if(Protocol.cDeviceProt != null)
                     {
                         Protocol.cDeviceProt!!.stopChannel()
+                        isConnectedToBL = false
                     }
 
                     val isEnabled = wifiManager.enableNetwork(i.networkId, true)
@@ -125,11 +125,20 @@ class WifiUtils {
                     handler.postDelayed({
                         val deviceProtocol = DeviceProtocol()
                         Protocol.cDeviceProt = deviceProtocol
+                        var data = byteArrayOf(
+                            0x01.toByte(),
+                            0x01.toByte(),
+                            128.toByte(),
+                            128.toByte(),
+                            128.toByte(),
+                            0x01.toByte()
+                        )
 
                         val isSSIDConnected = IsWiFiConnected(context, SSID)
                         if(isSSIDConnected)
                         {
                             Protocol.cDeviceProt!!.startChannel()
+                            Protocol.cDeviceProt!!.transferDataWithDelay(0x02, data)
                             wifiList[selectedWifiIndex!!].status = 2
                             sharedWifiAdapter!!.notifyDataSetChanged()
                             dialog.dismiss()
@@ -142,6 +151,7 @@ class WifiUtils {
                                 if(innerIsSSIDConnected)
                                 {
                                     Protocol.cDeviceProt!!.startChannel()
+                                    Protocol.cDeviceProt!!.transferDataWithDelay(0x02, data)
                                     wifiList[selectedWifiIndex!!].status = 2
                                     sharedWifiAdapter!!.notifyDataSetChanged()
                                     dialog.dismiss()

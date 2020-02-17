@@ -14,6 +14,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
+import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
 import androidx.navigation.NavController
 import androidx.navigation.Navigation
@@ -24,6 +25,7 @@ import com.example.blapp.common.Protocol
 import com.example.blapp.common.WifiUtils
 import com.example.blapp.model.WifiItem
 import dmax.dialog.SpotsDialog
+import kotlinx.android.synthetic.main.activity_landing.*
 import kotlinx.android.synthetic.main.fragment_landing.*
 import java.io.IOException
 import java.lang.Exception
@@ -98,12 +100,21 @@ class LandingFragment : Fragment() {
                     if(Protocol.cDeviceProt != null)
                     {
                         Protocol.cDeviceProt!!.stopChannel()
+                        WifiUtils.isConnectedToBL = false
                     }
-                    
+
                     val dProtocol = DeviceProtocol()
                     Protocol.cDeviceProt = dProtocol
                     Protocol.cDeviceProt!!.startChannel()
-
+                    val data = byteArrayOf(
+                        0x01.toByte(),
+                        0x01.toByte(),
+                        128.toByte(),
+                        128.toByte(),
+                        128.toByte(),
+                        0x01.toByte()
+                    )
+                    Protocol.cDeviceProt!!.transferDataWithDelay(0x02, data)
                     newWifiItem.status = 2
                     newWifiItem.selected = true
                 }
@@ -150,6 +161,7 @@ class LandingFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        WifiUtils.isConnectedToBL = false
 
         lst_wifi.setHasFixedSize(true)
         layoutManager = LinearLayoutManager(activity)

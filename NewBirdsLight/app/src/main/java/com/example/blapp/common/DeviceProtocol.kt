@@ -195,6 +195,7 @@ class DeviceProtocol : Handler.Callback, OnSocketListener {
         if (receivedAuth.equals(authComp)) {
             canAccess = true
             isRecognized = true
+            WifiUtils.isConnectedToBL = true
         }
 //        if (text == recogComp) {
 //            isRecognized = true
