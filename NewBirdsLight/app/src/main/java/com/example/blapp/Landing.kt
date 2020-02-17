@@ -310,7 +310,7 @@ class Landing : AppCompatActivity() {
 
     override fun onDestroy() {
         super.onDestroy()
-        Protocol.cDeviceProt.stopChannel()
+        Protocol.cDeviceProt!!.stopChannel()
         Toast.makeText(this, "app exit", Toast.LENGTH_SHORT).show()
     }
 

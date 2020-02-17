@@ -46,8 +46,6 @@ class InputDialog : AppCompatDialogFragment() {
             val mConnectWifi = WifiUtils()
             //val inputPassword: String? = input_password_box.text.toString()
             val isConnected = mConnectWifi.connectWiFi(context!! ,WifiUtils.sharedWifiManager!!, SelSSID!!, view.input_password_box.text.toString(), WifiUtils.wifiList[WifiUtils.selectedWifiIndex!!].capabilities!!)
-            WifiUtils.wifiList[WifiUtils.selectedWifiIndex!!].selected = true
-            WifiUtils.sharedWifiAdapter!!.notifyDataSetChanged()
             dismiss()
             //Toast.makeText(context, "Connect pressed", Toast.LENGTH_SHORT).show()
 //                val wifiUtils = WifiUtils()

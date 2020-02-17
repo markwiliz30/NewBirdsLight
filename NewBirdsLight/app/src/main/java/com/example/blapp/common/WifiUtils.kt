@@ -16,12 +16,14 @@ import android.net.wifi.WifiInfo
 import androidx.core.content.ContextCompat.getSystemService
 import android.content.IntentFilter
 import android.content.Intent
+import androidx.fragment.app.FragmentActivity
 import java.io.IOException
 import java.lang.ArithmeticException
 
 
 @Suppress("DEPRECATION")
 class WifiUtils {
+    private lateinit var dialog: AlertDialog
 
     companion object{
         var selectedWifiIndex: Int? = -1
@@ -45,7 +47,13 @@ class WifiUtils {
     }
 
     fun connectWiFi(context: Context ,wifiManager: WifiManager, SSID: String, password: String, Security: String): Boolean {
+        dialog = SpotsDialog(context, R.style.Connecting)
         try {
+            dialog.show()
+            wifiList[selectedWifiIndex!!].status = 1
+            wifiList[selectedWifiIndex!!].selected = true
+            sharedWifiAdapter!!.notifyDataSetChanged()
+
             val conf = WifiConfiguration()
             conf.SSID =
                 "\"" + SSID + "\""   // Please note the quotes. String should contain ssid in quotes
@@ -104,6 +112,10 @@ class WifiUtils {
             for (i in list) {
                 if (i.SSID != null && i.SSID == "\"" + SSID + "\"") {
                     val isDisconnected = wifiManager.disconnect()
+                    if(Protocol.cDeviceProt != null)
+                    {
+                        Protocol.cDeviceProt!!.stopChannel()
+                    }
 
                     val isEnabled = wifiManager.enableNetwork(i.networkId, true)
 
@@ -117,12 +129,10 @@ class WifiUtils {
                         val isSSIDConnected = IsWiFiConnected(context, SSID)
                         if(isSSIDConnected)
                         {
-//                            try {
-//                                Protocol.cDeviceProt.stopChannel()
-//                            }catch (e: java.lang.Exception) {
-//
-//                            }
-                            Protocol.cDeviceProt.startChannel()
+                            Protocol.cDeviceProt!!.startChannel()
+                            wifiList[selectedWifiIndex!!].status = 2
+                            sharedWifiAdapter!!.notifyDataSetChanged()
+                            dialog.dismiss()
                             Toast.makeText(context, "Connected to " + SSID, Toast.LENGTH_SHORT).show()
                         }
                         else
@@ -131,16 +141,15 @@ class WifiUtils {
                                 val innerIsSSIDConnected = IsWiFiConnected(context, SSID)
                                 if(innerIsSSIDConnected)
                                 {
-//                                    try {
-//                                        Protocol.cDeviceProt.stopChannel()
-//                                    }catch (e: java.lang.Exception) {
-//
-//                                    }
-                                    Protocol.cDeviceProt.startChannel()
+                                    Protocol.cDeviceProt!!.startChannel()
+                                    wifiList[selectedWifiIndex!!].status = 2
+                                    sharedWifiAdapter!!.notifyDataSetChanged()
+                                    dialog.dismiss()
                                     Toast.makeText(context, "Connected to " + SSID, Toast.LENGTH_SHORT).show()
                                 }
                                 else
                                 {
+                                    dialog.dismiss()
                                     Toast.makeText(context, "Failed to connect to " + SSID, Toast.LENGTH_SHORT).show()
                                 }
                             }, 1500)
@@ -154,6 +163,8 @@ class WifiUtils {
 
         } catch (e: Exception) {
             e.printStackTrace()
+            dialog.dismiss()
+            Toast.makeText(context, "Failed to connect", Toast.LENGTH_SHORT).show()
             return false
         }
         return false
@@ -190,6 +201,17 @@ class WifiUtils {
         return false
     }
 
+    fun findCurrentConnectedSSID():String{
+        val wifiInfo = sharedWifiManager!!.connectionInfo
+
+        val holdWifiInfo = WifiInfo.getDetailedStateOf(wifiInfo.supplicantState)
+
+        if (holdWifiInfo == NetworkInfo.DetailedState.OBTAINING_IPADDR || holdWifiInfo == NetworkInfo.DetailedState.CONNECTED) {
+            return wifiInfo.ssid
+        }
+        return "none"
+    }
+
 //    fun getWifiSSID(context: Context?): String {
 //        if (context == null) {
 //            return ""
@@ -208,9 +230,9 @@ class WifiUtils {
 //        return ""
 //    }
 
-//    fun FindConnedtedSSID(context: Context)
+//    fun FindConnedtedSSID(activity: FragmentActivity)
 //            : String {
-//        val connectivity = context.applicationContext.getSystemService(Context.CONNECTIVITY_SERVICE) as ConnectivityManager
+//        val connectivity = activity.applicationContext.getSystemService(Context.CONNECTIVITY_SERVICE) as ConnectivityManager
 //
 //        if(connectivity != null)
 //        {

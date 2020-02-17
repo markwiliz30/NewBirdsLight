@@ -54,9 +54,10 @@ class DeviceProtocol : Handler.Callback, OnSocketListener {
     }
 
     fun stopChannel() {
-        if (null == channel) {
-            channel!!.stop()
-        }
+//        if (null == channel) {
+//            channel!!.stop()
+//        }
+        channel!!.stop()
     }
 
     private fun dataLengthCounterHex(byteCount: Int): ByteArray {

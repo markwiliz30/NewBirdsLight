@@ -64,6 +64,7 @@ RecyclerView.Adapter<WifiViewHolder>()
         holder.itemView.setOnClickListener{
             for(item in itemList)
             {
+                item.status = 0
                 item.selected = false
             }
             //itemList[position].selected = !itemList[position].selected
@@ -91,6 +92,12 @@ RecyclerView.Adapter<WifiViewHolder>()
 //            {
 //                holder.itemView.setBackgroundColor(Color.parseColor("#ffffff"))
 //            }
+        }
+
+        when(itemList[position].status){
+            0->{holder.lblWifiStatus.text = "Not Connected"}
+            1->{holder.lblWifiStatus.text = "Connecting..."}
+            2->{holder.lblWifiStatus.text = "Connected"}
         }
 
         if(itemList[position].selected)
