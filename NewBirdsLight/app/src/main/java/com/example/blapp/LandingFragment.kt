@@ -1,5 +1,6 @@
 package com.example.blapp
 
+import android.app.Activity
 import android.app.AlertDialog
 import android.content.BroadcastReceiver
 import android.content.Context
@@ -13,15 +14,21 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
+import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
 import androidx.navigation.NavController
 import androidx.navigation.Navigation
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.blapp.adapter.WifiAdapter
+import com.example.blapp.common.DeviceProtocol
+import com.example.blapp.common.Protocol
 import com.example.blapp.common.WifiUtils
 import com.example.blapp.model.WifiItem
 import dmax.dialog.SpotsDialog
+import kotlinx.android.synthetic.main.activity_landing.*
 import kotlinx.android.synthetic.main.fragment_landing.*
+import java.io.IOException
+import java.lang.Exception
 
 
 /**
@@ -33,6 +40,7 @@ class LandingFragment : Fragment() {
 
     lateinit var layoutManager: LinearLayoutManager
     //var wifiList = ArrayList<WifiItem>()
+    lateinit var currentConnectedSSID: String
 
     var resultList = ArrayList<ScanResult>()
     lateinit var wifiManager: WifiManager
@@ -68,6 +76,9 @@ class LandingFragment : Fragment() {
     }
 
     private fun displayScannedWifi() {
+        val wifiUtils = WifiUtils()
+        currentConnectedSSID = wifiUtils.findCurrentConnectedSSID()
+
         WifiUtils.wifiList.clear()
         //var sameSSIDCount = 1
         for(item in resultList)
@@ -85,7 +96,33 @@ class LandingFragment : Fragment() {
                     newWifiItem.name = item.SSID
                 }
                 newWifiItem.level = WifiManager.calculateSignalLevel(item.level, 5)
-                newWifiItem.status = 0
+                if("\"" + newWifiItem.name + "\""  == currentConnectedSSID) {
+                    if(Protocol.cDeviceProt != null)
+                    {
+                        Protocol.cDeviceProt!!.stopChannel()
+                        WifiUtils.isConnectedToBL = false
+                    }
+
+                    val dProtocol = DeviceProtocol()
+                    Protocol.cDeviceProt = dProtocol
+                    Protocol.cDeviceProt!!.startChannel()
+                    val data = byteArrayOf(
+                        0x01.toByte(),
+                        0x01.toByte(),
+                        128.toByte(),
+                        128.toByte(),
+                        128.toByte(),
+                        0x01.toByte()
+                    )
+                    Protocol.cDeviceProt!!.transferDataWithDelay(0x02, data)
+                    newWifiItem.status = 2
+                    newWifiItem.selected = true
+                }
+                else
+                {
+                    newWifiItem.status = 0
+                    newWifiItem.selected = false
+                }
                 newWifiItem.capabilities = item.capabilities
 
                 WifiUtils.wifiList.add(newWifiItem)
@@ -109,7 +146,7 @@ class LandingFragment : Fragment() {
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        dialog = SpotsDialog(activity, R.style.Custom)
+        dialog = SpotsDialog(activity, R.style.Searching)
         wifiManager = activity!!.applicationContext.getSystemService(Context.WIFI_SERVICE) as WifiManager
         WifiUtils.sharedWifiManager = wifiManager
 
@@ -124,6 +161,7 @@ class LandingFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        WifiUtils.isConnectedToBL = false
 
         lst_wifi.setHasFixedSize(true)
         layoutManager = LinearLayoutManager(activity)
@@ -149,6 +187,22 @@ class LandingFragment : Fragment() {
 //                dialog.dismiss()
 //            }
 //            postDelayedSendToModule.postDelayed(sendToModule, 10000)
+        }
+    }
+
+    fun startProtocol(SSID: String){
+        for(item in WifiUtils.wifiList){
+            if(item.name == currentConnectedSSID)
+            {
+                item.status = 2
+                item.selected = true
+                WifiUtils.sharedWifiAdapter!!.notifyDataSetChanged()
+
+                val dProtocol = DeviceProtocol()
+                Protocol.cDeviceProt = dProtocol
+                Protocol.cDeviceProt!!.startChannel()
+                return
+            }
         }
     }
 

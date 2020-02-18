@@ -54,9 +54,10 @@ class DeviceProtocol : Handler.Callback, OnSocketListener {
     }
 
     fun stopChannel() {
-        if (null == channel) {
-            channel!!.stop()
-        }
+//        if (null == channel) {
+//            channel!!.stop()
+//        }
+        channel!!.stop()
     }
 
     private fun dataLengthCounterHex(byteCount: Int): ByteArray {
@@ -194,6 +195,7 @@ class DeviceProtocol : Handler.Callback, OnSocketListener {
         if (receivedAuth.equals(authComp)) {
             canAccess = true
             isRecognized = true
+            WifiUtils.isConnectedToBL = true
         }
 //        if (text == recogComp) {
 //            isRecognized = true

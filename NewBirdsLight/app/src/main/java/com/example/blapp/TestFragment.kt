@@ -10,6 +10,7 @@ import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.navigation.NavController
 import androidx.navigation.Navigation
+import com.example.blapp.common.DeviceProtocol
 import com.example.blapp.common.Protocol
 import kotlinx.android.synthetic.main.fragment_set_step.*
 import kotlinx.android.synthetic.main.fragment_test.*
@@ -42,7 +43,7 @@ class TestFragment : Fragment() {
             0.toByte(),
             0x01.toByte()
         )
-        Protocol.cDeviceProt.transferData(command, data)
+        Protocol.cDeviceProt!!.transferData(command, data)
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
@@ -59,7 +60,7 @@ class TestFragment : Fragment() {
                 255.toByte(),
                 0x01.toByte()
             )
-            Protocol.cDeviceProt.transferData(command, data)
+            Protocol.cDeviceProt!!.transferData(command, data)
             Toast.makeText(context, "Testing Program 1 Running", Toast.LENGTH_SHORT).show()
         }
 
@@ -72,7 +73,7 @@ class TestFragment : Fragment() {
                 0.toByte(),
                 0x01.toByte()
             )
-            Protocol.cDeviceProt.transferData(command, data)
+            Protocol.cDeviceProt!!.transferData(command, data)
             Toast.makeText(context, "Testing Program 2 Running", Toast.LENGTH_SHORT).show()
         }
 
@@ -85,7 +86,7 @@ class TestFragment : Fragment() {
                 128.toByte(),
                 0x01.toByte()
             )
-            Protocol.cDeviceProt.transferDataWithDelay(command, data)
+            Protocol.cDeviceProt!!.transferDataWithDelay(command, data)
             Toast.makeText(context, "Testing Program 3 Running", Toast.LENGTH_SHORT).show()
         }
 

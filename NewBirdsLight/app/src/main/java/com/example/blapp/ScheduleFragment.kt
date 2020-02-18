@@ -31,7 +31,6 @@ class ScheduleFragment : Fragment() {
     lateinit var navController: NavController
     lateinit var adapter: ScheduleAdapter
     lateinit var layoutManager: LinearLayoutManager
-    private lateinit var dialog: AlertDialog
     var scheduleList : MutableList<ScheduleItem> = mutableListOf()
     var progressVal = 0
 
@@ -40,7 +39,6 @@ class ScheduleFragment : Fragment() {
         savedInstanceState: Bundle?
     ): View? {
         // Inflate the layout for this fragment
-        dialog = SpotsDialog(activity, R.style.Custom)
         return inflater.inflate(R.layout.fragment_schedule, container, false)
     }
 
