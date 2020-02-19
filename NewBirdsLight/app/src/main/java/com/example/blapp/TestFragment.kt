@@ -1,6 +1,7 @@
 package com.example.blapp
 
 
+import android.content.Intent
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -22,6 +23,8 @@ class TestFragment : Fragment() {
     internal var pVal: Int = 0
     internal var tVal:Int = 0
     internal var bVal:Int = 0
+    internal var ButtonStatus:Boolean = true
+    internal var SeekBarStatus:Boolean = true
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -52,49 +55,79 @@ class TestFragment : Fragment() {
         var command: Byte = 0x02
         var data: ByteArray
         tglPgm1.setOnClickListener{
-            data = byteArrayOf(
-                0x01.toByte(),
-                0x01.toByte(),
-                255.toByte(),
-                255.toByte(),
-                255.toByte(),
-                0x01.toByte()
-            )
-            Protocol.cDeviceProt!!.transferData(command, data)
-            Toast.makeText(context, "Testing Program 1 Running", Toast.LENGTH_SHORT).show()
+
+            if(ButtonStatus){
+                data = byteArrayOf(
+                    0x01.toByte(),
+                    0x01.toByte(),
+                    255.toByte(),
+                    255.toByte(),
+                    255.toByte(),
+                    0x01.toByte()
+                )
+                Protocol.cDeviceProt!!.transferData(command, data)
+                Toast.makeText(context, "Testing Program 1 Running", Toast.LENGTH_SHORT).show()
+                SeekBarStatus = false
+            }else{
+                Toast.makeText(context, "Disabled", Toast.LENGTH_SHORT).show()
+            }
+
         }
 
         tglPgm2.setOnClickListener{
-            data = byteArrayOf(
-                0x01.toByte(),
-                0x01.toByte(),
-                0.toByte(),
-                0.toByte(),
-                0.toByte(),
-                0x01.toByte()
-            )
-            Protocol.cDeviceProt!!.transferData(command, data)
-            Toast.makeText(context, "Testing Program 2 Running", Toast.LENGTH_SHORT).show()
+            if(ButtonStatus){
+                data = byteArrayOf(
+                    0x01.toByte(),
+                    0x01.toByte(),
+                    12.toByte(),
+                    53.toByte(),
+                    22.toByte(),
+                    0x01.toByte()
+                )
+                Protocol.cDeviceProt!!.transferData(command, data)
+                Toast.makeText(context, "Testing Program 2 Running", Toast.LENGTH_SHORT).show()
+                SeekBarStatus = false
+            }else{
+                Toast.makeText(context, "Disabled", Toast.LENGTH_SHORT).show()
+            }
         }
 
         tglPgm3.setOnClickListener{
-            data = byteArrayOf(
-                0x01.toByte(),
-                0x01.toByte(),
-                128.toByte(),
-                128.toByte(),
-                128.toByte(),
-                0x01.toByte()
-            )
-            Protocol.cDeviceProt!!.transferDataWithDelay(command, data)
-            Toast.makeText(context, "Testing Program 3 Running", Toast.LENGTH_SHORT).show()
+            if(ButtonStatus){
+                    data = byteArrayOf(
+                        0x01.toByte(),
+                        0x01.toByte(),
+                        128.toByte(),
+                        128.toByte(),
+                        128.toByte(),
+                        0x01.toByte()
+                    )
+                    Protocol.cDeviceProt!!.transferData(command, data)
+
+
+                Toast.makeText(context, "Testing Program 3 Running", Toast.LENGTH_SHORT).show()
+                SeekBarStatus = false
+            }else{
+                Toast.makeText(context, "Disabled", Toast.LENGTH_SHORT).show()
+            }
         }
 
         btnReset.setOnClickListener{
             test_blink_sb.progress = 0
             test_pan_sb.progress = 128
             test_tilt_sb.progress =128
+            data = byteArrayOf(
+                0x01.toByte(),
+                0x01.toByte(),
+                128.toByte(),
+                128.toByte(),
+                0.toByte(),
+                0x01.toByte()
+            )
+            Protocol.cDeviceProt!!.transferData(command, data)
             Toast.makeText(context, "Resetting the device", Toast.LENGTH_SHORT).show()
+            ButtonStatus = true
+            SeekBarStatus = true
         }
 
          fun updateTextOnPan(value: Int) {
@@ -117,17 +150,25 @@ class TestFragment : Fragment() {
 
         test_pan_sb.setOnSeekBarChangeListener(object : SeekBar.OnSeekBarChangeListener{
             override fun onProgressChanged(seekBar: SeekBar?, progress: Int, fromUser: Boolean) {
-                pVal = progress
-//                data = byteArrayOf(
-//                    0x01.toByte(),
-//                    0x01.toByte(),
-//                    pVal.toByte(),
-//                    tVal.toByte(),
-//                    bVal.toByte(),
-//                    0x01.toByte()
-//                )
-//                Protocol.cDeviceProt.transferDataWithDelay(command, data)
-                updateTextOnPan(pVal)
+                if(SeekBarStatus){
+                    ButtonStatus = false
+                    pVal = progress
+                data = byteArrayOf(
+                    0x01.toByte(),
+                    0x01.toByte(),
+                    pVal.toByte(),
+                    tVal.toByte(),
+                    bVal.toByte(),
+                    0x01.toByte()
+                )
+                Protocol.cDeviceProt?.transferDataWithDelay(command, data)
+
+                    updateTextOnPan(pVal)
+                }else{
+                    Toast.makeText(context, "Disabled", Toast.LENGTH_SHORT).show()
+                    test_pan_sb.progress = 128
+
+                }
 
             }
 
@@ -159,17 +200,24 @@ class TestFragment : Fragment() {
         }
         test_tilt_sb.setOnSeekBarChangeListener(object : SeekBar.OnSeekBarChangeListener{
             override fun onProgressChanged(seekBar: SeekBar?, progress: Int, fromUser: Boolean) {
-                tVal = progress
-//                data = byteArrayOf(
-//                    0x01.toByte(),
-//                    0x01.toByte(),
-//                    pVal.toByte(),
-//                    tVal.toByte(),
-//                    bVal.toByte(),
-//                    0x01.toByte()
-//                )
-//                Protocol.cDeviceProt.transferDataWithDelay(command, data)
-                updateTextOnTilt(tVal)
+                if(SeekBarStatus){
+                    ButtonStatus = false
+                    tVal = progress
+                data = byteArrayOf(
+                    0x01.toByte(),
+                    0x01.toByte(),
+                    pVal.toByte(),
+                    tVal.toByte(),
+                    bVal.toByte(),
+                    0x01.toByte()
+                )
+                Protocol.cDeviceProt?.transferDataWithDelay(command, data)
+                    updateTextOnTilt(tVal)
+                }else{
+                    Toast.makeText(context, "Disabled", Toast.LENGTH_SHORT).show()
+                    test_tilt_sb.progress = 128
+                }
+
             }
 
             override fun onStartTrackingTouch(seekBar: SeekBar?) {
@@ -184,17 +232,23 @@ class TestFragment : Fragment() {
 
         test_blink_sb.setOnSeekBarChangeListener(object : SeekBar.OnSeekBarChangeListener{
             override fun onProgressChanged(seekBar: SeekBar?, progress: Int, fromUser: Boolean) {
-                bVal = progress
-//                data = byteArrayOf(
-//                    0x01.toByte(),
-//                    0x01.toByte(),
-//                    pVal.toByte(),
-//                    tVal.toByte(),
-//                    bVal.toByte(),
-//                    0x01.toByte()
-//                )
-//                Protocol.cDeviceProt.transferDataWithDelay(command, data)
-                update_test_blink.text = bVal.toString()
+                if(SeekBarStatus){
+                    ButtonStatus = false
+                    bVal = progress
+                data = byteArrayOf(
+                    0x01.toByte(),
+                    0x01.toByte(),
+                    pVal.toByte(),
+                    tVal.toByte(),
+                    bVal.toByte(),
+                    0x01.toByte()
+                )
+                Protocol.cDeviceProt?.transferDataWithDelay(command, data)
+                    update_test_blink.text = bVal.toString()
+                }else{
+                    Toast.makeText(context, "Disabled", Toast.LENGTH_SHORT).show()
+                    test_blink_sb.progress = 0
+                }
             }
 
             override fun onStartTrackingTouch(seekBar: SeekBar?) {

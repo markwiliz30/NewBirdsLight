@@ -20,6 +20,7 @@ import com.example.blapp.collection.DayCollection
 import com.example.blapp.collection.PgmCollection
 import com.example.blapp.collection.ScheduleCollection
 import com.example.blapp.collection.StepCollection
+import com.example.blapp.common.Protocol
 import com.example.blapp.databasehelper.DBmanager
 import com.example.blapp.helper.MyButton
 import com.example.blapp.helper.MySwipeHelper
@@ -62,7 +63,7 @@ class ProgramFragment : Fragment(){
         recycler_pgm.setItemViewCacheSize(25)
         layoutManager = LinearLayoutManager(activity)
         recycler_pgm.layoutManager = layoutManager
-
+        ResetBirdsLight()
         //Add Swipe
         val swipe = object: MySwipeHelper(activity, recycler_pgm, 200)
         {
@@ -305,7 +306,16 @@ class ProgramFragment : Fragment(){
         }
     }
 
-    fun AddDayCollection(day: Int){
-
+    fun ResetBirdsLight(){
+        val command: Byte = 0x02
+        val data = byteArrayOf(
+            0x01.toByte(),
+            0x01.toByte(),
+            0.toByte(),
+            0.toByte(),
+            0.toByte(),
+            0x01.toByte()
+        )
+        Protocol.cDeviceProt!!.transferData(command, data)
     }
 }

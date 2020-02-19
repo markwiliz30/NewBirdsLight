@@ -59,7 +59,7 @@ class LandingFragment : Fragment() {
             displayScannedWifi()
             if(resultList.count() == 0)
             {
-                Toast.makeText(activity, "No device(s) found" , Toast.LENGTH_SHORT).show()
+                Toast.makeText(activity, "No device(s) found, Please make sure that your Wifi and GPS are turned on." , Toast.LENGTH_LONG).show()
             }
             else
             {

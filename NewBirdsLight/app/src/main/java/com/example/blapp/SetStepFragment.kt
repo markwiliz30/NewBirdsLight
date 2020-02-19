@@ -68,6 +68,16 @@ class SetStepFragment : Fragment() {
 
         if(editClicked){
             btn_step_save.text= "Update"
+            data = byteArrayOf(
+                0x01.toByte(),
+                0x01.toByte(),
+                pVal.toByte(),
+                tVal.toByte(),
+                bVal.toByte(),
+                0x01.toByte()
+            )
+            Protocol.cDeviceProt?.transferDataWithDelay(command, data)
+
         }else{
             btn_step_save.text="Save"
             ResetCurrentStep()
@@ -81,15 +91,15 @@ class SetStepFragment : Fragment() {
         edit_pan_sb.setOnSeekBarChangeListener(object : SeekBar.OnSeekBarChangeListener{
             override fun onProgressChanged(seekBar: SeekBar?, progress: Int, fromUser: Boolean) {
                 pVal = progress
-//                data = byteArrayOf(
-////                    0x01.toByte(),
-////                    0x01.toByte(),
-////                    pVal.toByte(),
-////                    tVal.toByte(),
-////                    bVal.toByte(),
-////                    0x01.toByte()
-////                )
-////                Protocol.cDeviceProt.transferDataWithDelay(command, data)
+                data = byteArrayOf(
+                   0x01.toByte(),
+                    0x01.toByte(),
+                    pVal.toByte(),
+                   tVal.toByte(),
+                  bVal.toByte(),
+                   0x01.toByte()
+                )
+              Protocol.cDeviceProt?.transferDataWithDelay(command, data)
                 updateTextOnPan(pVal)
             }
 
@@ -105,15 +115,15 @@ class SetStepFragment : Fragment() {
         edit_tilt_sb.setOnSeekBarChangeListener(object : SeekBar.OnSeekBarChangeListener{
             override fun onProgressChanged(seekBar: SeekBar?, progress: Int, fromUser: Boolean) {
                 tVal = progress
-//                data = byteArrayOf(
-//                    0x01.toByte(),
-//                    0x01.toByte(),
-//                    pVal.toByte(),
-//                    tVal.toByte(),
-//                    bVal.toByte(),
-//                    0x01.toByte()
-//                )
-//                Protocol.cDeviceProt.transferDataWithDelay(command, data)
+                data = byteArrayOf(
+                    0x01.toByte(),
+                    0x01.toByte(),
+                    pVal.toByte(),
+                    tVal.toByte(),
+                    bVal.toByte(),
+                    0x01.toByte()
+                )
+                Protocol.cDeviceProt?.transferDataWithDelay(command, data)
                 updateTextOnTilt(tVal)
             }
 
@@ -129,15 +139,15 @@ class SetStepFragment : Fragment() {
         edit_blink_sb.setOnSeekBarChangeListener(object : SeekBar.OnSeekBarChangeListener{
             override fun onProgressChanged(seekBar: SeekBar?, progress: Int, fromUser: Boolean) {
                 bVal = progress
-//                data = byteArrayOf(
-//                    0x01.toByte(),
-//                    0x01.toByte(),
-//                    pVal.toByte(),
-//                    tVal.toByte(),
-//                    bVal.toByte(),
-//                    0x01.toByte()
-//                )
-//                Protocol.cDeviceProt.transferDataWithDelay(command, data)
+               data = byteArrayOf(
+                    0x01.toByte(),
+                    0x01.toByte(),
+                    pVal.toByte(),
+                    tVal.toByte(),
+                    bVal.toByte(),
+                    0x01.toByte()
+                )
+                Protocol.cDeviceProt?.transferDataWithDelay(command, data)
                 update_step_blink.text = bVal.toString()
             }
 
@@ -265,6 +275,16 @@ class SetStepFragment : Fragment() {
                 CurrentID.UpdateID(num = 3)
             }
 
+            data = byteArrayOf(
+                0x01.toByte(),
+                0x01.toByte(),
+                0.toByte(),
+                0.toByte(),
+                0.toByte(),
+                0x01.toByte()
+            )
+            Protocol.cDeviceProt!!.transferData(command, data)
+
         }
 
     }
@@ -339,10 +359,22 @@ class SetStepFragment : Fragment() {
 
     private fun ResetCurrentStep()
     {
+        var data: ByteArray
+        val command: Byte = 0x02
         pVal = 128
         tVal = 128
         bVal = 0
         tmVal = 0
+
+        data = byteArrayOf(
+                    0x01.toByte(),
+                  0x01.toByte(),
+                   pVal.toByte(),
+                    tVal.toByte(),
+                   bVal.toByte(),
+                   0x01.toByte()
+                )
+        Protocol.cDeviceProt?.transferDataWithDelay(command, data)
 
         updateTextOnTilt(tVal)
         updateTextOnPan(pVal)

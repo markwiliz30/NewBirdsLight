@@ -74,5 +74,27 @@ class Settings : Fragment() {
             val dialog = builder.create()
             dialog.show()
         }
+
+
+        FactoryReset.setOnClickListener{}
+    }
+
+    fun ShowSaveAlert(){
+
+        val mAlertDialog = AlertDialog.Builder(activity!!)
+        mAlertDialog.setIcon(R.mipmap.ic_launcher_round)
+        mAlertDialog.setTitle("Are you sure?")
+        mAlertDialog.setMessage("This will delete all created program and reset to default")
+
+
+        mAlertDialog.setPositiveButton("Okay") { dialog, id ->
+            Toast.makeText(activity , "Reseting device" , Toast.LENGTH_SHORT).show()
+        }
+
+        mAlertDialog.setNegativeButton("Cancel") { dialog, id ->
+
+        }
+
+        mAlertDialog.show()
     }
 }
